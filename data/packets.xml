@@ -1,0 +1,22 @@
+<packets>
+  <incoming>
+    <packet opcode="0" name="authentication_request">
+      <fields>
+        <field name="version" type="BYTE" />
+        <field name="username" type="STRING" />
+        <field name="verification" type="STRING" />
+        <field name="magic" type="BYTE" />
+      </fields>
+  	</packet>
+  </incoming>
+  <outgoing>
+    <packet opcode="0" name="authentication_response">
+      <fields>
+        <field name="version" type="BYTE" />
+        <field name="server_name" type="STRING" />
+        <field name="server_message" type="STRING" />
+        <field name="user_type" type="BYTE" />
+      </fields>
+    </packet>
+  </outgoing>
+</packets>
