@@ -1,14 +1,5 @@
 package org.opencraft.server;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.apache.mina.core.service.IoAcceptor;
-import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
-import org.opencraft.server.net.SessionHandler;
-
 /*
  * OpenCraft License
  * 
@@ -41,6 +32,15 @@ import org.opencraft.server.net.SessionHandler;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.mina.core.service.IoAcceptor;
+import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.opencraft.server.net.SessionHandler;
 
 /**
  * The core class of the OpenCraft server.

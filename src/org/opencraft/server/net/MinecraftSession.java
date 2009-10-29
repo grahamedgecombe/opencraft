@@ -1,8 +1,5 @@
 package org.opencraft.server.net;
 
-import org.apache.mina.core.session.IoSession;
-import org.opencraft.server.net.packet.Packet;
-
 /*
  * OpenCraft License
  * 
@@ -35,6 +32,9 @@ import org.opencraft.server.net.packet.Packet;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import org.apache.mina.core.session.IoSession;
+import org.opencraft.server.net.packet.Packet;
 
 /**
  * Manages a connected Minecraft session.

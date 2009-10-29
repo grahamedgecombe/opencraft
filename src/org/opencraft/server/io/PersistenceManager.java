@@ -1,15 +1,5 @@
 package org.opencraft.server.io;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import org.opencraft.server.net.packet.PacketDefinition;
-import org.opencraft.server.net.packet.PacketField;
-import org.opencraft.server.net.packet.PacketManager;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 /*
  * OpenCraft License
  * 
@@ -42,6 +32,16 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import org.opencraft.server.net.packet.PacketDefinition;
+import org.opencraft.server.net.packet.PacketField;
+import org.opencraft.server.net.packet.PacketManager;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * A class which manages XStream persistence.

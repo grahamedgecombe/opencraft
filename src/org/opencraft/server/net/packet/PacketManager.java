@@ -1,10 +1,5 @@
 package org.opencraft.server.net.packet;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.opencraft.server.io.PersistenceManager;
-
 /*
  * OpenCraft License
  * 
@@ -37,6 +32,11 @@ import org.opencraft.server.io.PersistenceManager;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.LinkedList;
+import java.util.List;
+
+import org.opencraft.server.io.PersistenceManager;
 
 /**
  * A utility class for managing the whole packet system.
