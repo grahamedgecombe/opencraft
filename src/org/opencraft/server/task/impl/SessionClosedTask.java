@@ -1,6 +1,7 @@
 package org.opencraft.server.task.impl;
 
 import org.apache.mina.core.session.IoSession;
+import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.task.Task;
 
 /**
@@ -25,7 +26,7 @@ public final class SessionClosedTask implements Task {
 
 	@Override
 	public void execute() {
-		session.removeAttribute("attachment");
+		((MinecraftSession) session.removeAttribute("attachment")).destroy();
 	}
 
 }

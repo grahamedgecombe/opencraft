@@ -1,6 +1,7 @@
 package org.opencraft.server.net;
 
 import org.apache.mina.core.session.IoSession;
+import org.opencraft.server.net.packet.Packet;
 
 /*
  * OpenCraft License
@@ -54,6 +55,29 @@ public class MinecraftSession {
 	 */
 	public MinecraftSession(IoSession session) {
 		this.session = session;
+	}
+	
+	/**
+	 * Sends a packet.
+	 * @param packet The packet to send.
+	 */
+	public void send(Packet packet) {
+		session.write(packet);
+	}
+	
+	/**
+	 * Closes this session.
+	 */
+	public void close() {
+		session.close(false);
+	}
+	
+	/**
+	 * Called when this session is to be destroyed, should release any
+	 * resources.
+	 */
+	public void destroy() {
+		
 	}
 
 }
