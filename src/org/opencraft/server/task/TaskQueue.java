@@ -1,5 +1,8 @@
 package org.opencraft.server.task;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 /*
  * OpenCraft License
  * 
@@ -51,6 +54,30 @@ public class TaskQueue {
 	 */
 	public static TaskQueue getTaskQueue() {
 		return INSTANCE;
+	}
+	
+	/**
+	 * The scheduled executor service backing this task queue.
+	 */
+	private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+	
+	/**
+	 * Default private constructor.
+	 */
+	private TaskQueue() {
+		/* empty */
+	}
+	
+	/**
+	 * Pushes a task onto the task queue.
+	 * @param task The task to be executed.
+	 */
+	public void push(final Task task) {
+		service.submit(new Runnable() {
+			public void run() {
+				task.execute();
+			}
+		});
 	}
 
 }
