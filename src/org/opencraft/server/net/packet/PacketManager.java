@@ -1,5 +1,10 @@
 package org.opencraft.server.net.packet;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.opencraft.server.io.PersistenceManager;
+
 /*
  * OpenCraft License
  * 
@@ -54,7 +59,7 @@ public final class PacketManager {
 			if(instance != null) {
 				throw new IllegalStateException("Packet manager already initialised.");
 			}
-			instance = new PacketManager();
+			instance = (PacketManager) PersistenceManager.getPersistenceManager().load("data/packets.xml");
 		}
 	}
 	
@@ -75,12 +80,12 @@ public final class PacketManager {
 	/**
 	 * Incoming packets.
 	 */
-	private PacketDefinition[] incoming = new PacketDefinition[256];
+	private List<PacketDefinition> incoming = new LinkedList<PacketDefinition>();
 	
 	/**
 	 * Outgoing packets.
 	 */
-	private PacketDefinition[] outgoing = new PacketDefinition[256];
+	private List<PacketDefinition> outgoing = new LinkedList<PacketDefinition>();
 	
 	/**
 	 * Default private constructor.

@@ -39,5 +39,10 @@ package org.opencraft.server;
  *
  */
 public class Constants {
+	
+	/**
+	 * The default Minecraft port.
+	 */
+	public static final int PORT = 25565;
 
 }

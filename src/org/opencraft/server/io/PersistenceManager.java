@@ -1,10 +1,14 @@
 package org.opencraft.server.io;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import org.opencraft.server.net.packet.PacketDefinition;
 import org.opencraft.server.net.packet.PacketField;
 import org.opencraft.server.net.packet.PacketManager;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /*
  * OpenCraft License
@@ -62,7 +66,7 @@ public class PersistenceManager {
 	/**
 	 * The XStream object.
 	 */
-	private final XStream xstream = new XStream();
+	private final XStream xstream = new XStream(new DomDriver());
 	
 	/**
 	 * Initializes the persistence manager.
@@ -71,6 +75,19 @@ public class PersistenceManager {
 		xstream.alias("packets", PacketManager.class);
 		xstream.alias("packet", PacketDefinition.class);
 		xstream.alias("field", PacketField.class);
+	}
+	
+	/**
+	 * Loads an object from an XML file.
+	 * @param file The file.
+	 * @return The object.
+	 */
+	public Object load(String file) {
+		try {
+			return xstream.fromXML(new FileInputStream(file));
+		} catch (FileNotFoundException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }

@@ -1,5 +1,15 @@
 package org.opencraft.server;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.mina.core.service.IoAcceptor;
+import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.opencraft.server.net.SessionHandler;
+import org.opencraft.server.net.packet.PacketManager;
+
 /*
  * OpenCraft License
  * 
@@ -39,13 +49,47 @@ package org.opencraft.server;
  * 
  */
 public final class Server {
+	
+	/**
+	 * Logger instance.
+	 */
+	private static final Logger logger = Logger.getLogger(Server.class.getName());
 
 	/**
 	 * The entry point of the server application.
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+		try {
+			new Server().start();
+		} catch (Throwable t) {
+			logger.log(Level.SEVERE, "An error occurred whilst loading the server.", t);
+		}
+	}
+	
+	/**
+	 * The socket acceptor.
+	 */
+	private final IoAcceptor acceptor = new NioSocketAcceptor();
+	
+	/**
+	 * Creates the server.
+	 */
+	public Server() {
+		logger.info("Starting OpenCraft server...");
+		acceptor.setHandler(new SessionHandler());
+	}
+	
+	/**
+	 * Starts the server.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public void start() throws IOException {
+		logger.info("Loading packet definitions...");
+		PacketManager.init();
+		logger.info("Binding to " + Constants.PORT + "...");
+		acceptor.bind(new InetSocketAddress(Constants.PORT));
+		logger.info("Ready.");
 	}
 
 }
