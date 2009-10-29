@@ -43,31 +43,52 @@ public enum DataType {
 	/**
 	 * Standard byte data type.
 	 */
-	BYTE,
+	BYTE(1),
 	
 	/**
 	 * Standard short data type.
 	 */
-	SHORT,
+	SHORT(2),
 	
 	/**
 	 * Standard integer data type.
 	 */
-	INT,
+	INT(4),
 	
 	/**
 	 * Standard long data type.
 	 */
-	LONG,
+	LONG(8),
 	
 	/**
 	 * Fixed-length (1024) byte array data type.
 	 */
-	BYTE_ARRAY,
+	BYTE_ARRAY(1024),
 	
 	/**
 	 * Fixed length (64 ASCII bytes) string data type.
 	 */
-	STRING;
+	STRING(64);
+	
+	/**
+	 * The length of the data type, in bytes.
+	 */
+	private int length;
+	
+	/**
+	 * Creates the data type.
+	 * @param length
+	 */
+	private DataType(int length) {
+		this.length = length;
+	}
+	
+	/**
+	 * Gets the length of this data type.
+	 * @return The length, in bytes.
+	 */
+	public int getLength() {
+		return length;
+	}
 
 }

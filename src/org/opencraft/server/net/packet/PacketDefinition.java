@@ -56,6 +56,11 @@ public final class PacketDefinition {
 	private final PacketField[] fields;
 	
 	/**
+	 * The length of this packet.
+	 */
+	private final int length;
+	
+	/**
 	 * Creates the packet definition.
 	 * @param opcode The opcode.
 	 * @param name The name.
@@ -65,6 +70,12 @@ public final class PacketDefinition {
 		this.opcode = opcode;
 		this.name = name;
 		this.fields = fields;
+		// compute packet length
+		int length = 0;
+		for(PacketField field : fields) {
+			length += field.getType().getLength();
+		}
+		this.length = length;
 	}
 	
 	/**
@@ -89,6 +100,14 @@ public final class PacketDefinition {
 	 */
 	public PacketField[] getFields() {
 		return fields;
+	}
+
+	/**
+	 * Gets the length of this packet.
+	 * @return The length of this packet, in bytes.
+	 */
+	public int getLength() {
+		return length;
 	}
 
 }

@@ -120,4 +120,13 @@ public final class PacketManager {
 		return this;
 	}
 
+	/**
+	 * Gets an incoming packet definition.
+	 * @param opcode The opcode.
+	 * @return The packet definition.
+	 */
+	public PacketDefinition getIncomingPacket(int opcode) {
+		return incomingArray[opcode];
+	}
+
 }
