@@ -35,6 +35,13 @@ package org.opencraft.server.net;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.opencraft.server.net.codec.MinecraftCodecFactory;
+import org.opencraft.server.net.packet.Packet;
+import org.opencraft.server.task.TaskQueue;
+import org.opencraft.server.task.impl.SessionClosedTask;
+import org.opencraft.server.task.impl.SessionMessageTask;
+import org.opencraft.server.task.impl.SessionOpenedTask;
 
 /**
  * An implementation of an <code>IoHandler</code> which manages incoming events
@@ -52,17 +59,18 @@ public class SessionHandler extends IoHandlerAdapter {
 
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
-		
+		TaskQueue.getTaskQueue().push(new SessionMessageTask(session, (Packet) message));
 	}
 
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
-		
+		TaskQueue.getTaskQueue().push(new SessionClosedTask(session));
 	}
 
 	@Override
 	public void sessionOpened(IoSession session) throws Exception {
-		
+		session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(new MinecraftCodecFactory()));
+		TaskQueue.getTaskQueue().push(new SessionOpenedTask(session));
 	}
 
 }

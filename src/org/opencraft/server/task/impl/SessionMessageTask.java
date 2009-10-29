@@ -1,4 +1,4 @@
-package org.opencraft.server.task;
+package org.opencraft.server.task.impl;
 
 /*
  * OpenCraft License
@@ -33,51 +33,40 @@ package org.opencraft.server.task;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import org.apache.mina.core.session.IoSession;
+import org.opencraft.server.net.packet.Packet;
+import org.opencraft.server.task.Task;
 
 /**
- * Manages the task queue.
+ * A task which parses a packet received from a session.
  * @author Graham Edgecombe
  *
  */
-public final class TaskQueue {
+public final class SessionMessageTask implements Task {
 	
 	/**
-	 * The task queue singleton.
+	 * The session.
 	 */
-	private static final TaskQueue INSTANCE = new TaskQueue();
+	private final IoSession session;
 	
 	/**
-	 * Gets the task queue instance.
-	 * @return The task queue instance.
+	 * The packet.
 	 */
-	public static TaskQueue getTaskQueue() {
-		return INSTANCE;
+	private final Packet packet;
+
+	/**
+	 * Creates the session message task.
+	 * @param session The session.
+	 * @param packet The packet.
+	 */
+	public SessionMessageTask(IoSession session, Packet packet) {
+		this.session = session;
+		this.packet = packet;
 	}
-	
-	/**
-	 * The scheduled executor service backing this task queue.
-	 */
-	private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-	
-	/**
-	 * Default private constructor.
-	 */
-	private TaskQueue() {
-		/* empty */
-	}
-	
-	/**
-	 * Pushes a task onto the task queue.
-	 * @param task The task to be executed.
-	 */
-	public void push(final Task task) {
-		service.submit(new Runnable() {
-			public void run() {
-				task.execute();
-			}
-		});
+
+	@Override
+	public void execute() {
+		
 	}
 
 }
