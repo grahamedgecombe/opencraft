@@ -48,33 +48,14 @@ public final class PacketManager {
 	/**
 	 * The packet manager instance.
 	 */
-	private static PacketManager instance;
+	private static final PacketManager INSTANCE = (PacketManager) PersistenceManager.getPersistenceManager().load("data/packets.xml");;
 	
 	/**
-	 * Initializes the packet manager.
-	 * @throws IllegalStateException if the packet manager is already initialised.
-	 */
-	public static void init() {
-		synchronized(PacketManager.class) {
-			if(instance != null) {
-				throw new IllegalStateException("Packet manager already initialised.");
-			}
-			instance = (PacketManager) PersistenceManager.getPersistenceManager().load("data/packets.xml");
-		}
-	}
-	
-	/**
-	 * Gets the packet manager.
-	 * @return The packet manager.
-	 * @throws IllegalStateException if the packet manager has not been initialised.
+	 * Gets the packet manager instance.
+	 * @return The packet manager instance.
 	 */
 	public static PacketManager getPacketManager() {
-		synchronized(PacketManager.class) {
-			if(instance == null) {
-				throw new IllegalStateException("Packet manager not initialised - did you call init()?");
-			}
-			return instance;
-		}
+		return INSTANCE;
 	}
 	
 	/**

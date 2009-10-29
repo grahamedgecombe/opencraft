@@ -79,6 +79,15 @@ public final class PacketDefinition {
 	}
 	
 	/**
+	 * Resolves this object.
+	 * @return The object with the correct packet length.
+	 */
+	private Object readResolve() {
+		// ensures length is computed
+		return new PacketDefinition(opcode, name, fields);
+	}
+	
+	/**
 	 * Gets the opcode of this packet.
 	 * @return The opcode of this packet.
 	 */

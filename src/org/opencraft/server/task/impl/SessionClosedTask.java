@@ -25,7 +25,7 @@ public final class SessionClosedTask implements Task {
 
 	@Override
 	public void execute() {
-		
+		session.removeAttribute("attachment");
 	}
 
 }

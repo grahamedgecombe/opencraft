@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.opencraft.server.net.SessionHandler;
-import org.opencraft.server.net.packet.PacketManager;
 
 /*
  * OpenCraft License
@@ -85,8 +84,6 @@ public final class Server {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public void start() throws IOException {
-		logger.info("Loading packet definitions...");
-		PacketManager.init();
 		logger.info("Binding to " + Constants.PORT + "...");
 		acceptor.bind(new InetSocketAddress(Constants.PORT));
 		logger.info("Ready.");

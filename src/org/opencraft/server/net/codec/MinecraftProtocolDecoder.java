@@ -57,58 +57,55 @@ public class MinecraftProtocolDecoder extends CumulativeProtocolDecoder {
 	/**
 	 * The current packet being decoded.
 	 */
-	private PacketDefinition currentPacket;
+	private PacketDefinition currentPacket = null;
 
 	@Override
 	protected boolean doDecode(IoSession session, IoBuffer buffer, ProtocolDecoderOutput out) throws Exception {
 		if(currentPacket == null) {
-			if(buffer.hasRemaining()) {
+			if(buffer.remaining() >= 1) {
 				int opcode = buffer.getUnsigned();
 				currentPacket = PacketManager.getPacketManager().getIncomingPacket(opcode);
 				if(currentPacket == null) {
 					throw new IOException("Unknown incoming packet type (opcode = " + opcode + ").");
-				} else {
-					return true;
 				}
 			} else {
 				return false;
 			}
+		}
+		if(buffer.remaining() >= currentPacket.getLength()) {
+			Map<String, Object> values = new HashMap<String, Object>();
+			for(PacketField field : currentPacket.getFields()) {
+				Object value = null;
+				switch(field.getType()) {
+				case BYTE:
+					value = buffer.get();
+					break;
+				case SHORT:
+					value = buffer.getShort();
+					break;
+				case INT:
+					value = buffer.getInt();
+					break;
+				case LONG:
+					value = buffer.getLong();
+					break;
+				case BYTE_ARRAY:
+					value = IoBuffer.allocate(1024).put(buffer);
+					break;
+				case STRING:
+					byte[] bytes = new byte[64];
+					buffer.get(bytes);
+					value = new String(bytes).trim();
+					break;
+				}
+				values.put(field.getName(), value);
+			}
+			Packet packet = new Packet(currentPacket, values);
+			currentPacket = null;
+			out.write(packet);
+			return true;
 		} else {
-			if(buffer.remaining() >= currentPacket.getLength()) {
-				Map<String, Object> values = new HashMap<String, Object>();
-				for(PacketField field : currentPacket.getFields()) {
-					Object value = null;
-					switch(field.getType()) {
-					case BYTE:
-						value = buffer.get();
-						break;
-					case SHORT:
-						value = buffer.getShort();
-						break;
-					case INT:
-						value = buffer.getInt();
-						break;
-					case LONG:
-						value = buffer.getLong();
-						break;
-					case BYTE_ARRAY:
-						value = IoBuffer.allocate(1024).put(buffer);
-						break;
-					case STRING:
-						byte[] bytes = new byte[64];
-						buffer.get(bytes);
-						value = new String(bytes).trim();
-						break;
-					}
-					values.put(field.getName(), value);
-				}
-				Packet packet = new Packet(currentPacket, values);
-				currentPacket = null;
-				out.write(packet);
-				return true;
-			} else {
-				return false;
-			}
+			return false;
 		}
 	}
 
