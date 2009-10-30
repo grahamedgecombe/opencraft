@@ -38,6 +38,7 @@ import java.util.Queue;
 
 import org.apache.mina.core.session.IoSession;
 import org.opencraft.server.model.Player;
+import org.opencraft.server.model.World;
 import org.opencraft.server.net.packet.Packet;
 import org.opencraft.server.net.packet.handler.PacketHandlerManager;
 
@@ -197,7 +198,7 @@ public final class MinecraftSession {
 	 * resources.
 	 */
 	public void destroy() {
-		
+		World.getWorld().unregister(this);
 	}
 
 }

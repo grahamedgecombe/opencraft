@@ -86,6 +86,7 @@ public class ActionSender {
 			public void execute() {
 				// for thread safety
 				session.setReady();
+				World.getWorld().completeRegistration(session);
 			}
 		});
 		final Level level = World.getWorld().getLevel();
@@ -118,6 +119,17 @@ public class ActionSender {
 	 */
 	public void sendRemoveEntity(Entity entity) {
 		
+	}
+
+	/**
+	 * Sends a chat message. 
+	 * @param message The message.
+	 */
+	public void sendChatMessage(String message) {
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(13));
+		bldr.putByte("id", -1);
+		bldr.putString("message", message);
+		session.send(bldr.toPacket());
 	}
 
 }

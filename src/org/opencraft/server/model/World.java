@@ -87,4 +87,22 @@ public final class World {
 		LevelGzipper.getLevelGzipper().gzipLevel(session);
 	}
 
+	/**
+	 * Unregisters a session.
+	 * @param session
+	 */
+	public void unregister(MinecraftSession session) {
+		if(session.isAuthenticated()) {
+			playerList.remove(session.getPlayer());
+		}
+	}
+
+	/**
+	 * Completes registration of a session.
+	 * @param session The sessino.
+	 */
+	public void completeRegistration(MinecraftSession session) {
+		session.getActionSender().sendChatMessage("Welcome to OpenCraft!");
+	}
+
 }
