@@ -35,6 +35,6 @@ POSSIBILITY OF SUCH DAMAGE.
 <map>
   <entry>
     <int>0</int>
-    <string>org.opencraft.server.net.event.impl.AuthenticationPacketHandler</string>
+    <string>org.opencraft.server.net.packet.handler.impl.AuthenticationPacketHandler</string>
   </entry>
 </map>
