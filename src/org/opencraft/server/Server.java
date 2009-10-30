@@ -43,6 +43,7 @@ import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.opencraft.server.net.SessionHandler;
 import org.opencraft.server.task.TaskQueue;
+import org.opencraft.server.task.impl.HeartbeatTask;
 import org.opencraft.server.task.impl.UpdateTask;
 
 /**
@@ -81,10 +82,11 @@ public final class Server {
 	 */
 	public Server() throws FileNotFoundException, IOException {
 		logger.info("Starting OpenCraft server...");
-		acceptor.setHandler(new SessionHandler());
-		TaskQueue.getTaskQueue().schedule(new UpdateTask());
 		logger.info("Configuring...");
 		Configuration.readConfiguration();
+		acceptor.setHandler(new SessionHandler());
+		TaskQueue.getTaskQueue().schedule(new UpdateTask());
+		TaskQueue.getTaskQueue().schedule(new HeartbeatTask());
 	}
 	
 	/**
