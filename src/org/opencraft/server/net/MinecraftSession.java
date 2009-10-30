@@ -78,6 +78,11 @@ public final class MinecraftSession {
 	private final IoSession session;
 	
 	/**
+	 * The action sender associated with this session.
+	 */
+	private final ActionSender actionSender = new ActionSender(this);
+	
+	/**
 	 * Packet queue.
 	 */
 	private final Queue<Packet> queuedPackets = new ArrayDeque<Packet>();
@@ -98,6 +103,14 @@ public final class MinecraftSession {
 	 */
 	public MinecraftSession(IoSession session) {
 		this.session = session;
+	}
+	
+	/**
+	 * Gets the action sender associated with this session.
+	 * @return The action sender.
+	 */
+	public ActionSender getActionSender() {
+		return actionSender;
 	}
 	
 	/**

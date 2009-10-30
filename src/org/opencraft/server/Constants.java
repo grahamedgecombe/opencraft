@@ -44,5 +44,11 @@ public final class Constants {
 	 * The default Minecraft port.
 	 */
 	public static final int PORT = 25565;
+	
+	/**
+	 * The protocol version of Minecraft that this version of OpenCraft is
+	 * compatible with.
+	 */
+	public static final int PROTOCOL_VERSION = 7;
 
 }
