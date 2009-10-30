@@ -50,5 +50,10 @@ public final class Constants {
 	 * compatible with.
 	 */
 	public static final int PROTOCOL_VERSION = 7;
+	
+	/**
+	 * The heartbeat server.
+	 */
+	public static final String HEARTBEAT_SERVER = "http://www.minecraft.net/";
 
 }

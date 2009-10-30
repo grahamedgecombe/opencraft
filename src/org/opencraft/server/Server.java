@@ -33,6 +33,7 @@ package org.opencraft.server;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
@@ -75,11 +76,15 @@ public final class Server {
 	
 	/**
 	 * Creates the server.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws FileNotFoundException if the configuration file is not found.
 	 */
-	public Server() {
+	public Server() throws FileNotFoundException, IOException {
 		logger.info("Starting OpenCraft server...");
 		acceptor.setHandler(new SessionHandler());
 		TaskQueue.getTaskQueue().schedule(new UpdateTask());
+		logger.info("Configuring...");
+		Configuration.readConfiguration();
 	}
 	
 	/**

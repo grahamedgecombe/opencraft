@@ -1,5 +1,6 @@
 package org.opencraft.server.model;
 
+import org.opencraft.server.Configuration;
 import org.opencraft.server.Constants;
 import org.opencraft.server.io.LevelGzipper;
 import org.opencraft.server.net.MinecraftSession;
@@ -83,7 +84,8 @@ public final class World {
 			return;
 		}
 		session.setPlayer(player);
-		session.getActionSender().sendLoginResponse(Constants.PROTOCOL_VERSION, "OpenCraft", "Loading...", false);
+		final Configuration c = Configuration.getConfiguration();
+		session.getActionSender().sendLoginResponse(Constants.PROTOCOL_VERSION, c.getName(), c.getMessage(), false);
 		LevelGzipper.getLevelGzipper().gzipLevel(session);
 	}
 

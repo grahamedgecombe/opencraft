@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.opencraft.server.Configuration;
 import org.opencraft.server.model.Player;
 
 /**
@@ -17,7 +18,7 @@ public class PlayerList {
 	/**
 	 * The maximum number of players.
 	 */
-	private final int maximumPlayers = 64;
+	private final int maximumPlayers = Configuration.getConfiguration().getMaximumPlayers();
 	
 	/**
 	 * The player array.
