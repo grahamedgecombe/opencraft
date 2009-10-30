@@ -34,21 +34,25 @@ package org.opencraft.server.model;
  */
 
 /**
- * The superclass for players and mobs.
+ * Represents a location in the game world.
  * @author Graham Edgecombe
  *
  */
-public abstract class Entity {
+public class Position {
 	
 	/**
-	 * The current position.
+	 * X position.
 	 */
-	private Position position;
+	private int x;
 	
 	/**
-	 * Gets the name of this entity.
-	 * @return The name of this entity.
+	 * Y position.
 	 */
-	public abstract String getName();
+	private int y;
+	
+	/**
+	 * Z position.
+	 */
+	private int z;
 
 }

@@ -39,5 +39,23 @@ package org.opencraft.server.model;
  *
  */
 public final class Player extends Entity {
+	
+	/**
+	 * The player's name.
+	 */
+	private final String name;
+	
+	/**
+	 * Creates the player.
+	 * @param name The player's name.
+	 */
+	public Player(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String getName() {
+		return name;
+	}
 
 }
