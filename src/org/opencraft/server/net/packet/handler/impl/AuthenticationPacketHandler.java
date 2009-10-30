@@ -1,4 +1,4 @@
-package org.opencraft.server.net.event;
+package org.opencraft.server.net.packet.handler.impl;
 
 /*
  * OpenCraft License
@@ -33,70 +33,39 @@ package org.opencraft.server.net.event;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
 import java.util.logging.Logger;
 
-import org.opencraft.server.io.PersistenceManager;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.packet.Packet;
+import org.opencraft.server.net.packet.PacketBuilder;
+import org.opencraft.server.net.packet.PacketManager;
+import org.opencraft.server.net.packet.handler.PacketHandler;
 
 /**
- * A class which manages <code>PacketHandler</code>s.
+ * Handles the incoming authentication packet.
  * @author Graham Edgecombe
  *
  */
-public class PacketHandlerManager {
-	
-	/**
-	 * The singleton instance.
-	 */
-	private static final PacketHandlerManager INSTANCE = new PacketHandlerManager();
+public class AuthenticationPacketHandler implements PacketHandler {
 	
 	/**
 	 * Logger instance.
 	 */
-	private static final Logger logger = Logger.getLogger(PacketHandlerManager.class.getName());
+	private static final Logger logger = Logger.getLogger(AuthenticationPacketHandler.class.getName());
 
-	/**
-	 * Gets the packet handler manager instance.
-	 * @return The packet handler manager instance.
-	 */
-	public static PacketHandlerManager getPacketHandlerManager() {
-		return INSTANCE;
-	}
-	
-	/**
-	 * An array of packet handlers.
-	 */
-	private PacketHandler[] handlers = new PacketHandler[256];
-	
-	/**
-	 * Default private constructor.
-	 */
-	@SuppressWarnings("unchecked")
-	private PacketHandlerManager() {
-		try {
-			Map<Integer, String> handlers = (Map<Integer, String>) PersistenceManager.getPersistenceManager().load("data/packetHandlers.xml");
-			for(Map.Entry<Integer, String> handler : handlers.entrySet()) {
-				this.handlers[handler.getKey()] = (PacketHandler) Class.forName(handler.getValue()).newInstance();
-			}
-		} catch (Exception ex) {
-			throw new ExceptionInInitializerError(ex);
-		}
-	}
-
-	/**
-	 * Handles a packet.
-	 * @param session The session.
-	 * @param packet The packet.
-	 */
+	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {
-		PacketHandler handler = handlers[packet.getDefinition().getOpcode()];
-		if(handler != null) {
-			handler.handlePacket(session, packet);
-		} else {
-			logger.info("Unhandled packet : " + packet + ".");
-		}
+		String username = packet.getStringField("username");
+		String verificationKey = packet.getStringField("verification_key");
+		int protocolVersion = packet.getNumericField("protocol_version").intValue();
+		logger.info("Received authentication packet : username=" + username + ", verificationKey=" + verificationKey + ", protocolVersion=" + protocolVersion + ".");
+		
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(0));
+		bldr.putByte("protocol_version", protocolVersion);
+		bldr.putString("server_name", "OpenCraft");
+		bldr.putString("server_message", "http://opencraft.sf.net/");
+		bldr.putByte("user_type", 0);
+		session.send(bldr.toPacket());
 	}
 
 }

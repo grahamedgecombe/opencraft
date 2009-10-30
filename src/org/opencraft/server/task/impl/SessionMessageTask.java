@@ -35,8 +35,8 @@ package org.opencraft.server.task.impl;
 
 import org.apache.mina.core.session.IoSession;
 import org.opencraft.server.net.MinecraftSession;
-import org.opencraft.server.net.event.PacketHandlerManager;
 import org.opencraft.server.net.packet.Packet;
+import org.opencraft.server.net.packet.handler.PacketHandlerManager;
 import org.opencraft.server.task.Task;
 
 /**
