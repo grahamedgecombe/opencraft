@@ -126,18 +126,7 @@ public final class MinecraftSession {
 	 * @param packet The packet to handle.
 	 */
 	public void handle(Packet packet) {
-		final PacketHandlerManager phm = PacketHandlerManager.getPacketHandlerManager();
-		if(state == State.READY) { 
-			for(Packet queuedPacket : queuedPackets) {
-				phm.handlePacket(this, queuedPacket);
-			}
-			queuedPackets.clear();
-			phm.handlePacket(this, packet);
-		} else if(state == State.CONNECTED && packet.getDefinition().getName().equals("authentication_request")) {
-			phm.handlePacket(this, packet);
-		} else {
-			queuedPackets.add(packet);
-		}
+		PacketHandlerManager.getPacketHandlerManager().handlePacket(this, packet);
 	}
 	
 	/**
@@ -145,7 +134,25 @@ public final class MinecraftSession {
 	 * @param packet The packet to send.
 	 */
 	public void send(Packet packet) {
-		session.write(packet);
+		final String name = packet.getDefinition().getName();
+		final boolean unqueuedPacket = name.equals("authentication_response")
+			|| name.endsWith("level_init")
+			|| name.equals("level_block")
+			|| name.equals("level_finish")
+			|| name.equals("disconnect");
+		if(state == State.READY) {
+			if(queuedPackets.size() > 0) {
+				for(Packet queuedPacket : queuedPackets) {
+					session.write(queuedPacket);
+				}
+				queuedPackets.clear();
+			}
+			session.write(packet);
+		} else if(unqueuedPacket) {
+			session.write(packet);
+		} else {
+			queuedPackets.add(packet);
+		}
 	}
 
 	/**

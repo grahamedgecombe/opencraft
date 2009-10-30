@@ -89,7 +89,9 @@ public final class MinecraftProtocolEncoder extends ProtocolEncoderAdapter {
 				break;
 			}
 		}
-		out.write(buf.flip());
+		buf.flip();
+		System.out.println(buf);
+		out.write(buf);
 	}
 
 }

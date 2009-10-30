@@ -1,5 +1,7 @@
 package org.opencraft.server.net;
 
+import org.opencraft.server.model.Level;
+import org.opencraft.server.model.World;
 import org.opencraft.server.net.packet.PacketBuilder;
 import org.opencraft.server.net.packet.PacketManager;
 
@@ -48,6 +50,40 @@ public class ActionSender {
 		bldr.putString("reason", message);
 		session.send(bldr.toPacket());
 		session.close();
+	}
+
+	/**
+	 * Sends the level init packet.
+	 */
+	public void sendLevelInit() {
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(2));
+		session.send(bldr.toPacket());
+	}
+
+	/**
+	 * Sends a level block/chunk.
+	 * @param len The length of the chunk.
+	 * @param chunk The chunk data.
+	 * @param percent The percentage.
+	 */
+	public void sendLevelBlock(int len, byte[] chunk, int percent) {
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(3));
+		bldr.putShort("chunk_length", len);
+		bldr.putByteArray("chunk_data", chunk);
+		bldr.putByte("percent", percent);
+		session.send(bldr.toPacket());
+	}
+
+	/**
+	 * Sends the level finish packet.
+	 */
+	public void sendLevelFinish() {
+		final Level level = World.getWorld().getLevel();
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(4));
+		bldr.putShort("width", level.getWidth());
+		bldr.putShort("height", level.getHeight());
+		bldr.putShort("depth", level.getDepth());
+		session.send(bldr.toPacket());
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.opencraft.server.net.packet.handler.impl;
+package org.opencraft.server.model;
 
 /*
  * OpenCraft License
@@ -33,42 +33,70 @@ package org.opencraft.server.net.packet.handler.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.logging.Logger;
-
-import org.opencraft.server.Constants;
-import org.opencraft.server.model.World;
-import org.opencraft.server.net.MinecraftSession;
-import org.opencraft.server.net.packet.Packet;
-import org.opencraft.server.net.packet.handler.PacketHandler;
-
 /**
- * Handles the incoming authentication packet.
+ * Represents the actual level.
  * @author Graham Edgecombe
  *
  */
-public final class AuthenticationPacketHandler implements PacketHandler {
+public final class Level {
 	
 	/**
-	 * Logger instance.
+	 * The level width.
 	 */
-	private static final Logger logger = Logger.getLogger(AuthenticationPacketHandler.class.getName());
+	private final int width = 256;
+	
+	/**
+	 * The level height.
+	 */
+	private final int height = 256;
+	
+	/**
+	 * The level depth.
+	 */
+	private final int depth = 64;
+	
+	/**
+	 * The blocks.
+	 */
+	private final byte[][][] blocks = new byte[width][height][depth];
+	
+	/**
+	 * Creates the level.
+	 */
+	public Level() {
+		
+	}
+	
+	/**
+	 * Gets all of the blocks.
+	 * @return All of the blocks.
+	 */
+	public byte[][][] getBlocks() {
+		return blocks;
+	}
 
-	@Override
-	public void handlePacket(MinecraftSession session, Packet packet) {
-		if(session.isAuthenticated()) {
-			return;
-		}
-		
-		String username = packet.getStringField("username");
-		String verificationKey = packet.getStringField("verification_key");
-		int protocolVersion = packet.getNumericField("protocol_version").intValue();
-		logger.info("Received authentication packet : username=" + username + ", verificationKey=" + verificationKey + ", protocolVersion=" + protocolVersion + ".");
-		
-		if(protocolVersion != Constants.PROTOCOL_VERSION) {
-			session.getActionSender().sendLoginFailure("Incorrect protocol version.");
-		} else {
-			World.getWorld().register(session, username, verificationKey);
-		}
+	/**
+	 * Gets the width of the level.
+	 * @return The width of the level.
+	 */
+	public int getWidth() {
+		return width;
+	}
+	
+	/**
+	 * Gets the height of the level.
+	 * @return The height of the level.
+	 */
+	public int getHeight() {
+		return height;
+	}
+	
+	/**
+	 * Gets the depth of the level.
+	 * @return The depth of the level.
+	 */
+	public int getDepth() {
+		return depth;
 	}
 
 }
