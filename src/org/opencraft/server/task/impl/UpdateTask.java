@@ -33,6 +33,12 @@ package org.opencraft.server.task.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+import java.util.Set;
+
+import org.opencraft.server.model.Entity;
+import org.opencraft.server.model.Player;
+import org.opencraft.server.model.World;
 import org.opencraft.server.task.ScheduledTask;
 
 /**
@@ -56,7 +62,26 @@ public class UpdateTask extends ScheduledTask {
 
 	@Override
 	public void execute() {
-		
+		final World world = World.getWorld();
+		for(Player player : world.getPlayerList().getPlayers()) {
+			Set<Entity> localEntities = player.getLocalEntities();
+			Iterator<Entity> localEntitiesIterator = localEntities.iterator();
+			while(localEntitiesIterator.hasNext()) {
+				Entity localEntity = localEntitiesIterator.next();
+				if(localEntity.getId() == -1) {
+					localEntitiesIterator.remove();
+					player.getSession().getActionSender().sendRemoveEntity(localEntity);
+				} else {
+					player.getSession().getActionSender().sendUpdateEntity(localEntity);
+				}
+			}
+			for(Player otherEntity : world.getPlayerList().getPlayers()) {
+				if(!localEntities.contains(otherEntity)) {
+					localEntities.add(otherEntity);
+					player.getSession().getActionSender().sendAddEntity(otherEntity);
+				}
+			}
+		}
 	}
 
 }

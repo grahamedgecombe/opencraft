@@ -43,6 +43,14 @@ public final class World {
 	}
 	
 	/**
+	 * Gets the player list.
+	 * @return The player list.
+	 */
+	public PlayerList getPlayerList() {
+		return playerList;
+	}
+	
+	/**
 	 * Gets the level.
 	 * @return The level.
 	 */

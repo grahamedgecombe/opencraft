@@ -1,5 +1,6 @@
 package org.opencraft.server.net;
 
+import org.opencraft.server.model.Entity;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.World;
 import org.opencraft.server.net.packet.PacketBuilder;
@@ -93,6 +94,30 @@ public class ActionSender {
 		bldr.putShort("height", level.getHeight());
 		bldr.putShort("depth", level.getDepth());
 		session.send(bldr.toPacket());
+	}
+	
+	/**
+	 * Sends the add entity packet.
+	 * @param entity The entity being added.
+	 */
+	public void sendAddEntity(Entity entity) {
+		
+	}
+	
+	/**
+	 * Sends the update entity packet.
+	 * @param entity The entity being updated.
+	 */
+	public void sendUpdateEntity(Entity entity) {
+		
+	}
+	
+	/**
+	 * Sends the remove entity packet.
+	 * @param entity The entity being removed.
+	 */
+	public void sendRemoveEntity(Entity entity) {
+		
 	}
 
 }

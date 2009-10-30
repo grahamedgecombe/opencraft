@@ -1,5 +1,8 @@
 package org.opencraft.server.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /*
  * OpenCraft License
  * 
@@ -41,6 +44,11 @@ package org.opencraft.server.model;
 public abstract class Entity {
 	
 	/**
+	 * A collection of local entities.
+	 */
+	private final Set<Entity> localEntities = new HashSet<Entity>();
+	
+	/**
 	 * The current position.
 	 */
 	private Position position;
@@ -56,10 +64,23 @@ public abstract class Entity {
 	private int id = -1;
 	
 	/**
+	 * The old id.
+	 */
+	private int oldId = -1;
+	
+	/**
 	 * Default public constructor.
 	 */
 	public Entity() {
 		/* empty */
+	}
+	
+	/**
+	 * Gets the local entity set.
+	 * @return The local entity set.
+	 */
+	public Set<Entity> getLocalEntities() {
+		return localEntities;
 	}
 	
 	/**
@@ -75,7 +96,18 @@ public abstract class Entity {
 	 * @param id The id.
 	 */
 	public void setId(int id) {
+		if(id == -1) {
+			this.oldId = this.id;
+		}
 		this.id = id;
+	}
+	
+	/**
+	 * Gets the old id.
+	 * @return The old id.
+	 */
+	public int getOldId() {
+		return oldId;
 	}
 	
 	/**
