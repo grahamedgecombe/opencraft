@@ -1,4 +1,4 @@
-package org.opencraft.server;
+package org.opencraft.server.task.impl;
 
 /*
  * OpenCraft License
@@ -33,63 +33,30 @@ package org.opencraft.server;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.apache.mina.core.service.IoAcceptor;
-import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
-import org.opencraft.server.net.SessionHandler;
-import org.opencraft.server.task.TaskQueue;
-import org.opencraft.server.task.impl.UpdateTask;
+import org.opencraft.server.task.ScheduledTask;
 
 /**
- * The core class of the OpenCraft server.
+ * Updates the players and game world.
  * @author Graham Edgecombe
- * 
+ *
  */
-public final class Server {
-	
-	/**
-	 * Logger instance.
-	 */
-	private static final Logger logger = Logger.getLogger(Server.class.getName());
+public class UpdateTask extends ScheduledTask {
 
 	/**
-	 * The entry point of the server application.
-	 * @param args
+	 * The delay.
 	 */
-	public static void main(String[] args) {
-		try {
-			new Server().start();
-		} catch (Throwable t) {
-			logger.log(Level.SEVERE, "An error occurred whilst loading the server.", t);
-		}
+	private static final long DELAY = 100;
+	
+	/**
+	 * Creates the update task with a delay of 100ms.
+	 */
+	public UpdateTask() {
+		super(DELAY);
 	}
-	
-	/**
-	 * The socket acceptor.
-	 */
-	private final IoAcceptor acceptor = new NioSocketAcceptor();
-	
-	/**
-	 * Creates the server.
-	 */
-	public Server() {
-		logger.info("Starting OpenCraft server...");
-		acceptor.setHandler(new SessionHandler());
-		TaskQueue.getTaskQueue().schedule(new UpdateTask());
-	}
-	
-	/**
-	 * Starts the server.
-	 * @throws IOException if an I/O error occurs.
-	 */
-	public void start() throws IOException {
-		logger.info("Binding to port " + Constants.PORT + "...");
-		acceptor.bind(new InetSocketAddress(Constants.PORT));
-		logger.info("Ready for connections.");
+
+	@Override
+	public void execute() {
+		
 	}
 
 }

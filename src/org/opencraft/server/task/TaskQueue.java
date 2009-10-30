@@ -35,6 +35,7 @@ package org.opencraft.server.task;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,6 +90,41 @@ public final class TaskQueue {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Schedules a task to run in the future.
+	 * @param task The scheduled task.
+	 */
+	public void schedule(final ScheduledTask task) {
+		schedule(task, task.getDelay());
+	}
+
+	/**
+	 * Internally schedules the task.
+	 * @param task The task.
+	 * @param delay The remaining delay.
+	 */
+	private void schedule(final ScheduledTask task, final long delay) {
+		service.schedule(new Runnable() {
+			public void run() {
+				long start = System.currentTimeMillis();
+				try {
+					task.execute();
+				} catch (Throwable t) {
+					logger.log(Level.SEVERE, "Error during task execution.", t);
+				}
+				if(!task.isRunning()) {
+					return;
+				}
+				long elapsed = System.currentTimeMillis() - start;
+				long waitFor = task.getDelay() - elapsed;
+				if(waitFor < 0) {
+					waitFor = 0;
+				}
+				schedule(task, waitFor);
+			}
+		}, delay, TimeUnit.MILLISECONDS);
 	}
 
 }
