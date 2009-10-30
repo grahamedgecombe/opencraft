@@ -58,7 +58,7 @@ public final class PacketDefinition {
 	/**
 	 * The length of this packet.
 	 */
-	private final int length;
+	private final transient int length;
 	
 	/**
 	 * Creates the packet definition.

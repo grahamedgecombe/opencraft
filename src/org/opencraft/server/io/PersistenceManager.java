@@ -35,6 +35,7 @@ package org.opencraft.server.io;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import org.opencraft.server.net.packet.PacketDefinition;
 import org.opencraft.server.net.packet.PacketField;
@@ -85,6 +86,19 @@ public class PersistenceManager {
 	public Object load(String file) {
 		try {
 			return xstream.fromXML(new FileInputStream(file));
+		} catch (FileNotFoundException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	/**
+	 * Saves an object to an XML file.
+	 * @param file The file.
+	 * @param o The object.
+	 */
+	public void save(String file, Object o) {
+		try {
+			xstream.toXML(o, new FileOutputStream(file));
 		} catch (FileNotFoundException ex) {
 			throw new RuntimeException(ex);
 		}

@@ -34,23 +34,51 @@ POSSIBILITY OF SUCH DAMAGE.
 -->
 <packets>
   <incoming>
-    <packet opcode="0" name="authentication_request">
+    <packet>
+      <opcode>0</opcode>
+      <name>authentication_request</name>
       <fields>
-        <field name="protocol_version" type="BYTE" />
-        <field name="username" type="STRING" />
-        <field name="verification_key" type="STRING" />
-        <field name="magic" type="BYTE" />
+        <field>
+          <name>protocol_version</name>
+          <type>BYTE</type>
+        </field>
+        <field>
+          <name>username</name>
+          <type>STRING</type>
+        </field>
+        <field>
+          <name>verification_key</name>
+          <type>STRING</type>
+        </field>
+        <field>
+          <name>magic</name>
+          <type>BYTE</type>
+        </field>
       </fields>
   	</packet>
   </incoming>
   <outgoing>
-    <packet opcode="0" name="authentication_response">
+    <packet>
+      <opcode>0</opcode>
+      <name>authentication_request</name>
       <fields>
-        <field name="protocol_version" type="BYTE" />
-        <field name="server_name" type="STRING" />
-        <field name="server_message" type="STRING" />
-        <field name="user_type" type="BYTE" />
+        <field>
+          <name>protocol_version</name>
+          <type>BYTE</type>
+        </field>
+        <field>
+          <name>server_name</name>
+          <type>STRING</type>
+        </field>
+        <field>
+          <name>server_message</name>
+          <type>STRING</type>
+        </field>
+        <field>
+          <name>user_type</name>
+          <type>BYTE</type>
+        </field>
       </fields>
-    </packet>
+  	</packet>
   </outgoing>
 </packets>

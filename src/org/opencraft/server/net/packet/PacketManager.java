@@ -109,5 +109,14 @@ public final class PacketManager {
 	public PacketDefinition getIncomingPacket(int opcode) {
 		return incomingArray[opcode];
 	}
+	
+	/**
+	 * Gets an outgoing packet definition.
+	 * @param opcode The opcode.
+	 * @return The packet definition.
+	 */
+	public PacketDefinition getOutgoingPacket(int opcode) {
+		return outgoingArray[opcode];
+	}
 
 }

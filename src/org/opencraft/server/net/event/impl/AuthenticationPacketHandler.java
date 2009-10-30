@@ -56,7 +56,7 @@ public class AuthenticationPacketHandler implements PacketHandler {
 		String username = packet.getStringField("username");
 		String verificationKey = packet.getStringField("verification_key");
 		int protocolVersion = packet.getNumericField("protocol_version").intValue();
-		logger.info("Received authentication packet: username=" + username + ", verificationKey=" + verificationKey + ", protocolVersion=" + protocolVersion + ".");
+		logger.info("Received authentication packet : username=" + username + ", verificationKey=" + verificationKey + ", protocolVersion=" + protocolVersion + ".");
 	}
 
 }
