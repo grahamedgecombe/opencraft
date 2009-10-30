@@ -1,5 +1,7 @@
 package org.opencraft.server.model;
 
+import org.opencraft.server.net.MinecraftSession;
+
 /*
  * OpenCraft License
  * 
@@ -41,6 +43,11 @@ package org.opencraft.server.model;
 public final class Player extends Entity {
 	
 	/**
+	 * The player's session.
+	 */
+	private final MinecraftSession session;
+	
+	/**
 	 * The player's name.
 	 */
 	private final String name;
@@ -49,13 +56,22 @@ public final class Player extends Entity {
 	 * Creates the player.
 	 * @param name The player's name.
 	 */
-	public Player(String name) {
+	public Player(MinecraftSession session, String name) {
+		this.session = session;
 		this.name = name;
 	}
 	
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * Gets the player's session.
+	 * @return The session.
+	 */
+	public MinecraftSession getSession() {
+		return session;
 	}
 
 }

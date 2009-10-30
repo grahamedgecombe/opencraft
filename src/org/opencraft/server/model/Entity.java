@@ -51,10 +51,31 @@ public abstract class Entity {
 	private Rotation rotation;
 	
 	/**
+	 * The current id.
+	 */
+	private int id = -1;
+	
+	/**
 	 * Default public constructor.
 	 */
 	public Entity() {
 		/* empty */
+	}
+	
+	/**
+	 * Gets the id.
+	 * @return The id.
+	 */
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * Sets the id.
+	 * @param id The id.
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package org.opencraft.server.model;
 import org.opencraft.server.Constants;
 import org.opencraft.server.io.LevelGzipper;
 import org.opencraft.server.net.MinecraftSession;
+import org.opencraft.server.util.PlayerList;
 
 /**
  * Manages the in-game world.
@@ -30,6 +31,11 @@ public final class World {
 	private final Level level = new Level();
 	
 	/**
+	 * The player list.
+	 */
+	private final PlayerList playerList = new PlayerList();
+	
+	/**
 	 * Default private constructor.
 	 */
 	private World() {
@@ -51,6 +57,24 @@ public final class World {
 	 * @param verificationKey The verification key.
 	 */
 	public void register(MinecraftSession session, String username, String verificationKey) {
+		char[] nameChars = username.toCharArray();
+		for(char nameChar : nameChars) {
+			if(nameChar < ' ' || nameChar > '\177') {
+				session.getActionSender().sendLoginFailure("Invalid name!");
+				return;
+			}
+		}
+		for(Player p : playerList.getPlayers()) {
+			if(p.getName().equalsIgnoreCase(username)) {
+				p.getSession().getActionSender().sendLoginFailure("Logged in from another computer.");
+			}
+		}
+		final Player player = new Player(session, username);
+		if(!playerList.add(player)) {
+			player.getSession().getActionSender().sendLoginFailure("Too many players online!");
+			return;
+		}
+		session.setPlayer(player);
 		session.getActionSender().sendLoginResponse(Constants.PROTOCOL_VERSION, "OpenCraft", "Loading...", false);
 		LevelGzipper.getLevelGzipper().gzipLevel(session);
 	}

@@ -114,6 +114,36 @@ public final class MinecraftSession {
 	}
 	
 	/**
+	 * Sets the player associated with this session.
+	 * @param player The player.
+	 */
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
+	/**
+	 * Sets the state to authenticated.
+	 */
+	public void setAuthenticated() {
+		this.state = State.AUTHENTICATED;
+	}
+	
+	/**
+	 * Sets the state to ready.
+	 */
+	public void setReady() {
+		this.state = State.READY;
+	}
+	
+	/**
+	 * Gets the player associated with this session.
+	 * @return The player.
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+	
+	/**
 	 * Checks if this session is authenticated.
 	 * @return <code>true</code> if so, <code>false</code> if not.
 	 */
