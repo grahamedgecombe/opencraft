@@ -1,17 +1,5 @@
 package org.opencraft.server.io;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.zip.GZIPOutputStream;
-
-import org.apache.mina.core.buffer.IoBuffer;
-import org.opencraft.server.model.Level;
-import org.opencraft.server.model.World;
-import org.opencraft.server.net.MinecraftSession;
-
 /*
  * OpenCraft License
  * 
@@ -44,6 +32,18 @@ import org.opencraft.server.net.MinecraftSession;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.zip.GZIPOutputStream;
+
+import org.apache.mina.core.buffer.IoBuffer;
+import org.opencraft.server.model.Level;
+import org.opencraft.server.model.World;
+import org.opencraft.server.net.MinecraftSession;
 
 /**
  * A utility class for gzipping levels.
