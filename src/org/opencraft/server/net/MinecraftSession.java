@@ -37,6 +37,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import org.apache.mina.core.session.IoSession;
+import org.opencraft.server.model.Player;
 import org.opencraft.server.net.packet.Packet;
 import org.opencraft.server.net.packet.handler.PacketHandlerManager;
 
@@ -87,11 +88,24 @@ public class MinecraftSession {
 	private State state = State.CONNECTED;
 	
 	/**
+	 * The player associated with this session.
+	 */
+	private Player player;
+	
+	/**
 	 * Creates the Minecraft session.
 	 * @param session The <code>IoSession</code>.
 	 */
 	public MinecraftSession(IoSession session) {
 		this.session = session;
+	}
+	
+	/**
+	 * Checks if this session is authenticated.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean isAuthenticated() {
+		return player != null;
 	}
 	
 	/**
