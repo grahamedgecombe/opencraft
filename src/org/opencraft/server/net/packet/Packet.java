@@ -37,8 +37,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.mina.core.buffer.IoBuffer;
-
 /**
  * Represents a single packet.
  * @author Graham Edgecombe
@@ -97,8 +95,8 @@ public final class Packet {
 	 * @param fieldName The name of the field.
 	 * @return The value of the byte array field.
 	 */
-	public IoBuffer getByteArrayField(String fieldName) {
-		return (IoBuffer) fields.get(fieldName);
+	public byte[] getByteArrayField(String fieldName) {
+		return (byte[]) fields.get(fieldName);
 	}
 
 }

@@ -75,9 +75,13 @@ public class PacketHandlerManager {
 	 */
 	@SuppressWarnings("unchecked")
 	private PacketHandlerManager() {
-		Map<Integer, PacketHandler> handlers = (Map<Integer, PacketHandler>) PersistenceManager.getPersistenceManager().load("data/packetHandlers.xml");
-		for(Map.Entry<Integer, PacketHandler> handler : handlers.entrySet()) {
-			this.handlers[handler.getKey()] = handler.getValue();
+		try {
+			Map<Integer, String> handlers = (Map<Integer, String>) PersistenceManager.getPersistenceManager().load("data/packetHandlers.xml");
+			for(Map.Entry<Integer, String> handler : handlers.entrySet()) {
+				this.handlers[handler.getKey()] = (PacketHandler) Class.forName(handler.getValue()).newInstance();
+			}
+		} catch (Exception ex) {
+			throw new ExceptionInInitializerError(ex);
 		}
 	}
 

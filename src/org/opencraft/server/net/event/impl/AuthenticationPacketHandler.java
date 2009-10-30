@@ -38,6 +38,8 @@ import java.util.logging.Logger;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.event.PacketHandler;
 import org.opencraft.server.net.packet.Packet;
+import org.opencraft.server.net.packet.PacketBuilder;
+import org.opencraft.server.net.packet.PacketManager;
 
 /**
  * Handles the incoming authentication packet.
@@ -57,6 +59,13 @@ public class AuthenticationPacketHandler implements PacketHandler {
 		String verificationKey = packet.getStringField("verification_key");
 		int protocolVersion = packet.getNumericField("protocol_version").intValue();
 		logger.info("Received authentication packet : username=" + username + ", verificationKey=" + verificationKey + ", protocolVersion=" + protocolVersion + ".");
+		
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(0));
+		bldr.putByte("protocol_version", protocolVersion);
+		bldr.putString("server_name", "OpenCraft");
+		bldr.putString("server_message", "http://opencraft.sf.net/");
+		bldr.putByte("user_type", 0);
+		session.send(bldr.toPacket());
 	}
 
 }

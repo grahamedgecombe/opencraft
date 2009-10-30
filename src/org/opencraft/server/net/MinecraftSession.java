@@ -64,7 +64,7 @@ public class MinecraftSession {
 	public void send(Packet packet) {
 		session.write(packet);
 	}
-	
+
 	/**
 	 * Closes this session.
 	 */

@@ -35,6 +35,8 @@ package org.opencraft.server.task;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Manages the task queue.
@@ -47,6 +49,11 @@ public final class TaskQueue {
 	 * The task queue singleton.
 	 */
 	private static final TaskQueue INSTANCE = new TaskQueue();
+	
+	/**
+	 * Logger instance.
+	 */
+	private static final Logger logger = Logger.getLogger(TaskQueue.class.getName());
 	
 	/**
 	 * Gets the task queue instance.
@@ -75,7 +82,11 @@ public final class TaskQueue {
 	public void push(final Task task) {
 		service.submit(new Runnable() {
 			public void run() {
-				task.execute();
+				try {
+					task.execute();
+				} catch (Throwable t) {
+					logger.log(Level.SEVERE, "Error during task execution.", t);
+				}
 			}
 		});
 	}
