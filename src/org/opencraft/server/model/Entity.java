@@ -46,6 +46,50 @@ public abstract class Entity {
 	private Position position;
 	
 	/**
+	 * The current rotation.
+	 */
+	private Rotation rotation;
+	
+	/**
+	 * Default public constructor.
+	 */
+	public Entity() {
+		/* empty */
+	}
+	
+	/**
+	 * Sets the rotation.
+	 * @param rotation The rotation.
+	 */
+	public void setRotation(Rotation rotation) {
+		this.rotation = rotation;
+	}
+	
+	/**
+	 * Gets the rotation.
+	 * @return The rotation.
+	 */
+	public Rotation getRotation() {
+		return rotation;
+	}
+	
+	/**
+	 * Sets the position.
+	 * @param position The position.
+	 */
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
+	/**
+	 * Gets the position.
+	 * @return The position.
+	 */
+	public Position getPosition() {
+		return position;
+	}
+	
+	/**
 	 * Gets the name of this entity.
 	 * @return The name of this entity.
 	 */

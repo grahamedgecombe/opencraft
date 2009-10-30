@@ -34,60 +34,46 @@ package org.opencraft.server.model;
  */
 
 /**
- * Represents a location in the game world.
+ * Represents a rotation in the game world.
  * @author Graham Edgecombe
- *
+ * 
  */
-public final class Position {
+public final class Rotation {
 	
 	/**
-	 * X position.
+	 * The rotation.
 	 */
-	private final int x;
+	private final int rotation;
 	
 	/**
-	 * Y position.
+	 * The look.
 	 */
-	private final int y;
+	private final int look;
 	
 	/**
-	 * Z position.
+	 * Creates the rotation.
+	 * @param rotation The rotation.
+	 * @param look The look value.
 	 */
-	private final int z;
-	
-	/**
-	 * Creates a new position.
-	 * @param x The x coordinate.
-	 * @param y The y coordinate.
-	 * @param z The z coordinate.
-	 */
-	public Position(int x, int y, int z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public Rotation(int rotation, int look) {
+		this.rotation = rotation;
+		this.look = look;
 	}
 	
 	/**
-	 * Gets the x coordinate.
-	 * @return The x coordinate.
+	 * Gets the rotation.
+	 * @return The rotation.
 	 */
-	public int getX() {
-		return x;
+	public int getRotation() {
+		return rotation;
+	}
+	
+	/**
+	 * Gets the look value.
+	 * @return The look value.
+	 */
+	public int getLook() {
+		return look;
 	}
 
-	/**
-	 * Gets the y coordinate.
-	 * @return The y coordinate.
-	 */
-	public int getY() {
-		return y;
-	}
-	
-	/**
-	 * Gets the z coordinate.
-	 * @return The z coordinate.
-	 */
-	public int getZ() {
-		return z;
-	}
 }
