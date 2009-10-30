@@ -82,7 +82,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </field>
       </fields>
     </packet>
-        <packet>
+    <packet>
       <opcode>8</opcode>
       <name>move_and_rotate</name>
       <fields>
@@ -150,7 +150,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </field>
       </fields>
     </packet>
-        <packet>
+    <packet>
       <opcode>2</opcode>
       <name>level_init</name>
       <fields/>
