@@ -36,7 +36,6 @@ package org.opencraft.server.task.impl;
 import org.apache.mina.core.session.IoSession;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.packet.Packet;
-import org.opencraft.server.net.packet.handler.PacketHandlerManager;
 import org.opencraft.server.task.Task;
 
 /**
@@ -68,7 +67,7 @@ public final class SessionMessageTask implements Task {
 
 	@Override
 	public void execute() {
-		PacketHandlerManager.getPacketHandlerManager().handlePacket((MinecraftSession) session.getAttribute("attachment"), packet);
+		((MinecraftSession) session.getAttribute("attachment")).handle(packet);
 	}
 
 }

@@ -33,8 +33,12 @@ package org.opencraft.server.net;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 import org.apache.mina.core.session.IoSession;
 import org.opencraft.server.net.packet.Packet;
+import org.opencraft.server.net.packet.handler.PacketHandlerManager;
 
 /**
  * Manages a connected Minecraft session.
@@ -44,10 +48,43 @@ import org.opencraft.server.net.packet.Packet;
 public class MinecraftSession {
 	
 	/**
+	 * Various connection states.
+	 * @author Graham Edgecombe
+	 *
+	 */
+	public enum State {
+		
+		/**
+		 * Indicates the connection is new and has just connected.
+		 */
+		CONNECTED,
+		
+		/**
+		 * Indicates the connection has been authenticated but is not yet ready.
+		 */
+		AUTHENTICATED,
+		
+		/**
+		 * Indicates the connection is ready for use.
+		 */
+		READY;
+	}
+	
+	/**
 	 * The <code>IoSession</code> associated with this
 	 * <code>MinecraftSession</code>.
 	 */
 	private final IoSession session;
+	
+	/**
+	 * Packet queue.
+	 */
+	private final Queue<Packet> queuedPackets = new ArrayDeque<Packet>();
+	
+	/**
+	 * State.
+	 */
+	private State state = State.CONNECTED;
 	
 	/**
 	 * Creates the Minecraft session.
@@ -55,6 +92,25 @@ public class MinecraftSession {
 	 */
 	public MinecraftSession(IoSession session) {
 		this.session = session;
+	}
+	
+	/**
+	 * Handles a packet.
+	 * @param packet The packet to handle.
+	 */
+	public void handle(Packet packet) {
+		final PacketHandlerManager phm = PacketHandlerManager.getPacketHandlerManager();
+		if(state == State.READY) { 
+			for(Packet queuedPacket : queuedPackets) {
+				phm.handlePacket(this, queuedPacket);
+			}
+			queuedPackets.clear();
+			phm.handlePacket(this, packet);
+		} else if(state == State.CONNECTED && packet.getDefinition().getName().equals("authentication_request")) {
+			phm.handlePacket(this, packet);
+		} else {
+			queuedPackets.add(packet);
+		}
 	}
 	
 	/**
