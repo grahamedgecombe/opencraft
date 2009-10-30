@@ -35,6 +35,7 @@ package org.opencraft.server.net.packet.handler.impl;
 
 import java.util.logging.Logger;
 
+import org.opencraft.server.Constants;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.packet.Packet;
 import org.opencraft.server.net.packet.handler.PacketHandler;
@@ -62,7 +63,11 @@ public final class AuthenticationPacketHandler implements PacketHandler {
 		int protocolVersion = packet.getNumericField("protocol_version").intValue();
 		logger.info("Received authentication packet : username=" + username + ", verificationKey=" + verificationKey + ", protocolVersion=" + protocolVersion + ".");
 		
-		
+		if(protocolVersion != Constants.PROTOCOL_VERSION) {
+			session.getActionSender().sendLoginFailure("Incorrect protocol version.");
+		} else {
+			// TODO add to world etc
+		}
 	}
 
 }

@@ -39,8 +39,15 @@ public class ActionSender {
 		session.send(bldr.toPacket());
 	}
 	
+	/**
+	 * Sends a login failure.
+	 * @param message The message to send to the client.
+	 */
 	public void sendLoginFailure(String message) {
-		
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(14));
+		bldr.putString("reason", message);
+		session.send(bldr.toPacket());
+		session.close();
 	}
 
 }
