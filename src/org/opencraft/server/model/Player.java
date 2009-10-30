@@ -38,6 +38,6 @@ package org.opencraft.server.model;
  * @author Graham Edgecombe
  *
  */
-public class Player {
+public final class Player extends Entity {
 
 }

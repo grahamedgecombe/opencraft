@@ -53,7 +53,7 @@ import org.opencraft.server.task.impl.SessionOpenedTask;
  * @author Graham Edgecombe
  *
  */
-public class SessionHandler extends IoHandlerAdapter {
+public final class SessionHandler extends IoHandlerAdapter {
 
 	/**
 	 * Logger instance.

@@ -45,7 +45,7 @@ import org.opencraft.server.net.packet.Packet;
  * @author Graham Edgecombe
  *
  */
-public class PacketHandlerManager {
+public final class PacketHandlerManager {
 	
 	/**
 	 * The singleton instance.

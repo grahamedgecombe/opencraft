@@ -49,7 +49,7 @@ import org.opencraft.server.net.packet.PacketField;
  * @author Graham Edgecombe
  *
  */
-public class MinecraftProtocolEncoder extends ProtocolEncoderAdapter {
+public final class MinecraftProtocolEncoder extends ProtocolEncoderAdapter {
 
 	@Override
 	public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {

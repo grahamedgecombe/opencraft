@@ -52,7 +52,7 @@ import org.opencraft.server.net.packet.PacketManager;
  * @author Graham Edgecombe
  *
  */
-public class MinecraftProtocolDecoder extends CumulativeProtocolDecoder {
+public final class MinecraftProtocolDecoder extends CumulativeProtocolDecoder {
 	
 	/**
 	 * The current packet being decoded.

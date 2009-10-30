@@ -38,7 +38,7 @@ package org.opencraft.server;
  * @author Graham Edgecombe
  *
  */
-public class Constants {
+public final class Constants {
 	
 	/**
 	 * The default Minecraft port.

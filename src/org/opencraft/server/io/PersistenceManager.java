@@ -49,7 +49,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * @author Graham Edgecombe
  *
  */
-public class PersistenceManager {
+public final class PersistenceManager {
 	
 	/**
 	 * The singleton instance.

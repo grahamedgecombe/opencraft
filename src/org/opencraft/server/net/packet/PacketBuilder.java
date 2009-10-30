@@ -41,7 +41,7 @@ import java.util.Map;
  * @author Graham Edgecombe
  *
  */
-public class PacketBuilder {
+public final class PacketBuilder {
 	
 	/**
 	 * The packet definition.

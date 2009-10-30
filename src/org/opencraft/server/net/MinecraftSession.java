@@ -46,7 +46,7 @@ import org.opencraft.server.net.packet.handler.PacketHandlerManager;
  * @author Graham Edgecombe
  *
  */
-public class MinecraftSession {
+public final class MinecraftSession {
 	
 	/**
 	 * Various connection states.
