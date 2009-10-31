@@ -51,7 +51,7 @@ public class UpdateTask extends ScheduledTask {
 	/**
 	 * The delay.
 	 */
-	private static final long DELAY = 1000;
+	private static final long DELAY = 100;
 	
 	/**
 	 * Creates the update task with a delay of 100ms.
