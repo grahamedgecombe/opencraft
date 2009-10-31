@@ -135,7 +135,15 @@ public class ActionSender {
 	 * @param entity The entity being added.
 	 */
 	public void sendAddEntity(Entity entity) {
-		
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(7));
+		bldr.putByte("id", entity.getId());
+		bldr.putString("name", entity.getName());
+		bldr.putShort("x", entity.getPosition().getX());
+		bldr.putShort("y", entity.getPosition().getY());
+		bldr.putShort("z", entity.getPosition().getZ());
+		bldr.putByte("rotation", entity.getRotation().getRotation());
+		bldr.putByte("look", entity.getRotation().getLook());
+		session.send(bldr.toPacket());
 	}
 	
 	/**
@@ -151,7 +159,9 @@ public class ActionSender {
 	 * @param entity The entity being removed.
 	 */
 	public void sendRemoveEntity(Entity entity) {
-		
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(12));
+		bldr.putByte("id", entity.getId());
+		session.send(bldr.toPacket());
 	}
 
 	/**

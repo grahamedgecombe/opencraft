@@ -49,9 +49,19 @@ public abstract class Entity {
 	private final Set<Entity> localEntities = new HashSet<Entity>();
 	
 	/**
+	 * The old position.
+	 */
+	private Position oldPosition;
+	
+	/**
 	 * The current position.
 	 */
 	private Position position;
+	
+	/**
+	 * The old rotation.
+	 */
+	private Rotation oldRotation;
 	
 	/**
 	 * The current rotation.
@@ -72,7 +82,9 @@ public abstract class Entity {
 	 * Default public constructor.
 	 */
 	public Entity() {
-		/* empty */
+		position = new Position(0, 0, 0);
+		rotation = new Rotation(0, 0);
+		resetOldPositionAndRotation();
 	}
 	
 	/**
@@ -140,6 +152,30 @@ public abstract class Entity {
 	 */
 	public Position getPosition() {
 		return position;
+	}
+	
+	/**
+	 * Gets the old position.
+	 * @return The old position.
+	 */
+	public Position getOldPosition() {
+		return oldPosition;
+	}
+	
+	/**
+	 * Gets the old rotation.
+	 * @return The old rotation.
+	 */
+	public Rotation getOldRotation() {
+		return oldRotation;
+	}
+	
+	/**
+	 * Resets the old position and rotation data.
+	 */
+	public void resetOldPositionAndRotation() {
+		oldPosition = position;
+		oldRotation = rotation;
 	}
 	
 	/**
