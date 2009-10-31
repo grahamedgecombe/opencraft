@@ -37,4 +37,16 @@ POSSIBILITY OF SUCH DAMAGE.
     <int>0</int>
     <string>org.opencraft.server.net.packet.handler.impl.AuthenticationPacketHandler</string>
   </entry>
+  <entry>
+    <int>5</int>
+    <string>org.opencraft.server.net.packet.handler.impl.ConstructionPacketHandler</string>
+  </entry>
+  <entry>
+    <int>8</int>
+    <string>org.opencraft.server.net.packet.handler.impl.MovementPacketHandler</string>
+  </entry>
+  <entry>
+    <int>13</int>
+    <string>org.opencraft.server.net.packet.handler.impl.MessagePacketHandler</string>
+  </entry>
 </map>

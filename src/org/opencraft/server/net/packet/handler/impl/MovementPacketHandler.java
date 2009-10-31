@@ -1,4 +1,4 @@
-package org.opencraft.server.model;
+package org.opencraft.server.net.packet.handler.impl;
 
 /*
  * OpenCraft License
@@ -33,90 +33,20 @@ package org.opencraft.server.model;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.opencraft.server.net.MinecraftSession;
+import org.opencraft.server.net.packet.Packet;
+import org.opencraft.server.net.packet.handler.PacketHandler;
+
 /**
- * Represents the actual level.
+ * A packet handler which handles movement packets.
  * @author Graham Edgecombe
  *
  */
-public final class Level {
-	
-	/**
-	 * The level width.
-	 */
-	private final int width = 256;
-	
-	/**
-	 * The level height.
-	 */
-	private final int height = 256;
-	
-	/**
-	 * The level depth.
-	 */
-	private final int depth = 64;
-	
-	/**
-	 * The blocks.
-	 */
-	private final byte[][][] blocks = new byte[width][height][depth];
-	
-	/**
-	 * Creates the level.
-	 */
-	public Level() {
-		for(int i = 0; i < (depth / 2); i++) {
-			for(int j = 0; j < width; j++) {
-				for(int k = 0; k < height; k++) {
-					blocks[j][k][i] = 3;
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Gets all of the blocks.
-	 * @return All of the blocks.
-	 */
-	public byte[][][] getBlocks() {
-		return blocks;
-	}
+public class MovementPacketHandler implements PacketHandler {
 
-	/**
-	 * Gets the width of the level.
-	 * @return The width of the level.
-	 */
-	public int getWidth() {
-		return width;
-	}
-	
-	/**
-	 * Gets the height of the level.
-	 * @return The height of the level.
-	 */
-	public int getHeight() {
-		return height;
-	}
-	
-	/**
-	 * Gets the depth of the level.
-	 * @return The depth of the level.
-	 */
-	public int getDepth() {
-		return depth;
-	}
-
-	/**
-	 * Sets a block.
-	 * @param x The x coordinate.
-	 * @param y The y coordinate.
-	 * @param z The z coordinate.
-	 * @param type The type id.
-	 */
-	public void setBlock(int x, int y, int z, byte type) {
-		blocks[x][y][z] = type;
-		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
-			player.getSession().getActionSender().sendBlock(x, y, z, type);
-		}
+	@Override
+	public void handlePacket(MinecraftSession session, Packet packet) {
+		
 	}
 
 }
