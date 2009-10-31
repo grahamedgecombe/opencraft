@@ -1,7 +1,12 @@
 package org.opencraft.server.model;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.opencraft.server.Configuration;
 import org.opencraft.server.Constants;
+import org.opencraft.server.heartbeat.HeartbeatManager;
 import org.opencraft.server.io.LevelGzipper;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.util.PlayerList;
@@ -66,6 +71,23 @@ public final class World {
 	 * @param verificationKey The verification key.
 	 */
 	public void register(MinecraftSession session, String username, String verificationKey) {
+		// verify name
+		if(Configuration.getConfiguration().isVerifyingNames()) {
+			long salt = HeartbeatManager.getHeartbeatManager().getSalt();
+			String hash = new StringBuilder().append(String.valueOf(salt)).append(username).toString();
+			MessageDigest digest;
+			try {
+				digest = MessageDigest.getInstance("MD5");
+			} catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException("No MD5 algorithm!");
+			}
+			digest.update(hash.getBytes());
+			if(!verificationKey.equals(new BigInteger(1, digest.digest()).toString(16))) {
+				session.getActionSender().sendLoginFailure("Illegal name.");
+				return;
+			}
+		}
+		// check if name is valid
 		char[] nameChars = username.toCharArray();
 		for(char nameChar : nameChars) {
 			if(nameChar < ' ' || nameChar > '\177') {
@@ -73,16 +95,20 @@ public final class World {
 				return;
 			}
 		}
+		// disconnect any existing players with the same name
 		for(Player p : playerList.getPlayers()) {
 			if(p.getName().equalsIgnoreCase(username)) {
 				p.getSession().getActionSender().sendLoginFailure("Logged in from another computer.");
+				break;
 			}
 		}
+		// attempt to add the player
 		final Player player = new Player(session, username);
 		if(!playerList.add(player)) {
 			player.getSession().getActionSender().sendLoginFailure("Too many players online!");
 			return;
 		}
+		// final setup
 		session.setPlayer(player);
 		final Configuration c = Configuration.getConfiguration();
 		session.getActionSender().sendLoginResponse(Constants.PROTOCOL_VERSION, c.getName(), c.getMessage(), false);
