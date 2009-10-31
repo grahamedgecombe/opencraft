@@ -35,6 +35,8 @@ package org.opencraft.server.net;
 
 import org.opencraft.server.model.Entity;
 import org.opencraft.server.model.Level;
+import org.opencraft.server.model.Position;
+import org.opencraft.server.model.Rotation;
 import org.opencraft.server.model.World;
 import org.opencraft.server.net.packet.PacketBuilder;
 import org.opencraft.server.net.packet.PacketManager;
@@ -151,7 +153,42 @@ public class ActionSender {
 	 * @param entity The entity being updated.
 	 */
 	public void sendUpdateEntity(Entity entity) {
+		final Position oldPosition = entity.getOldPosition();
+		final Position position = entity.getPosition();
 		
+		final Rotation oldRotation = entity.getOldRotation();
+		final Rotation rotation = entity.getRotation();
+		
+		final int deltaX = oldPosition.getX() - position.getX();
+		final int deltaY = oldPosition.getY() - position.getY();
+		final int deltaZ = oldPosition.getZ() - position.getZ();
+		
+		final int deltaRotation = oldRotation.getRotation() - rotation.getRotation();
+		final int deltaLook = oldRotation.getLook() - rotation.getLook();
+		
+		if(deltaX > Byte.MAX_VALUE || deltaX < Byte.MIN_VALUE
+				|| deltaY > Byte.MAX_VALUE || deltaY < Byte.MIN_VALUE
+				|| deltaZ > Byte.MAX_VALUE || deltaZ < Byte.MIN_VALUE
+				|| deltaRotation > Byte.MAX_VALUE || deltaRotation < Byte.MIN_VALUE
+				|| deltaLook > Byte.MAX_VALUE || deltaLook < Byte.MIN_VALUE) {
+			// teleport
+			
+			return;
+		}
+		
+		if(deltaX == 0 && deltaY == 0 && deltaZ == 0) {
+			if(deltaRotation == 0 && deltaLook == 0) {
+				// send no packet
+			} else {
+				// send rotation packet
+			}
+		} else {
+			if(deltaRotation == 0 && deltaLook == 0) {
+				// send move packet
+			} else {
+				// send move and rotate packet
+			}
+		}
 	}
 	
 	/**
