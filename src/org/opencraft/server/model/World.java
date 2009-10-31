@@ -133,4 +133,25 @@ public final class World {
 		session.getActionSender().sendChatMessage("Welcome to OpenCraft!");
 	}
 
+	/**
+	 * Broadcasts a chat message.
+	 * @param player The source player.
+	 * @param message The message.
+	 */
+	public void broadcast(Player player, String message) {
+		for(Player otherPlayer : playerList.getPlayers()) {
+			otherPlayer.getSession().getActionSender().sendChatMessage(player.getId(), message);
+		}
+	}
+	
+	/**
+	 * Broadcasts a server message.
+	 * @param message The message.
+	 */
+	public void broadcast(String message) {
+		for(Player player : playerList.getPlayers()) {
+			player.getSession().getActionSender().sendChatMessage(message);
+		}
+	}
+
 }

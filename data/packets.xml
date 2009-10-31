@@ -122,7 +122,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </field>
         <field>
           <name>message</name>
-          <type>BYTE</type>
+          <type>STRING</type>
         </field>
       </fields>
     </packet>

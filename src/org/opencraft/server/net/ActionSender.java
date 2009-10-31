@@ -181,4 +181,16 @@ public class ActionSender {
 		session.send(bldr.toPacket());
 	}
 
+	/**
+	 * Sends a chat message.
+	 * @param id The source player id.
+	 * @param message The message.
+	 */
+	public void sendChatMessage(int id, String message) {
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(13));
+		bldr.putByte("id", id);
+		bldr.putString("message", message);
+		session.send(bldr.toPacket());
+	}
+
 }
