@@ -113,6 +113,9 @@ public final class Level {
 	 * @param type The type id.
 	 */
 	public void setBlock(int x, int y, int z, byte type) {
+		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
+			return;
+		}
 		blocks[x][y][z] = type;
 		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
 			player.getSession().getActionSender().sendBlock(x, y, z, type);

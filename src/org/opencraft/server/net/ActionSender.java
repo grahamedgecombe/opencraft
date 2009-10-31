@@ -152,42 +152,44 @@ public class ActionSender {
 	 * Sends the update entity packet.
 	 * @param entity The entity being updated.
 	 */
-	public void sendUpdateEntity(Entity entity) {
+	public void sendUpdateEntity(Entity entity) {		
 		final Position oldPosition = entity.getOldPosition();
 		final Position position = entity.getPosition();
 		
 		final Rotation oldRotation = entity.getOldRotation();
 		final Rotation rotation = entity.getRotation();
 		
-		final int deltaX = oldPosition.getX() - position.getX();
-		final int deltaY = oldPosition.getY() - position.getY();
-		final int deltaZ = oldPosition.getZ() - position.getZ();
+		final int deltaX = - oldPosition.getX() - position.getX();
+		final int deltaY = - oldPosition.getY() - position.getY();
+		final int deltaZ = - oldPosition.getZ() - position.getZ();
 		
-		final int deltaRotation = oldRotation.getRotation() - rotation.getRotation();
-		final int deltaLook = oldRotation.getLook() - rotation.getLook();
-		
+		final int deltaRotation = - oldRotation.getRotation() - rotation.getRotation();
+		final int deltaLook = - oldRotation.getLook() - rotation.getLook();
+				
 		if(deltaX > Byte.MAX_VALUE || deltaX < Byte.MIN_VALUE
 				|| deltaY > Byte.MAX_VALUE || deltaY < Byte.MIN_VALUE
 				|| deltaZ > Byte.MAX_VALUE || deltaZ < Byte.MIN_VALUE
 				|| deltaRotation > Byte.MAX_VALUE || deltaRotation < Byte.MIN_VALUE
 				|| deltaLook > Byte.MAX_VALUE || deltaLook < Byte.MIN_VALUE) {
 			// teleport
-			
-			return;
-		}
-		
-		if(deltaX == 0 && deltaY == 0 && deltaZ == 0) {
-			if(deltaRotation == 0 && deltaLook == 0) {
-				// send no packet
-			} else {
-				// send rotation packet
-			}
+			PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(8));
+			bldr.putByte("id", entity.getId());
+			bldr.putShort("x", position.getX());
+			bldr.putShort("y", position.getY());
+			bldr.putShort("z", position.getZ());
+			bldr.putByte("rotation", rotation.getRotation());
+			bldr.putByte("look", rotation.getLook());
+			session.send(bldr.toPacket());
 		} else {
-			if(deltaRotation == 0 && deltaLook == 0) {
-				// send move packet
-			} else {
-				// send move and rotate packet
-			}
+			// send move and rotate packet
+			PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(9));
+			bldr.putByte("id", entity.getId());
+			bldr.putByte("delta_x", deltaX);
+			bldr.putByte("delta_y", deltaY);
+			bldr.putByte("delta_z", deltaZ);
+			bldr.putByte("delta_rotation", deltaRotation);
+			bldr.putByte("delta_look", deltaLook);
+			session.send(bldr.toPacket());
 		}
 	}
 	
@@ -197,7 +199,7 @@ public class ActionSender {
 	 */
 	public void sendRemoveEntity(Entity entity) {
 		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(12));
-		bldr.putByte("id", entity.getId());
+		bldr.putByte("id", entity.getOldId());
 		session.send(bldr.toPacket());
 	}
 

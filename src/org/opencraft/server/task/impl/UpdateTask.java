@@ -51,7 +51,7 @@ public class UpdateTask extends ScheduledTask {
 	/**
 	 * The delay.
 	 */
-	private static final long DELAY = 100;
+	private static final long DELAY = 1000;
 	
 	/**
 	 * Creates the update task with a delay of 100ms.
@@ -76,11 +76,14 @@ public class UpdateTask extends ScheduledTask {
 				}
 			}
 			for(Player otherEntity : world.getPlayerList().getPlayers()) {
-				if(!localEntities.contains(otherEntity)) {
+				if(!localEntities.contains(otherEntity) && otherEntity != player) {
 					localEntities.add(otherEntity);
 					player.getSession().getActionSender().sendAddEntity(otherEntity);
 				}
 			}
+		}
+		for(Player player : world.getPlayerList().getPlayers()) {
+			player.resetOldPositionAndRotation();
 		}
 	}
 

@@ -122,6 +122,8 @@ public final class World {
 	public void unregister(MinecraftSession session) {
 		if(session.isAuthenticated()) {
 			playerList.remove(session.getPlayer());
+			broadcast(session.getPlayer().getName() + " disconnected.");
+			session.setPlayer(null);
 		}
 	}
 
@@ -131,6 +133,7 @@ public final class World {
 	 */
 	public void completeRegistration(MinecraftSession session) {
 		session.getActionSender().sendChatMessage("Welcome to OpenCraft!");
+		broadcast(session.getPlayer().getName() + " connected.");
 	}
 
 	/**

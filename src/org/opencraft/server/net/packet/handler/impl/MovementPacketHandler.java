@@ -33,6 +33,9 @@ package org.opencraft.server.net.packet.handler.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.opencraft.server.model.Player;
+import org.opencraft.server.model.Position;
+import org.opencraft.server.model.Rotation;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.packet.Packet;
 import org.opencraft.server.net.packet.handler.PacketHandler;
@@ -46,7 +49,17 @@ public class MovementPacketHandler implements PacketHandler {
 
 	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {
-		
+		if(!session.isAuthenticated()) {
+			return;
+		}
+		final int x = packet.getNumericField("x").intValue();
+		final int y = packet.getNumericField("y").intValue();
+		final int z = packet.getNumericField("z").intValue();
+		final int rotation = packet.getNumericField("rotation").intValue();
+		final int look = packet.getNumericField("look").intValue();
+		final Player player = session.getPlayer();
+		player.setPosition(new Position(x, y, z));
+		player.setRotation(new Rotation(rotation, look));
 	}
 
 }
