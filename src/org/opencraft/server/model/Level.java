@@ -67,7 +67,7 @@ public final class Level {
 		for(int i = 0; i < (depth / 2); i++) {
 			for(int j = 0; j < width; j++) {
 				for(int k = 0; k < height; k++) {
-					blocks[j][k][i] = 3;
+					blocks[j][k][i] = Block.DIRT.getId();
 				}
 			}
 		}
