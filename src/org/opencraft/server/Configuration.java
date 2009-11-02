@@ -90,6 +90,11 @@ public class Configuration {
 	private String message;
 	
 	/**
+	 * The filename of the map file.
+	 */
+	private static String mapFilename;
+	
+	/**
 	 * The maximum allowed player count.
 	 */
 	private int maximumPlayers;
@@ -114,6 +119,7 @@ public class Configuration {
 		maximumPlayers = Integer.valueOf(props.getProperty("max_players", "16"));
 		publicServer = Boolean.valueOf(props.getProperty("public", "false"));
 		verifyNames = Boolean.valueOf(props.getProperty("verify_names", "false"));
+		mapFilename = props.getProperty("filename", "server_level.dat");
 	}
 	
 	/**
@@ -154,6 +160,14 @@ public class Configuration {
 	 */
 	public boolean isVerifyingNames() {
 		return verifyNames;
+	}
+
+	/**
+	 * Gets the map filename.
+	 * @return The map's filename.
+	 */
+	public static String getMapFilename() {
+		return mapFilename;
 	}
 
 }
