@@ -1,5 +1,7 @@
 package org.opencraft.server.model;
 
+//import org.opencraft.server.io.SerializableLevel;
+
 /*
  * OpenCraft License
  * 
@@ -43,17 +45,17 @@ public final class Level {
 	/**
 	 * The level width.
 	 */
-	private final int width = 256;
+	private int width;
 	
 	/**
 	 * The level height.
 	 */
-	private final int height = 256;
+	private int height;
 	
 	/**
 	 * The level depth.
 	 */
-	private final int depth = 64;
+	private int depth;
 	
 	/**
 	 * The blocks.
@@ -61,16 +63,15 @@ public final class Level {
 	private final byte[][][] blocks = new byte[width][height][depth];
 	
 	/**
+	 * The serializable copy of this level.
+	 */
+	//private SerializableLevel serializableLevel;
+	
+	/**
 	 * Creates the level.
 	 */
 	public Level() {
-		for(int i = 0; i < (depth / 2); i++) {
-			for(int j = 0; j < width; j++) {
-				for(int k = 0; k < height; k++) {
-					blocks[j][k][i] = Block.DIRT.getId();
-				}
-			}
-		}
+		//this.serializableLevel = new SerializableLevel();
 	}
 	
 	/**

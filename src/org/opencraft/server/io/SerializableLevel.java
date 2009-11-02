@@ -1,6 +1,9 @@
 package org.opencraft.server.io;
 
 import org.opencraft.server.Configuration;
+import org.opencraft.server.model.Position;
+import org.opencraft.server.model.Rotation;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -117,14 +120,94 @@ public class SerializableLevel implements Serializable {
 	 * The logger instance.
 	 */
 	private transient Logger logger = Logger.getLogger(SerializableLevel.class.getName());
+	
+	/**
+	 * Did load() successfully load a map?
+	 */
+	private transient boolean loadSuccess = false;
 
 	/**
 	 * Constructor.
 	 */
   	public SerializableLevel() {
+  		this.load();
   	}
 
   	/**
+  	 * Did we load the level successfully?
+  	 * @return Whether we loaded the map successfully.
+  	 */
+	public boolean isLoadSuccess() {
+		return loadSuccess;
+	}
+	
+	/**
+	 * Return the spawn coordinates as a Position.
+	 * @return
+	 */
+	public Position getSpawnPoint() {
+		return new Position(xSpawn, ySpawn, zSpawn);
+	}
+	
+	/**
+	 * Update the spawn coordinates.
+	 * @param point The new spawnpoint.
+	 */
+	public void updateSpawnPoint(Position point) {
+		this.xSpawn = point.getX();
+		this.ySpawn = point.getY();
+		this.zSpawn = point.getZ();
+	}
+	
+	/**
+	 * Get the spawn rotation as a Rotation.
+	 * @return The spawn rotation.
+	 */
+	public Rotation getSpawnRotation() {
+		return new Rotation((int) rotSpawn, 0);
+	}
+	
+	/**
+	 * Update the spawn rotation.
+	 * @param rotation The new spawn rotation.
+	 */
+	public void updateSpawnRotation(Rotation rotation) {
+		this.rotSpawn = (float) rotation.getRotation();
+	}
+	
+	/**
+	 * Gets all of the blocks.
+	 * @return All of the blocks.
+	 */
+	public byte[] getBlocks() {
+		return blocks;
+	}
+
+	/**
+	 * Gets the width of the level.
+	 * @return The width of the level.
+	 */
+	public int getWidth() {
+		return width;
+	}
+	
+	/**
+	 * Gets the height of the level.
+	 * @return The height of the level.
+	 */
+	public int getHeight() {
+		return height;
+	}
+	
+	/**
+	 * Gets the depth of the level.
+	 * @return The depth of the level.
+	 */
+	public int getDepth() {
+		return depth;
+	}
+
+	/**
   	 * Match this object to a locally created copy made when loading a map.
   	 */
   	public void setData(int width, int depth, int height, byte[] blocks, 
@@ -158,7 +241,7 @@ public class SerializableLevel implements Serializable {
   	 * @throws ClassNotFoundException 
   	 * @throws IOException 
   	 */
-  	public boolean load() {
+  	public void load() {
   		logger.info("Loading map file...");
   		try {
   			FileInputStream fis = new FileInputStream("./data/" + this.filename);
@@ -167,12 +250,12 @@ public class SerializableLevel implements Serializable {
   			if (dis.readInt() != 656127880) {
   				logger.log(Level.WARNING, "Map file is invalid or corrupt.");
   	  			dis.close();
-  	  			return false;
+  	  			return;
   			}
   			if (dis.readByte() != 2) {
   				logger.log(Level.WARNING, "Map file is not of version 2. Cannot be loaded.");
   	  			dis.close();
-  	  			return false;
+  	  			return;
   			}
   			ObjectInputStream ois = new ObjectInputStream(gzis);
   			SerializableLevel localLevel = (SerializableLevel)ois.readObject();
@@ -183,16 +266,16 @@ public class SerializableLevel implements Serializable {
   					localLevel.name, localLevel.creator, localLevel.createTime, localLevel.networkMode, 
   					localLevel.creativeMode, localLevel.waterLevel, localLevel.skyColor, localLevel.fogColor,
   					localLevel.cloudColor, localLevel.unprocessed, localLevel.tickCount);
-  			return true;
+  			this.setloafas(true);
   		} catch(FileNotFoundException e) {
   			logger.info("Could not load map file.");
-  			return false;
+  			return;
   		} catch (IOException e) {
   			logger.info("Could not load map file.");
-  			return false;
+  			return;
 		} catch (ClassNotFoundException e) {
   			logger.info("Could not load map file.");
-  			return false;
+  			return;
 		}
   	}
 
