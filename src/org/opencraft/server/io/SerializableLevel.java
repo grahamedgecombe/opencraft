@@ -11,6 +11,7 @@ import org.opencraft.server.Configuration;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -161,17 +162,17 @@ public class SerializableLevel implements Serializable {
 
   	/**
   	 * Load a map.
-  	 * @throws IOException
-  	 * @throws RuntimeException
   	 * @throws ClassNotFoundException 
+  	 * @throws IOException 
   	 */
-  	public boolean load() throws IOException, RuntimeException, ClassNotFoundException {
+  	public boolean load() {
+  		logger.info("Loading map file...");
   		try {
   			FileInputStream fis = new FileInputStream("./data/" + this.filename);
   			GZIPInputStream gzis = new GZIPInputStream(fis);
   			DataInputStream dis = new DataInputStream(gzis);
   			if (dis.readInt() != 656127880) {
-  				logger.log(Level.WARNING, "Map file is invalid.");
+  				logger.log(Level.WARNING, "Map file is invalid or corrupt.");
   	  			dis.close();
   	  			return false;
   			}
@@ -190,10 +191,16 @@ public class SerializableLevel implements Serializable {
   					localLevel.creativeMode, localLevel.waterLevel, localLevel.skyColor, localLevel.fogColor,
   					localLevel.cloudColor, localLevel.unprocessed, localLevel.tickCount);
   			return true;
-  		} catch(IOException e) {
-  			e.printStackTrace();
+  		} catch(FileNotFoundException e) {
+  			logger.info("Could not load map file.");
   			return false;
-  		}
+  		} catch (IOException e) {
+  			logger.info("Could not load map file.");
+  			return false;
+		} catch (ClassNotFoundException e) {
+  			logger.info("Could not load map file.");
+  			return false;
+		}
   	}
 
 	// save in file called filename
