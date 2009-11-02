@@ -1,12 +1,5 @@
 package org.opencraft.server.io;
 
-/*
- * This code was not written by the OpenCraft team. This code is the property of Markus Persson,
- * AKA Notch (www.minecraft.net) and is used under "fair use" policy to interpret and save
- * Minecraft game maps. The OpenCraft team claims no responsibility for this code, its use, or
- * its effectiveness.
- */
-
 import org.opencraft.server.Configuration;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
