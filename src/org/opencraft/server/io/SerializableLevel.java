@@ -266,7 +266,7 @@ public class SerializableLevel implements Serializable {
   					localLevel.name, localLevel.creator, localLevel.createTime, localLevel.networkMode, 
   					localLevel.creativeMode, localLevel.waterLevel, localLevel.skyColor, localLevel.fogColor,
   					localLevel.cloudColor, localLevel.unprocessed, localLevel.tickCount);
-  			this.setloafas(true);
+  			this.loadSuccess = true;
   		} catch(FileNotFoundException e) {
   			logger.info("Could not load map file.");
   			return;
