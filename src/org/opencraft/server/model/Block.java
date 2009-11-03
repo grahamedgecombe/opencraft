@@ -8,7 +8,7 @@ import java.util.EnumSet;
  *
  */
 public enum Block {
-	// id, light, solid, liquid, plant, halfblock
+	// id, translucency, solid, liquid, plant, halfblock
 	AIR(0, 1, 0, 0, 0, 0),
 	
 	STONE(1, 0, 1, 0, 0, 0),

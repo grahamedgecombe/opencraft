@@ -29,62 +29,62 @@ public class SerializableLevel implements Serializable {
 	/**
 	 * The serial version UID for this object.
 	 */
-	public static final long serialVersionUID = 0L;
+	private static final long serialVersionUID = 0L;
 	
 	/**
 	 * The width of the map.
 	 */
-	public int width;
+	private int width;
 	
 	/**
 	 * The height of the map.
 	 */
-	public int height;
+	private int height;
 	
 	/**
 	 * The depth of the map.
 	 */
-	public int depth;
+	private int depth;
 	
 	/**
 	 * The blocks in the map (stored as an array of bytes)
 	 */
-	public byte[] blocks;
+	private byte[] blocks;
 	
 	/**
 	 * The name of the map.
 	 */
-	public String name;
+	private String name;
 	
 	/**
 	 * The name of the map's creator.
 	 */
-	public String creator;
+	private String creator;
 	
 	/**
 	 * The date of the map's creation.
 	 */
-	public long createTime;
+	private long createTime;
 	
 	/**
 	 * The X spawn coordinate.
 	 */
-	public int xSpawn;
+	private int xSpawn;
 	
 	/**
 	 * The Y spawn coordinate.
 	 */
-	public int ySpawn;
+	private int ySpawn;
 	
 	/**
 	 * The Z spawn coordinate.
 	 */
-	public int zSpawn;
+	private int zSpawn;
 	
 	/**
 	 * The player's spawning rotation.
 	 */
-	public float rotSpawn;
+	private float rotSpawn;
 	
 	/**
 	 * Kept for consistency. Unused.
@@ -94,12 +94,12 @@ public class SerializableLevel implements Serializable {
 	/**
 	 * Kept for consistency. Unused.
 	 */
-	public boolean creativeMode;
+	private boolean creativeMode;
 	
 	/**
 	 * Kept for consistency. Unused.
 	 */
-	public int waterLevel, skyColor, fogColor, cloudColor;
+	private int waterLevel, skyColor, fogColor, cloudColor;
 	
 	/**
 	 * Kept for consistency. Unused.
@@ -210,7 +210,7 @@ public class SerializableLevel implements Serializable {
 	/**
   	 * Match this object to a locally created copy made when loading a map.
   	 */
-  	public void setData(int width, int depth, int height, byte[] blocks, 
+  	private void setData(int width, int depth, int height, byte[] blocks, 
   			int xSpawn, int ySpawn, int zSpawn, float rotSpawn, 
   			String name, String creator, long createTime, boolean networkMode, boolean creativeMode, 
   			int waterLevel, int skyColor, int fogColor, int cloudColor, int unprocessed, int tickCount) {
@@ -234,6 +234,22 @@ public class SerializableLevel implements Serializable {
   		this.unprocessed = unprocessed;
   		this.tickCount = tickCount;
   		System.gc();
+  	}
+  	
+	/**
+  	 * Match this object to a locally created copy made when loading a map.
+  	 */
+  	public void updateSerializableLevel(int width, int depth, int height, byte[] blocks, 
+  			int xSpawn, int ySpawn, int zSpawn, float rotSpawn) {
+  		this.width = width;
+  		this.depth = depth;
+  		this.height = height;
+  		this.blocks = blocks;
+  		this.xSpawn = xSpawn;
+  		this.ySpawn = ySpawn;
+  		this.zSpawn = zSpawn;
+  		this.rotSpawn = rotSpawn;
+  		this.save();
   	}
 
   	/**
@@ -297,7 +313,7 @@ public class SerializableLevel implements Serializable {
 			out.close();
 			logger.info("Successfully saved " + this.filename + ".");
 		} catch(IOException e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "Could not save map.");
 		}
 	}
 

@@ -1,5 +1,7 @@
 package org.opencraft.server.model;
 
+import org.opencraft.server.io.SerializableLevel;
+
 //import org.opencraft.server.io.SerializableLevel;
 
 /*
@@ -60,25 +62,46 @@ public final class Level {
 	/**
 	 * The blocks.
 	 */
-	private final byte[][][] blocks = new byte[width][height][depth];
+	private byte[] blocks;
 	
 	/**
 	 * The serializable copy of this level.
 	 */
-	//private SerializableLevel serializableLevel;
+	private SerializableLevel serializableLevel;
+	
+	/**
+	 * The spawn rotation.
+	 */
+	private Rotation spawnRotation;
+	
+	/**
+	 * The spawn position.
+	 */
+	private Position spawnPosition;
 	
 	/**
 	 * Creates the level.
 	 */
 	public Level() {
-		//this.serializableLevel = new SerializableLevel();
+		this.serializableLevel = new SerializableLevel();
+		if(serializableLevel.isLoadSuccess()) {
+			this.width = serializableLevel.getWidth();
+			this.height = serializableLevel.getHeight();
+			this.depth = serializableLevel.getDepth();
+			this.spawnPosition = serializableLevel.getSpawnPoint();
+			this.spawnRotation = serializableLevel.getSpawnRotation();
+			this.blocks = new byte[this.width * this.height * this.depth];
+			this.blocks = serializableLevel.getBlocks();
+		} else {
+			// TODO: generate a new level here
+		}
 	}
 	
 	/**
 	 * Gets all of the blocks.
 	 * @return All of the blocks.
 	 */
-	public byte[][][] getBlocks() {
+	public byte[] getBlocks() {
 		return blocks;
 	}
 
@@ -113,14 +136,53 @@ public final class Level {
 	 * @param z The z coordinate.
 	 * @param type The type id.
 	 */
-	public void setBlock(int x, int y, int z, byte type) {
+	public void setBlock(int x, int y, int z, int type) {
 		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
 			return;
 		}
-		blocks[x][y][z] = type;
+		blocks[((y * this.height + z) * this.width + x)] = (byte)type;
 		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
-			player.getSession().getActionSender().sendBlock(x, y, z, type);
+			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
 		}
+	}
+	
+	/**
+	 * Writes the level to serializableLevel for saving.
+	 */
+	public void saveLevel() {
+		serializableLevel.updateSerializableLevel(this.width, this.depth, this.height, this.blocks, this.spawnPosition.getX(), this.spawnPosition.getY(), this.spawnPosition.getZ(), this.spawnRotation.getRotation());
+	}
+
+	/**
+	 * Set the rotation of the character when spawned.
+	 * @param spawnRotation The rotation.
+	 */
+	public void setSpawnRotation(Rotation spawnRotation) {
+		this.spawnRotation = spawnRotation;
+	}
+
+	/**
+	 * Get the spawning rotation.
+	 * @return The spawning rotation.
+	 */
+	public Rotation getSpawnRotation() {
+		return spawnRotation;
+	}
+
+	/**
+	 * Set the spawn position.
+	 * @param spawnPosition The spawn position.
+	 */
+	public void setSpawnPosition(Position spawnPosition) {
+		this.spawnPosition = spawnPosition;
+	}
+
+	/**
+	 * Get the spawn position.
+	 * @return The spawn position.
+	 */
+	public Position getSpawnPosition() {
+		return spawnPosition;
 	}
 
 }
