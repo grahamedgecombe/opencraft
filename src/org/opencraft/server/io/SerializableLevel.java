@@ -32,82 +32,82 @@ public class SerializableLevel implements Serializable {
 	private static final long serialVersionUID = 0L;
 	
 	/**
-	 * The width of the map.
+	 * The width of the map. This was public.
 	 */
 	private int width;
 	
 	/**
-	 * The height of the map.
+	 * The height of the map. This was public.
 	 */
 	private int height;
 	
 	/**
-	 * The depth of the map.
+	 * The depth of the map. This was public.
 	 */
 	private int depth;
 	
 	/**
-	 * The blocks in the map (stored as an array of bytes)
+	 * The blocks in the map (stored as an array of bytes) This was public.
 	 */
 	private byte[] blocks;
 	
 	/**
-	 * The name of the map.
+	 * The name of the map. This was public.
 	 */
 	private String name;
 	
 	/**
-	 * The name of the map's creator.
+	 * The name of the map's creator. This was public.
 	 */
 	private String creator;
 	
 	/**
-	 * The date of the map's creation.
+	 * The date of the map's creation. This was public.
 	 */
 	private long createTime;
 	
 	/**
-	 * The X spawn coordinate.
+	 * The X spawn coordinate. This was public.
 	 */
 	private int xSpawn;
 	
 	/**
-	 * The Y spawn coordinate.
+	 * The Y spawn coordinate. This was public.
 	 */
 	private int ySpawn;
 	
 	/**
-	 * The Z spawn coordinate.
+	 * The Z spawn coordinate. This was public.
 	 */
 	private int zSpawn;
 	
 	/**
-	 * The player's spawning rotation.
+	 * The player's spawning rotation. This was public.
 	 */
 	private float rotSpawn;
 	
 	/**
-	 * Kept for consistency. Unused.
+	 * Kept for consistency. Unused. This was private.
 	 */
 	private boolean networkMode = false;
 	
 	/**
-	 * Kept for consistency. Unused.
+	 * Kept for consistency. Unused. This was public.
 	 */
 	private boolean creativeMode;
 	
 	/**
-	 * Kept for consistency. Unused.
+	 * Kept for consistency. Unused. This was public.
 	 */
 	private int waterLevel, skyColor, fogColor, cloudColor;
 	
 	/**
-	 * Kept for consistency. Unused.
+	 * Kept for consistency. Unused. This was public.
 	 */
 	int unprocessed = 0;
 	
 	/**
-	 * Kept for consistency. Unused.
+	 * Kept for consistency. Unused. This was public.
 	 */
 	private int tickCount = 0;
 	
