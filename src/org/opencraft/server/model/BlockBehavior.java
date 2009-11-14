@@ -36,36 +36,19 @@ package org.opencraft.server.model;
 /**
  * Contains various methods handling block behavior.
  * @author Brett Russell
+ * @author Graham Edgecombe
+ * 
  */
-public class BlockBehavior {
+public interface BlockBehavior {
 	
-	public void infiniteWater() {	
-	}
+	/**
+	 * Applies a behaviour to a block.
+	 * @param level The level.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
+	 * @param type The block type.
+	 */
+	public void apply(Level level, int x, int y, int z, int type);
 	
-	public void finiteWater() {
-	}
-	
-	public void infiniteLava() {
-	}
-	
-	public void finiteLava() {
-	}
-	
-	public void plants(boolean needsLight) {
-	}
-	
-	public void gravity() {
-	}
-	
-	public void grassGrow() {
-	}
-	
-	public void spongeAbsorb() {
-	}
-	
-	public void spongeBreak() {
-	}
-	
-	public void detonateTNT() {
-	}
 }

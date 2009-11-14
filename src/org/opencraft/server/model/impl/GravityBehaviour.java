@@ -1,4 +1,4 @@
-package org.opencraft.server.model;
+package org.opencraft.server.model.impl;
 
 /*
  * OpenCraft License
@@ -33,45 +33,26 @@ package org.opencraft.server.model;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.net.MinecraftSession;
+import org.opencraft.server.model.BlockBehavior;
+import org.opencraft.server.model.Level;
 
 /**
- * Represents a connected player.
+ * A block behaviour that applies gravity to a block.
  * @author Graham Edgecombe
  *
  */
-public final class Player extends Entity {
-	
-	/**
-	 * The player's session.
-	 */
-	private final MinecraftSession session;
-	
-	/**
-	 * The player's name.
-	 */
-	private final String name;
-	
-	/**
-	 * Creates the player.
-	 * @param name The player's name.
-	 */
-	public Player(MinecraftSession session, String name) {
-		this.session = session;
-		this.name = name;
-	}
-	
-	@Override
-	public String getName() {
-		return name;
-	}
+public class GravityBehaviour implements BlockBehavior {
 
-	/**
-	 * Gets the player's session.
-	 * @return The session.
-	 */
-	public MinecraftSession getSession() {
-		return session;
+	@Override
+	public void apply(Level level, int x, int y, int z, int type) {
+		if(z > 0) {
+			int tgtZ = z - 1;
+			if(level.getBlock(x, y, tgtZ) == 0) {
+				int src = level.getBlock(x, y, z);
+				level.setBlock(x, y, z, 0);
+				level.setBlock(x, y, tgtZ, src);
+			}
+		}
 	}
 
 }

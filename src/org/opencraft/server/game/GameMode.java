@@ -1,4 +1,4 @@
-package org.opencraft.server.model;
+package org.opencraft.server.game;
 
 /*
  * OpenCraft License
@@ -33,45 +33,11 @@ package org.opencraft.server.model;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.net.MinecraftSession;
-
 /**
- * Represents a connected player.
+ * An interface which represents a specific type of game mode.
  * @author Graham Edgecombe
- *
+ * 
  */
-public final class Player extends Entity {
-	
-	/**
-	 * The player's session.
-	 */
-	private final MinecraftSession session;
-	
-	/**
-	 * The player's name.
-	 */
-	private final String name;
-	
-	/**
-	 * Creates the player.
-	 * @param name The player's name.
-	 */
-	public Player(MinecraftSession session, String name) {
-		this.session = session;
-		this.name = name;
-	}
-	
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Gets the player's session.
-	 * @return The session.
-	 */
-	public MinecraftSession getSession() {
-		return session;
-	}
+public interface GameMode {
 
 }

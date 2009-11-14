@@ -130,6 +130,17 @@ public final class Level {
 			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
 		}
 	}
+	
+	/**
+	 * Gets a block.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
+	 * @return The type id.
+	 */
+	public byte getBlock(int x, int y, int z) {
+		return blocks[((y * this.height + z) * this.width + x)];
+	}
 
 	/**
 	 * Set the rotation of the character when spawned.
