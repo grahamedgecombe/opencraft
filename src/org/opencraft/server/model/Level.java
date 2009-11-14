@@ -33,6 +33,9 @@ package org.opencraft.server.model;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 /**
  * Represents the actual level.
  * @author Graham Edgecombe
@@ -71,6 +74,11 @@ public final class Level {
 	private Position spawnPosition;
 	
 	/**
+	 * A queue of positions to update at the next tick.
+	 */
+	private Queue<Position> updateQueue = new ArrayDeque<Position>();
+	
+	/**
 	 * Generates a level.
 	 */
 	public Level() {
@@ -80,6 +88,17 @@ public final class Level {
 		this.blocks = new byte[this.width * this.height * this.depth];
 		this.spawnPosition = new Position(0, 0, 0);
 		this.spawnRotation = new Rotation(0, 0);
+	}
+	
+	/**
+	 * Performs physics updates.
+	 */
+	public void tick() {
+		Queue<Position> currentQueue = new ArrayDeque<Position>(updateQueue);
+		updateQueue.clear();
+		for(Position pos : currentQueue) {
+			// TODO update physics at the position
+		}
 	}
 	
 	/**
@@ -113,6 +132,17 @@ public final class Level {
 	public int getDepth() {
 		return depth;
 	}
+	
+	/**
+	 * Sets a block and updates the neighbours.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
+	 * @param type The type id.
+	 */
+	public void setBlock(int x, int y, int z, int type) {
+		setBlock(x, y, z, type, true);
+	}
 
 	/**
 	 * Sets a block.
@@ -120,8 +150,9 @@ public final class Level {
 	 * @param y The y coordinate.
 	 * @param z The z coordinate.
 	 * @param type The type id.
+	 * @param update Update neighbours flag.
 	 */
-	public void setBlock(int x, int y, int z, int type) {
+	public void setBlock(int x, int y, int z, int type, boolean update) {
 		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
 			return;
 		}
@@ -129,8 +160,40 @@ public final class Level {
 		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
 			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
 		}
+		if(update) {
+			updateNeighboursAt(x, y, z);
+		}
 	}
 	
+	/**
+	 * Updates neighbours at the specified coordinate.
+	 * @param x X coordinate.
+	 * @param y Y coordinate.
+	 * @param z Z coordinate.
+	 */
+	private void updateNeighboursAt(int x, int y, int z) {
+		queueTileUpdate(x, y, z);
+		queueTileUpdate(x - 1, y, z);
+		queueTileUpdate(x, y - 1, z);
+		queueTileUpdate(x + 1, y, z);
+		queueTileUpdate(x, y + 1, z);
+		queueTileUpdate(x, y, z - 1);
+		queueTileUpdate(x, y, z + 1);
+	}
+	
+	/**
+	 * Queues a tile update.
+	 * @param x X coordinate.
+	 * @param y Y coordinate.
+	 * @param z Z coordinate.
+	 */
+	private void queueTileUpdate(int x, int y, int z) {
+		Position pos = new Position(x, y, z);
+		if(!updateQueue.contains(pos)) {
+			updateQueue.add(pos);
+		}
+	}
+
 	/**
 	 * Gets a block.
 	 * @param x The x coordinate.
