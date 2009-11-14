@@ -1,8 +1,5 @@
 package org.opencraft.server.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /*
  * OpenCraft License
  * 
@@ -35,6 +32,9 @@ import java.util.Set;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The superclass for players and mobs.
