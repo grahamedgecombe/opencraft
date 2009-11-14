@@ -89,13 +89,6 @@ public final class LevelGzipper {
 					DataOutputStream os = new DataOutputStream(new GZIPOutputStream(out));
 					os.writeInt(size);
 					os.write(blockData);
-//					for(int z = 0; z < depth; z++) {
-//						for(int y = 0; y < height; y++) {
-//							for(int x = 0; x < width; x++) {
-//								os.write(blockData[x][y][z]);
-//							}
-//						}
-//					}
 					os.close();
 					byte[] data = out.toByteArray();
 					IoBuffer buf = IoBuffer.allocate(data.length);

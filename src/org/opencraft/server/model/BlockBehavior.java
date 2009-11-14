@@ -1,12 +1,11 @@
 package org.opencraft.server.model;
 
-import org.opencraft.server.model.Block;
-
 /**
  * Contains various methods handling block behavior.
  * @author Brett Russell
  */
 public class BlockBehavior {
+	
 	public void infiniteWater() {	
 	}
 	

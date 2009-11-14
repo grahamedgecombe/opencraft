@@ -1,9 +1,5 @@
 package org.opencraft.server.model;
 
-import org.opencraft.server.io.SerializableLevel;
-
-//import org.opencraft.server.io.SerializableLevel;
-
 /*
  * OpenCraft License
  * 
@@ -65,11 +61,6 @@ public final class Level {
 	private byte[] blocks;
 	
 	/**
-	 * The serializable copy of this level.
-	 */
-	private SerializableLevel serializableLevel;
-	
-	/**
 	 * The spawn rotation.
 	 */
 	private Rotation spawnRotation;
@@ -80,24 +71,15 @@ public final class Level {
 	private Position spawnPosition;
 	
 	/**
-	 * Creates the level.
+	 * Generates a level.
 	 */
 	public Level() {
-		this.serializableLevel = new SerializableLevel();
-		if(serializableLevel.isLoadSuccess()) {
-			this.width = serializableLevel.getWidth();
-			this.height = serializableLevel.getHeight();
-			this.depth = serializableLevel.getDepth();
-			this.spawnPosition = serializableLevel.getSpawnPoint();
-			this.spawnRotation = serializableLevel.getSpawnRotation();
-			this.blocks = new byte[this.width * this.height * this.depth];
-			this.blocks = serializableLevel.getBlocks();
-		} else {
-			this.width = 256;
-			this.height = 256;
-			this.depth = 64;
-			this.blocks = new byte[this.width * this.height * this.depth];
-		}
+		this.width = 256;
+		this.height = 256;
+		this.depth = 64;
+		this.blocks = new byte[this.width * this.height * this.depth];
+		this.spawnPosition = new Position(0, 0, 0);
+		this.spawnRotation = new Rotation(0, 0);
 	}
 	
 	/**
@@ -147,13 +129,6 @@ public final class Level {
 		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
 			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
 		}
-	}
-	
-	/**
-	 * Writes the level to serializableLevel for saving.
-	 */
-	public void saveLevel() {
-		serializableLevel.updateSerializableLevel(this.width, this.depth, this.height, this.blocks, this.spawnPosition.getX(), this.spawnPosition.getY(), this.spawnPosition.getZ(), this.spawnRotation.getRotation());
 	}
 
 	/**
