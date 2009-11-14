@@ -61,7 +61,7 @@ public final class Level {
 	/**
 	 * The blocks.
 	 */
-	private byte[] blocks;
+	private byte[][][] blocks;
 	
 	/**
 	 * The spawn rotation.
@@ -85,9 +85,18 @@ public final class Level {
 		this.width = 256;
 		this.height = 256;
 		this.depth = 64;
-		this.blocks = new byte[this.width * this.height * this.depth];
+		this.blocks = new byte[width][height][depth];
 		this.spawnPosition = new Position(0, 0, 0);
 		this.spawnRotation = new Rotation(0, 0);
+		// temporary:
+		for(int z = 0; z < depth / 2; z++) {
+			for(int x = 0; x < width; x++) {
+				for(int y = 0; y < height; y++) {
+					int type = z == (depth / 2 - 1) ? Block.GRASS.getId() : Block.DIRT.getId();
+					this.blocks[x][y][z] = (byte) type;
+				}
+			}
+		}
 	}
 	
 	/**
@@ -105,7 +114,7 @@ public final class Level {
 	 * Gets all of the blocks.
 	 * @return All of the blocks.
 	 */
-	public byte[] getBlocks() {
+	public byte[][][] getBlocks() {
 		return blocks;
 	}
 
@@ -156,7 +165,7 @@ public final class Level {
 		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
 			return;
 		}
-		blocks[((y * this.height + z) * this.width + x)] = (byte)type;
+		blocks[x][y][z] = (byte) type;
 		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
 			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
 		}
@@ -188,9 +197,11 @@ public final class Level {
 	 * @param z Z coordinate.
 	 */
 	private void queueTileUpdate(int x, int y, int z) {
-		Position pos = new Position(x, y, z);
-		if(!updateQueue.contains(pos)) {
-			updateQueue.add(pos);
+		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
+			Position pos = new Position(x, y, z);
+			if(!updateQueue.contains(pos)) {
+				updateQueue.add(pos);
+			}
 		}
 	}
 
@@ -202,7 +213,7 @@ public final class Level {
 	 * @return The type id.
 	 */
 	public byte getBlock(int x, int y, int z) {
-		return blocks[((y * this.height + z) * this.width + x)];
+		return blocks[x][y][z];
 	}
 
 	/**
