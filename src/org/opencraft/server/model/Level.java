@@ -93,7 +93,10 @@ public final class Level {
 			this.blocks = new byte[this.width * this.height * this.depth];
 			this.blocks = serializableLevel.getBlocks();
 		} else {
-			// TODO: generate a new level here
+			this.width = 256;
+			this.height = 256;
+			this.depth = 64;
+			this.blocks = new byte[this.width * this.height * this.depth];
 		}
 	}
 	

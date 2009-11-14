@@ -79,7 +79,7 @@ public final class LevelGzipper {
 		final int width = level.getWidth();
 		final int height = level.getHeight();
 		final int depth = level.getDepth();
-		final byte[][][] blockData = World.getWorld().getLevel().getBlocks().clone();
+		final byte[] blockData = World.getWorld().getLevel().getBlocks().clone();
 		session.getActionSender().sendLevelInit();
 		service.submit(new Runnable() {
 			public void run() {
@@ -88,13 +88,14 @@ public final class LevelGzipper {
 					int size = width * height * depth;
 					DataOutputStream os = new DataOutputStream(new GZIPOutputStream(out));
 					os.writeInt(size);
-					for(int z = 0; z < depth; z++) {
-						for(int y = 0; y < height; y++) {
-							for(int x = 0; x < width; x++) {
-								os.write(blockData[x][y][z]);
-							}
-						}
-					}
+					os.write(blockData);
+//					for(int z = 0; z < depth; z++) {
+//						for(int y = 0; y < height; y++) {
+//							for(int x = 0; x < width; x++) {
+//								os.write(blockData[x][y][z]);
+//							}
+//						}
+//					}
 					os.close();
 					byte[] data = out.toByteArray();
 					IoBuffer buf = IoBuffer.allocate(data.length);
