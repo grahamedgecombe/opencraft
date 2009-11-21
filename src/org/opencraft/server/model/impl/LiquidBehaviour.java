@@ -38,18 +38,46 @@ import org.opencraft.server.model.BlockBehaviour;
 import org.opencraft.server.model.Level;
 
 /**
- * A block behaviour that handles water (outward and downward expansion).
+ * A block behaviour that handles liquids (outward and downward expansion).
  * @author Brett Russell
  *
  */
 public class LiquidBehaviour implements BlockBehaviour {
 
 	@Override
-	public void apply(Level level, int x, int y, int z, int type) { 
-		
-		if(type == Block.WATER.getId()) {
-			
+	public void apply(Level level, int x, int y, int z, int type) {
+		if(Block.forId(type).isLiquid()) {
+			if(type == Block.WATER.getId()) {
+				waterFlow(level, x, y, z);
+			} else if(type == Block.LAVA.getId()) {
+				lavaFlow(level, x, y, z);
+			} else {
+			}
 		}
+	}
+	
+	/**
+	 * Handles water behaviour specifically. Takes into account water's preference to flow down before flowing outward,
+	 * and the effects of sponges, as well as water's reaction when making contact with lava.
+	 * @param level The level.
+	 * @param x The block's x-coordinate.
+	 * @param y The block's y-coordinate.
+	 * @param z The block's z-coordinate.
+	 */
+	private void waterFlow(Level level, int x, int y, int z) {
+		
+	}
+	
+	/**
+	 * Handles lava behaviour specifically. Lava has no preference for directional flow, except it flows much slower than water. 
+	 * Takes into account lava's reaction when making contact with water.
+	 * @param level The level.
+	 * @param x The block's x-coordinate.
+	 * @param y The block's y-coordinate.
+	 * @param z The block's z-coordinate.
+	 */
+	private void lavaFlow(Level level, int x, int y, int z) {
+		
 	}
 		
 }
