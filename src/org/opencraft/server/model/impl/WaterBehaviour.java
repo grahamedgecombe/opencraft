@@ -37,26 +37,20 @@ import org.opencraft.server.model.BlockBehaviour;
 import org.opencraft.server.model.Level;
 
 /**
- * A block behaviour that applies gravity to a block.
- * Lets a block fall to the lowest possible unoccupied square (z-axis).
- * @author Graham Edgecombe
+ * A block behaviour that handles water (outward and downward expansion).
  * @author Brett Russell
  *
  */
-public class GravityBehaviour implements BlockBehaviour {
+public class WaterBehaviour implements BlockBehaviour {
 
 	@Override
 	public void apply(Level level, int x, int y, int z, int type) {
-		int src = level.getBlock(x, y, z);
-		for(int i = z-1; i >= 0; i--) {
-			if(level.getBlock(x, y, i) != 0) {
+		if(z > 0) {
+			int tgtZ = z - 1;
+			if(level.getBlock(x, y, tgtZ) == 0) {
+				int src = level.getBlock(x, y, z);
 				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i+1, src);
-				return;
-			}
-			if(i == 0) {
-				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i, src);
+				level.setBlock(x, y, tgtZ, src);
 			}
 		}
 	}

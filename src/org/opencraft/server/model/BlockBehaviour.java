@@ -39,7 +39,7 @@ package org.opencraft.server.model;
  * @author Graham Edgecombe
  * 
  */
-public interface BlockBehavior {
+public interface BlockBehaviour {
 	
 	/**
 	 * Applies a behaviour to a block.
