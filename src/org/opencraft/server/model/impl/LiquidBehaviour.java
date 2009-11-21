@@ -46,38 +46,36 @@ public class LiquidBehaviour implements BlockBehaviour {
 
 	@Override
 	public void apply(Level level, int x, int y, int z, int type) {
-		if(Block.forId(type).isLiquid()) {
-			if(type == Block.WATER.getId()) {
-				waterFlow(level, x, y, z);
-			} else if(type == Block.LAVA.getId()) {
-				lavaFlow(level, x, y, z);
-			} else {
+		
+		/**
+		 * The different spreading directions for a block.
+		 */
+		final int[][] spreadRules = 	{ { 1,  0,  0 },
+										  {-1,  0,  0 },
+										  { 0,  1,  0 },
+										  { 0, -1,  0 },
+										  { 0,  0, -1 } };
+		
+		final int spongeRadius = 3;
+		
+		for(int i = 0; i >= spreadRules.length - 1; i++) {
+			
+			byte thisBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]);	
+				// check for sponges
+			if(level.getBlock(x+(spreadRules[i][0]*spongeRadius), y+(spreadRules[i][1]*spongeRadius), z+(spreadRules[i][2]*spongeRadius)) != Block.SPONGE.getId()) 
+			{
+				// check for block anti-types
+				if (thisBlock == Block.LAVA.getId() && type == Block.WATER.getId()) { 
+					level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], Block.STONE.getId()); 
+				}
+				else if (thisBlock == Block.WATER.getId() && type == Block.LAVA.getId()) {
+					level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], Block.STONE.getId());
+				}
+				else if (!Block.forId(thisBlock).isSolid() && !Block.forId(thisBlock).isLiquid()) {
+					level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], type); 
+				}
 			}
 		}
 	}
 	
-	/**
-	 * Handles water behaviour specifically. Takes into account water's preference to flow down before flowing outward,
-	 * and the effects of sponges, as well as water's reaction when making contact with lava.
-	 * @param level The level.
-	 * @param x The block's x-coordinate.
-	 * @param y The block's y-coordinate.
-	 * @param z The block's z-coordinate.
-	 */
-	private void waterFlow(Level level, int x, int y, int z) {
-		
-	}
-	
-	/**
-	 * Handles lava behaviour specifically. Lava has no preference for directional flow, except it flows much slower than water. 
-	 * Takes into account lava's reaction when making contact with water.
-	 * @param level The level.
-	 * @param x The block's x-coordinate.
-	 * @param y The block's y-coordinate.
-	 * @param z The block's z-coordinate.
-	 */
-	private void lavaFlow(Level level, int x, int y, int z) {
-		
-	}
-		
 }

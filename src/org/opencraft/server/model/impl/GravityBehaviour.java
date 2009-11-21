@@ -51,12 +51,12 @@ public class GravityBehaviour implements BlockBehaviour {
 		for(int i = z - 1; i >= 0; i--) {
 			if(Block.forId(level.getBlock(x, y, i)).isSolid()) {
 				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i + 1, (byte)type);
+				level.setBlock(x, y, i + 1, (byte) type);
 				return;
 			}
 			if(i == 0) {
 				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i, (byte)type);
+				level.setBlock(x, y, i, (byte) type);
 			}
 		}
 	}
