@@ -33,6 +33,7 @@ package org.opencraft.server.model.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.opencraft.server.model.Block;
 import org.opencraft.server.model.BlockBehaviour;
 import org.opencraft.server.model.Level;
 
@@ -41,18 +42,14 @@ import org.opencraft.server.model.Level;
  * @author Brett Russell
  *
  */
-public class WaterBehaviour implements BlockBehaviour {
+public class LiquidBehaviour implements BlockBehaviour {
 
 	@Override
-	public void apply(Level level, int x, int y, int z, int type) {
-		if(z > 0) {
-			int tgtZ = z - 1;
-			if(level.getBlock(x, y, tgtZ) == 0) {
-				int src = level.getBlock(x, y, z);
-				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, tgtZ, src);
-			}
+	public void apply(Level level, int x, int y, int z, int type) { 
+		
+		if(type == Block.WATER.getId()) {
+			
 		}
 	}
-
+		
 }

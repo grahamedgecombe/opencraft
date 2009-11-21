@@ -33,6 +33,7 @@ package org.opencraft.server.model.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.opencraft.server.model.Block;
 import org.opencraft.server.model.BlockBehaviour;
 import org.opencraft.server.model.Level;
 
@@ -47,16 +48,15 @@ public class GravityBehaviour implements BlockBehaviour {
 
 	@Override
 	public void apply(Level level, int x, int y, int z, int type) {
-		int src = level.getBlock(x, y, z);
 		for(int i = z-1; i >= 0; i--) {
-			if(level.getBlock(x, y, i) != 0) {
+			if(Block.forId(level.getBlock(x, y, i)).isSolid()) {
 				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i+1, src);
+				level.setBlock(x, y, i+1, (byte)type);
 				return;
 			}
 			if(i == 0) {
 				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i, src);
+				level.setBlock(x, y, i, (byte)type);
 			}
 		}
 	}

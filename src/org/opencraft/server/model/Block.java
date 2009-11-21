@@ -171,7 +171,7 @@ public enum Block {
 	}
 
 	/**
-	 * Gets the blocks ID, as a byte.
+	 * Gets the blocks ID, as a byte. If you need the ID as an integer for some reason, typecast it.
 	 * @return The block's ID as a byte.
 	 */
 	public byte getId() {
