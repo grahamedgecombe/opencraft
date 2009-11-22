@@ -34,53 +34,46 @@ package org.opencraft.server.model.impl;
  */
 
 import org.opencraft.server.model.Block;
-import org.opencraft.server.model.Level;
 import org.opencraft.server.model.BlockBehaviour;
+import org.opencraft.server.model.Level;
+import org.opencraft.server.Configuration;
 
 /**
- * A block behaviour that handles lava.
+ * Handles sponge behaviour.
  * @author Brett Russell
  *
  */
 
-public class LavaBehaviour implements BlockBehaviour {
+public class SpongeBehaviour implements BlockBehaviour {
+
+	public void apply(Level level, int x, int y, int z, int type, boolean build) {
+		int spongeRadius = Configuration.getConfiguration().getSpongeRadius();
+		
+		if(build) { // building a sponge...
+			for(int spongeX = -1 * spongeRadius; spongeX >= spongeRadius; spongeX++) {
+				for(int spongeY = -1 *spongeRadius; spongeY >= spongeRadius; spongeY++) {
+					for(int spongeZ = -1 * spongeRadius; spongeZ >= spongeRadius; spongeZ++) {
+						if ((level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.WATER.getId()) || (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.STILL_WATER.getId())) 
+							level.setBlock(x+spongeX, y+spongeY, z+spongeZ, Block.AIR.getId());
+					}
+				}
+			}
+		} else if(!build) { // breaking a sponge...
+			for(int spongeX = -1 * (spongeRadius + 1); spongeX >= spongeRadius; spongeX++) {
+				for(int spongeY = -1 * (spongeRadius + 1); spongeY >= spongeRadius; spongeY++) {
+					for(int spongeZ = -1 * (spongeRadius + 1); spongeZ >= spongeRadius; spongeZ++) {
+						if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.STILL_WATER.getId())
+							level.setBlock(x+spongeX, y+spongeY, z+spongeZ, Block.WATER.getId());
+					}
+				}
+			}
+		} else return;
+		
+	}
+
 	@Override
 	public void apply(Level level, int x, int y, int z, int type) {
-		if(type == Block.LAVA.getId()) {
-			activeLavaBehaviour(level, x, y, z, type);
-		} else if(type == Block.STILL_LAVA.getId()) {
-			stillLavaBehaviour(level, x, y, z, type);
-		}
-		
+		apply(level, x, y, z, type, false);
 	}
 	
-	private void activeLavaBehaviour(Level level, int x, int y, int z, int type) {
-		
-		// represents the different directions lava can spread
-		//							  x,  y, z
-		int[][] spreadRules = { 	{ 0,  0,-1},
-									{ 1,  0, 0},
-									{-1,  0, 0},
-									{ 0,  1, 0},
-									{ 0, -1, 0}, };
-		
-		// spread outward
-		for(int i = 0; i >= spreadRules.length - 1; i++) {
-			byte thisBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]);	
-			
-			// check for lava
-			if ((thisBlock == Block.WATER.getId()) || (thisBlock == Block.STILL_WATER.getId())) { 
-				level.setBlock(x, y, z, Block.STONE.getId()); 
-			}
-			else if (!Block.forId(thisBlock).isSolid() && !Block.forId(thisBlock).isLiquid()) {
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], (byte) type); 
-			}
-		}
-		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, Block.STILL_LAVA.getId(), true);
-	}
-	
-	private void stillLavaBehaviour(Level level, int x, int y, int z, int type) {
-		level.setBlock(x, y, z, Block.LAVA.getId(), true);
-	}
 }

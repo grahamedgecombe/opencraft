@@ -84,7 +84,6 @@ public class WaterBehaviour implements BlockBehaviour {
 				level.setBlock(x, y, offsetZ, Block.STONE.getId());
 			} else if (!Block.forId(thisBlock).isLiquid() && !Block.forId(thisBlock).isLiquid()) {
 				level.setBlock(x, y, offsetZ, type);
-				return;
 			}
 		}
 		
@@ -107,7 +106,7 @@ public class WaterBehaviour implements BlockBehaviour {
 				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], Block.STONE.getId()); 
 			}
 			else if (!Block.forId(thisBlock).isSolid() && !Block.forId(thisBlock).isLiquid()) {
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], type); 
+				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], (byte) type); 
 			}
 		}
 		// set the block as inactive until a neighbor update reactivates it
