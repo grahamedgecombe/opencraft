@@ -59,9 +59,9 @@ public class SpongeBehaviour implements BlockBehaviour {
 				}
 			}
 		} else if(!build) { // breaking a sponge...
-			for(int spongeX = -1 * (spongeRadius + 1); spongeX >= spongeRadius; spongeX++) {
-				for(int spongeY = -1 * (spongeRadius + 1); spongeY >= spongeRadius; spongeY++) {
-					for(int spongeZ = -1 * (spongeRadius + 1); spongeZ >= spongeRadius; spongeZ++) {
+			for(int spongeX = -1 * (spongeRadius + 1); spongeX >= spongeRadius + 1; spongeX++) {
+				for(int spongeY = -1 * (spongeRadius + 1); spongeY >= spongeRadius + 1; spongeY++) {
+					for(int spongeZ = -1 * (spongeRadius + 1); spongeZ >= spongeRadius + 1; spongeZ++) {
 						if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.STILL_WATER.getId())
 							level.setBlock(x+spongeX, y+spongeY, z+spongeZ, Block.WATER.getId());
 					}
