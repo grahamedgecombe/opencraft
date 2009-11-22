@@ -100,6 +100,11 @@ public class Configuration {
 	private int maximumPlayers;
 	
 	/**
+	 * The radius of a sponge's effectiveness.
+	 */
+	private int spongeRadius;
+	
+	/**
 	 * Public server flag.
 	 */
 	private boolean publicServer;
@@ -120,6 +125,7 @@ public class Configuration {
 		publicServer = Boolean.valueOf(props.getProperty("public", "false"));
 		verifyNames = Boolean.valueOf(props.getProperty("verify_names", "false"));
 		mapFilename = props.getProperty("filename", "server_level.dat");
+		spongeRadius = Integer.valueOf(props.getProperty("sponge_radius", "2"));
 	}
 	
 	/**
@@ -168,6 +174,15 @@ public class Configuration {
 	 */
 	public static String getMapFilename() {
 		return mapFilename;
+	}
+
+
+	/**
+	 * Gets the range at which a sponge is effective.
+	 * @return The sponge radius.
+	 */
+	public int getSpongeRadius() {
+		return spongeRadius;
 	}
 
 }
