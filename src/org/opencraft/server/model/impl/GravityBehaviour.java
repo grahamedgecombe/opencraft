@@ -47,7 +47,7 @@ import org.opencraft.server.model.Level;
 public class GravityBehaviour implements BlockBehaviour {
 
 	@Override
-	public void apply(Level level, int x, int y, int z, int type) {
+	public void handlePassive(Level level, int x, int y, int z, int type) {
 		for(int i = z - 1; i >= 0; i--) {
 			// find the first solid block below our gravity-affected block
 			if(Block.forId(level.getBlock(x, y, i)).isSolid()) {
@@ -63,6 +63,18 @@ public class GravityBehaviour implements BlockBehaviour {
 				level.setBlock(x, y, i, (byte) type);
 			}
 		}
+	}
+
+	@Override
+	public void handleBreak(Level level, int x, int y, int z, int type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleBuild(Level level, int x, int y, int z, int type) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

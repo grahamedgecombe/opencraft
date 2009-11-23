@@ -45,7 +45,7 @@ import org.opencraft.server.model.BlockBehaviour;
 
 public class LavaBehaviour implements BlockBehaviour {
 	@Override
-	public void apply(Level level, int x, int y, int z, int type) {
+	public void handlePassive(Level level, int x, int y, int z, int type) {
 		if(type == Block.LAVA.getId()) {
 			activeLavaBehaviour(level, x, y, z, type);
 		} else if(type == Block.STILL_LAVA.getId()) {
@@ -82,5 +82,17 @@ public class LavaBehaviour implements BlockBehaviour {
 	
 	private void stillLavaBehaviour(Level level, int x, int y, int z, int type) {
 		level.setBlock(x, y, z, Block.LAVA.getId(), true);
+	}
+
+	@Override
+	public void handleBreak(Level level, int x, int y, int z, int type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleBuild(Level level, int x, int y, int z, int type) {
+		// TODO Auto-generated method stub
+		
 	}
 }

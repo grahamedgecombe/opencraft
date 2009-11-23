@@ -46,7 +46,7 @@ import org.opencraft.server.model.Level;
 public class WaterBehaviour implements BlockBehaviour {
 
 	@Override
-	public void apply(Level level, int x, int y, int z, int type) {
+	public void handlePassive(Level level, int x, int y, int z, int type) {
 		if(type == Block.WATER.getId()) {
 			activeWaterBehaviour(level, x, y, z, type);
 		} else if(type == Block.STILL_WATER.getId()) {
@@ -71,7 +71,7 @@ public class WaterBehaviour implements BlockBehaviour {
 			for(int spongeX = -1 * spongeRadius; spongeX >= spongeRadius; spongeX++) {
 				for(int spongeY = -1 *spongeRadius; spongeY >= spongeRadius; spongeY++) {
 					for(int spongeZ = -1 * spongeRadius; spongeZ >= spongeRadius; spongeZ++) {
-						if ((level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.SPONGE.getId()) && (type == Block.WATER.getId())) 
+						if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.SPONGE.getId()) 
 							break OUTERMOST_DOWNWARD;
 					}
 				}
@@ -115,5 +115,17 @@ public class WaterBehaviour implements BlockBehaviour {
 	
 	private void stillWaterBehaviour(Level level, int x, int y, int z, int type) {
 		level.setBlock(x, y, z, Block.WATER.getId(), true);
+	}
+
+	@Override
+	public void handleBreak(Level level, int x, int y, int z, int type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleBuild(Level level, int x, int y, int z, int type) {
+		// TODO Auto-generated method stub
+		
 	}
 }

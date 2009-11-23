@@ -49,6 +49,26 @@ public interface BlockBehaviour {
 	 * @param z The z coordinate.
 	 * @param type The block type.
 	 */
-	public void apply(Level level, int x, int y, int z, int type);
+	public void handlePassive(Level level, int x, int y, int z, int type);
+	
+	/**
+	 * Applies a behaviour to a block.
+	 * @param level The level.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
+	 * @param type The block type.
+	 */
+	public void handleBuild(Level level, int x, int y, int z, int type);
+	
+	/**
+	 * Applies a behaviour to a block.
+	 * @param level The level.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
+	 * @param type The block type.
+	 */
+	public void handleBreak(Level level, int x, int y, int z, int type);
 	
 }
