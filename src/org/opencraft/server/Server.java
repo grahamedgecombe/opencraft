@@ -43,6 +43,7 @@ import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.opencraft.server.net.SessionHandler;
 import org.opencraft.server.task.TaskQueue;
+import org.opencraft.server.task.impl.BlockBehaviourTask;
 import org.opencraft.server.task.impl.HeartbeatTask;
 import org.opencraft.server.task.impl.UpdateTask;
 
@@ -87,6 +88,7 @@ public final class Server {
 		acceptor.setHandler(new SessionHandler());
 		TaskQueue.getTaskQueue().schedule(new UpdateTask());
 		TaskQueue.getTaskQueue().schedule(new HeartbeatTask());
+		TaskQueue.getTaskQueue().schedule(new BlockBehaviourTask());
 	}
 	
 	/**

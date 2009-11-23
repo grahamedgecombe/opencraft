@@ -91,21 +91,6 @@ public final class BlockBehaviourManager {
 			behaviour.handlePassive(World.getWorld().getLevel(), x, y, z, type);
 		}
 	}
-	
-	/**
-	 * Handles a block behaviour.
-	 * @param level The level on which the block is located.
-	 * @param x The x-coordinate of the block.
-	 * @param y The y-coordinate of the block.
-	 * @param z The z-coordinate of the block.
-	 * @param type The type of block.
-	 */
-	public void handleBuildBehaviour(Level level, int x, int y, int z, int type) {
-		BlockBehaviour behaviour = behaviours[type];
-		if(behaviour != null) {
-			behaviour.handleBuild(World.getWorld().getLevel(), x, y, z, type);
-		}
-	}
 
 	/**
 	 * Handles a block behaviour.
@@ -118,7 +103,7 @@ public final class BlockBehaviourManager {
 	public void handleBreakBehaviour(Level level, int x, int y, int z, int type) {
 		BlockBehaviour behaviour = behaviours[type];
 		if(behaviour != null) {
-			behaviour.handleBreak(World.getWorld().getLevel(), x, y, z, type);
+			behaviour.handleDestroy(World.getWorld().getLevel(), x, y, z, type);
 		}
 	}
 }

@@ -47,15 +47,16 @@ public class WaterBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handlePassive(Level level, int x, int y, int z, int type) {
-		if(type == Block.WATER.getId()) {
-			activeWaterBehaviour(level, x, y, z, type);
-		} else if(type == Block.STILL_WATER.getId()) {
-			stillWaterBehaviour(level, x, y, z, type);
-		}
 		
 	}
-	
-	private void activeWaterBehaviour(Level level, int x, int y, int z, int type) {
+
+	@Override
+	public void handleDestroy(Level level, int x, int y, int z, int type) {
+		
+	}
+
+	@Override
+	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
 		
 		// represents different directions in the Cartesian plane, z axis is ignored and handled specially
 		int[][] spreadRules = { 	{ 1,  0, 0},
@@ -103,29 +104,14 @@ public class WaterBehaviour implements BlockBehaviour {
 			
 			// check for lava
 			if ((thisBlock == Block.LAVA.getId()) || (thisBlock == Block.STILL_LAVA.getId())) { 
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], Block.STONE.getId()); 
+				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], Block.STONE.getId(), false); 
 			}
 			else if (!Block.forId(thisBlock).isSolid() && !Block.forId(thisBlock).isLiquid()) {
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], (byte) type); 
+				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], type, false); 
 			}
 		}
 		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, Block.STILL_WATER.getId(), true);
-	}
-	
-	private void stillWaterBehaviour(Level level, int x, int y, int z, int type) {
-		level.setBlock(x, y, z, Block.WATER.getId(), true);
+		level.setBlock(x, y, z, Block.STILL_WATER.getId(), false);
 	}
 
-	@Override
-	public void handleBreak(Level level, int x, int y, int z, int type) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void handleBuild(Level level, int x, int y, int z, int type) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -46,15 +46,16 @@ import org.opencraft.server.model.BlockBehaviour;
 public class LavaBehaviour implements BlockBehaviour {
 	@Override
 	public void handlePassive(Level level, int x, int y, int z, int type) {
-		if(type == Block.LAVA.getId()) {
-			activeLavaBehaviour(level, x, y, z, type);
-		} else if(type == Block.STILL_LAVA.getId()) {
-			stillLavaBehaviour(level, x, y, z, type);
-		}
 		
 	}
-	
-	private void activeLavaBehaviour(Level level, int x, int y, int z, int type) {
+
+	@Override
+	public void handleDestroy(Level level, int x, int y, int z, int type) {
+		
+	}
+
+	@Override
+	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
 		
 		// represents the different directions lava can spread
 		//							  x,  y, z
@@ -68,31 +69,15 @@ public class LavaBehaviour implements BlockBehaviour {
 		for(int i = 0; i >= spreadRules.length - 1; i++) {
 			byte thisBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]);	
 			
-			// check for lava
+			// check for water
 			if ((thisBlock == Block.WATER.getId()) || (thisBlock == Block.STILL_WATER.getId())) { 
-				level.setBlock(x, y, z, Block.STONE.getId()); 
+				level.setBlock(x, y, z, Block.STONE.getId(), false); 
 			}
 			else if (!Block.forId(thisBlock).isSolid() && !Block.forId(thisBlock).isLiquid()) {
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], (byte) type); 
+				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], type, false); 
 			}
 		}
 		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, Block.STILL_LAVA.getId(), true);
-	}
-	
-	private void stillLavaBehaviour(Level level, int x, int y, int z, int type) {
-		level.setBlock(x, y, z, Block.LAVA.getId(), true);
-	}
-
-	@Override
-	public void handleBreak(Level level, int x, int y, int z, int type) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void handleBuild(Level level, int x, int y, int z, int type) {
-		// TODO Auto-generated method stub
-		
+		level.setBlock(x, y, z, Block.STILL_LAVA.getId(), false);
 	}
 }

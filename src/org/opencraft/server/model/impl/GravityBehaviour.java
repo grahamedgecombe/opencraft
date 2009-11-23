@@ -48,32 +48,31 @@ public class GravityBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handlePassive(Level level, int x, int y, int z, int type) {
-		for(int i = z - 1; i >= 0; i--) {
-			// find the first solid block below our gravity-affected block
-			if(Block.forId(level.getBlock(x, y, i)).isSolid()) {
-				// drop it on top of that block
-				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i + 1, (byte) type);
-				return;
-			}
-			// if we've hit the edge of the map...
-			if(i == 0) {
-				// drop the block on the bottom of the map.
-				level.setBlock(x, y, z, 0);
-				level.setBlock(x, y, i, (byte) type);
+		if(z != 0) {
+			for(int i = z - 1; i >= 0; i--) {
+				// find the first solid block below our gravity-affected block
+				if(Block.forId(level.getBlock(x, y, i)).isSolid() && i + 1 != z) {
+					// drop it on top of that block
+					level.setBlock(x, y, z, Block.AIR.getId());
+					level.setBlock(x, y, i + 1, type, false);
+					return;
+				}
+				else if(i == 0 && !Block.forId(level.getBlock(x, y, i)).isSolid()) { // if we've hit the edge of the map...
+					// drop the block on the bottom of the map.
+					level.setBlock(x, y, z, Block.AIR.getId());
+					level.setBlock(x, y, i, type, false);
+				}
 			}
 		}
 	}
 
 	@Override
-	public void handleBreak(Level level, int x, int y, int z, int type) {
-		// TODO Auto-generated method stub
+	public void handleDestroy(Level level, int x, int y, int z, int type) {
 		
 	}
 
 	@Override
-	public void handleBuild(Level level, int x, int y, int z, int type) {
-		// TODO Auto-generated method stub
+	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
 		
 	}
 

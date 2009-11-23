@@ -59,7 +59,7 @@ public interface BlockBehaviour {
 	 * @param z The z coordinate.
 	 * @param type The block type.
 	 */
-	public void handleBuild(Level level, int x, int y, int z, int type);
+	public void handleDestroy(Level level, int x, int y, int z, int type);
 	
 	/**
 	 * Applies a behaviour to a block.
@@ -69,6 +69,6 @@ public interface BlockBehaviour {
 	 * @param z The z coordinate.
 	 * @param type The block type.
 	 */
-	public void handleBreak(Level level, int x, int y, int z, int type);
+	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type);
 	
 }

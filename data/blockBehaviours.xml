@@ -39,7 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
   </entry>
   <entry>
     <int>9</int>
-    <string>org.opencraft.server.model.impl.WaterBehaviour</string>
+    <string>org.opencraft.server.model.impl.StillWaterBehaviour</string>
   </entry>
   <entry>
     <int>10</int>
@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
   </entry>
   <entry>
     <int>11</int>
-    <string>org.opencraft.server.model.impl.LavaBehaviour</string>
+    <string>org.opencraft.server.model.impl.StillLavaBehaviour</string>
   </entry>
   <entry>
   	<int>12</int>
