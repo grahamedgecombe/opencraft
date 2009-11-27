@@ -55,7 +55,23 @@ public class ConstructionPacketHandler implements PacketHandler {
 		int z = packet.getNumericField("z").intValue();
 		int mode = packet.getNumericField("mode").intValue();
 		int type = packet.getNumericField("type").intValue();
-		World.getWorld().getLevel().setBlock(x, y, z, (byte) (mode == 1 ? type : 0));
+		System.out.println("[BLOCK][Type:" + type + "][Mode:" + mode + "]");
+		switch(type)
+		{
+			case 46:
+				World.getWorld().getLevel().preserveBlock(x,y,z);
+				if(World.getWorld().getEntityControl().isEntityAt(session.getPlayer().getPosition().getX(),
+						
+						session.getPlayer().getPosition().getY(),session.getPlayer().getPosition().getZ(),25))
+				{
+					session.getActionSender().sendChatMessage("Response to entity contact.");
+				}
+			break;
+			default:
+				World.getWorld().getLevel().setBlock(x, y, z, (mode == 0) ? 0 : type);
+				session.getPlayer().getSkill().addExperience(1, mode, type);
+			break;
+		}
 	}
 
 }

@@ -41,7 +41,64 @@ import org.opencraft.server.net.MinecraftSession;
  *
  */
 public final class Player extends Entity {
-	
+	/**
+	 * Represents the rights of a player.
+	 * @author Graham Edgecombe
+	 *
+	 */
+	public enum Rights {
+		
+		/**
+		 * A standard account.
+		 */
+		PLAYER(0),
+		
+		/**
+		 * A player-moderator account.
+		 */
+		MODERATOR(1),
+		
+		/**
+		 * An administrator account.
+		 */
+		ADMINISTRATOR(2);
+		
+		/**
+		 * The integer representing this rights level.
+		 */
+		private int value;
+		
+		/**
+		 * Creates a rights level.
+		 * @param value The integer representing this rights level.
+		 */
+		private Rights(int value) {
+			this.value = value;
+		}
+		
+		/**
+		 * Gets an integer representing this rights level.
+		 * @return An integer representing this rights level.
+		 */
+		public int toInteger() {
+			return value;
+		}
+
+		/**
+		 * Gets rights by a specific integer.
+		 * @param value The integer returned by {@link #toInteger()}.
+		 * @return The rights level.
+		 */
+		public static Rights getRights(int value) {
+			if(value == 1) {
+				return MODERATOR;
+			} else if(value == 2) {
+				return ADMINISTRATOR;
+			} else {
+				return PLAYER;
+			}
+		}
+	}
 	/**
 	 * The player's session.
 	 */
@@ -52,6 +109,20 @@ public final class Player extends Entity {
 	 */
 	private final String name;
 	
+	
+	/**
+	 * The player's authorization level.
+	 */
+	
+	private final Rights rights = Rights.PLAYER;
+	
+	
+	/**
+	 * The player's skill which increases as 
+	 * he/she builds structures.
+	 */
+	
+	private final Skill skill;
 	/**
 	 * Creates the player.
 	 * @param name The player's name.
@@ -59,6 +130,7 @@ public final class Player extends Entity {
 	public Player(MinecraftSession session, String name) {
 		this.session = session;
 		this.name = name;
+		this.skill = new Skill(this);
 	}
 	
 	@Override
@@ -73,5 +145,18 @@ public final class Player extends Entity {
 	public MinecraftSession getSession() {
 		return session;
 	}
+	
+	
+	/**
+	 * Returns the player's rights which is private.
+	 */
+	public Rights getRights()
+	{
+		return rights;
+	}
 
+	public Skill getSkill() {
+		// TODO Auto-generated method stub
+		return skill;
+	}
 }

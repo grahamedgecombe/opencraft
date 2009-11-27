@@ -41,8 +41,10 @@ import org.opencraft.server.Configuration;
 import org.opencraft.server.Constants;
 import org.opencraft.server.heartbeat.HeartbeatManager;
 import org.opencraft.server.io.LevelGzipper;
+import org.opencraft.server.model.npc.Npc;
 import org.opencraft.server.net.MinecraftSession;
-import org.opencraft.server.util.PlayerList;
+import org.opencraft.server.util.EntityList;
+import org.opencraft.server.util.GlobalList;
 
 /**
  * Manages the in-game world.
@@ -70,13 +72,9 @@ public final class World {
 	private final Level level = new Level();
 	
 	/**
-	 * The player list.
+	 * The list containing all of the server's entities.
 	 */
-	private final PlayerList playerList = new PlayerList();
-	
-	/**
-	 * Default private constructor.
-	 */
+	private final GlobalList globalList = new GlobalList(EntityList.DEFAULT_MAXIMUM, 2000);
 	private World() {
 		/* empty */
 	}
@@ -85,8 +83,8 @@ public final class World {
 	 * Gets the player list.
 	 * @return The player list.
 	 */
-	public PlayerList getPlayerList() {
-		return playerList;
+	public GlobalList getEntityControl() {
+		return globalList;
 	}
 	
 	/**
@@ -129,15 +127,15 @@ public final class World {
 			}
 		}
 		// disconnect any existing players with the same name
-		for(Player p : playerList.getPlayers()) {
+		for(Entity p : globalList.getPlayers().getEntities()) {
 			if(p.getName().equalsIgnoreCase(username)) {
-				p.getSession().getActionSender().sendLoginFailure("Logged in from another computer.");
+				((Player) p).getSession().getActionSender().sendLoginFailure("Logged in from another computer.");
 				break;
 			}
 		}
 		// attempt to add the player
 		final Player player = new Player(session, username);
-		if(!playerList.add(player)) {
+		if(!globalList.add(player)) {
 			player.getSession().getActionSender().sendLoginFailure("Too many players online!");
 			return;
 		}
@@ -149,14 +147,29 @@ public final class World {
 	}
 
 	/**
+	 * Registers an npc into the npc list.
+	 */
+	public void register(Npc npc)
+	{
+		globalList.add(npc);
+	}
+	/**
 	 * Unregisters a session.
 	 * @param session
 	 */
-	public void unregister(MinecraftSession session) {
-		if(session.isAuthenticated()) {
-			playerList.remove(session.getPlayer());
-			broadcast(session.getPlayer().getName() + " disconnected.");
-			session.setPlayer(null);
+	public void unregister(Entity entity) {
+		if(entity instanceof Player)
+		{
+			MinecraftSession session = ((Player) entity).getSession();
+			if(session.isAuthenticated()) {
+				globalList.remove(session.getPlayer());
+				broadcast(session.getPlayer().getName() + " disconnected.");
+				session.setPlayer(null);
+			}
+		}
+		else if(entity instanceof Npc)
+		{
+			globalList.remove((Npc)entity);
 		}
 	}
 
@@ -165,7 +178,7 @@ public final class World {
 	 * @param session The sessino.
 	 */
 	public void completeRegistration(MinecraftSession session) {
-		session.getActionSender().sendChatMessage("Welcome to OpenCraft!");
+		session.getActionSender().sendChatMessage("Welcome to MineCraft!");
 		broadcast(session.getPlayer().getName() + " connected.");
 	}
 
@@ -175,8 +188,8 @@ public final class World {
 	 * @param message The message.
 	 */
 	public void broadcast(Player player, String message) {
-		for(Player otherPlayer : playerList.getPlayers()) {
-			otherPlayer.getSession().getActionSender().sendChatMessage(player.getId(), message);
+		for(Entity otherPlayer : globalList.getPlayers().getEntities()) {
+			((Player) otherPlayer).getSession().getActionSender().sendChatMessage(player.getId(), message);
 		}
 	}
 	
@@ -185,9 +198,19 @@ public final class World {
 	 * @param message The message.
 	 */
 	public void broadcast(String message) {
-		for(Player player : playerList.getPlayers()) {
-			player.getSession().getActionSender().sendChatMessage(message);
+		for(Entity player : globalList.getPlayers().getEntities()) {
+			((Player) player).getSession().getActionSender().sendChatMessage(message);
 		}
+	}
+	
+	/**
+	 * 
+	 * Broadcasts a server message that has the sender's name and level as a prefix.
+	 */
+	public void broadcastWithHeader(Player player, String message)
+	{
+		String send = player.getName() + "&agdgd&a(Level:" + player.getSkill().getLevel() + "):  ";
+		broadcast(player, send + message);
 	}
 
 }
