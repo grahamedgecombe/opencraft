@@ -104,8 +104,11 @@ public class BlockDefinition {
 	
 	/**
 	 * Constructor.
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	BlockDefinition(String name, int bid, boolean solid, boolean liquid, boolean blocksLight, boolean halfBlock, boolean doesThink, long thinkTimer, String behaviourName) {
+	private BlockDefinition(String name, int bid, boolean solid, boolean liquid, boolean blocksLight, boolean halfBlock, boolean doesThink, long thinkTimer, String behaviourName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		this.name = name;
 		this.bid = bid;
 		this.solid = solid;
@@ -114,23 +117,20 @@ public class BlockDefinition {
 		this.halfBlock = halfBlock;
 		this.doesThink = doesThink;
 		this.thinkTimer = thinkTimer;
-		this.behaviourName = behaviourName;
-		
-		/*
-		try{
+		this.behaviourName = behaviourName.trim();
+		if(behaviourName.length() > 0) {
 			this.behaviour = (BlockBehaviour) Class.forName(this.behaviourName).newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		*/
-		
 	}
 	
 	/**
 	 * Resolves this object.
 	 * @return A resolved object.
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	private Object readResolve() {
+	private Object readResolve() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		return new BlockDefinition(name, bid, solid, liquid, blocksLight, halfBlock, doesThink, thinkTimer, behaviourName);
 	}
 	
@@ -199,6 +199,9 @@ public class BlockDefinition {
 	 * @param type
 	 */
 	public void behavePassive(Level level, int x, int y, int z) {
+		if(behaviour == null) {
+			return;
+		}
 		this.behaviour.handlePassive(level, x, y, z, this.bid);
 	}
 	
@@ -211,6 +214,9 @@ public class BlockDefinition {
 	 * @param type
 	 */
 	public void behaveDestruct(Level level, int x, int y, int z) {
+		if(behaviour == null) {
+			return;
+		}
 		this.behaviour.handleDestroy(level, x, y, z, this.bid);
 	}
 	
@@ -223,6 +229,9 @@ public class BlockDefinition {
 	 * @param type
 	 */
 	public void behaveSchedule(Level level, int x, int y, int z) {
+		if(behaviour == null) {
+			return;
+		}
 		this.behaviour.handleScheduledBehaviour(level, x, y, z, this.bid);
 	}
 	
