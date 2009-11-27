@@ -7,6 +7,7 @@
 
 	import java.util.Iterator;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ import org.opencraft.server.task.TaskQueue;
 	public class NpcTaskManager extends ScheduledTask{
 
 		
-		private final ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) Executors.newCachedThreadPool();
+		private final ScheduledExecutorService executor =  Executors.newScheduledThreadPool(5);
 		
 		private final EntityList<Npc> list = new EntityList<Npc>();
 
