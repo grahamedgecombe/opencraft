@@ -50,12 +50,15 @@ POSSIBILITY OF SUCH DAMAGE.
     <string>org.opencraft.server.model.impl.StillLavaBehaviour</string>
   </entry>
   <entry>
-  	<int>12</int>
-  	<string>org.opencraft.server.model.impl.GravityBehaviour</string></entry>
+    <int>12</int>
+    <string>org.opencraft.server.model.impl.GravityBehaviour</string>
+  </entry>
   <entry>
-  	<int>13</int>
-  	<string>org.opencraft.server.model.impl.GravityBehaviour</string></entry>
+    <int>13</int>
+    <string>org.opencraft.server.model.impl.GravityBehaviour</string>
+  </entry>
   <entry>
-  	<int>19</int>
-  	<string>org.opencraft.server.model.impl.SpongeBehaviour</string></entry>
+    <int>19</int>
+    <string>org.opencraft.server.model.impl.SpongeBehaviour</string>
+  </entry>
 </map>
