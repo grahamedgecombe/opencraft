@@ -142,6 +142,7 @@ public final class Level {
 		for(Position pos : currentQueue) {
 			BlockManager.getBlockManager().getBlock(this.getBlock(pos.getX(), pos.getY(), pos.getZ())).behavePassive(this, pos.getX(), pos.getY(), pos.getZ());
 		}
+		// we only process 20 of each type of thinking block every tick, or we'd probably be here all day.
 		for(int type = 0; type < 256; type++) {
 			if(BlockManager.getBlockManager().getBlock(type) != null)  {
 				if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
