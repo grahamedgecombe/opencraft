@@ -1,4 +1,4 @@
-package org.opencraft.server.model.impl;
+package org.opencraft.server.model;
 
 /*
  * OpenCraft License
@@ -33,53 +33,69 @@ package org.opencraft.server.model.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.model.BlockBehaviour;
-import org.opencraft.server.model.BlockDefinition;
-import org.opencraft.server.model.Level;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.opencraft.server.io.PersistenceManager;
 
 /**
- * A block behaviour that handles lava.
+ * A class which manages <code>BlockDefinition</code>s and <code>BlockBehaviour</code>s.
+ * @author Graham Edgecombe
  * @author Brett Russell
  *
  */
-
-public class LavaBehaviour implements BlockBehaviour {
-	@Override
-	public void handlePassive(Level level, int x, int y, int z, int type) {
-		
-	}
-
-	@Override
-	public void handleDestroy(Level level, int x, int y, int z, int type) {
-		
-	}
-
-	@Override
-	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
-		/*
-		// represents the different directions lava can spread
-		//							  x,  y, z
-		int[][] spreadRules = { 	{ 0,  0,-1},
-									{ 1,  0, 0},
-									{-1,  0, 0},
-									{ 0,  1, 0},
-									{ 0, -1, 0}, };
-		
-		// spread outward
-		for(int i = 0; i >= spreadRules.length - 1; i++) {
-			byte thisBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]);	
-			
-			// check for water
-			if ((thisBlock == Block.BlockDefinition.getId()) || (thisBlock == Block.BlockDefinition.getId())) { 
-				level.setBlock(x, y, z, Block.BlockDefinition.getId(), false); 
-			}
-			else if (!BlockDefinition.forId(thisBlock).isSolid() && !BlockDefinition.forId(thisBlock).isLiquid()) {
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], type, false); 
-			}
-		}
-		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, Block.BlockDefinition.getId(), false);
-		*/
+public final class BlockManager {
+	
+	/**
+	 * The packet manager instance.
+	 */
+	private static final BlockManager INSTANCE = (BlockManager) PersistenceManager.getPersistenceManager().load("data/blocks.xml");
+	
+	/**
+	 * Gets the packet manager instance.
+	 * @return The packet manager instance.
+	 */
+	public static BlockManager getBlockManager() {
+		return INSTANCE;
 	}
 	
+	/**
+	 * A list of the blocks.
+	 */
+	private List<BlockDefinition> blockList = new LinkedList<BlockDefinition>();
+	
+	/**
+	 * The block array (faster access by opcode than list iteration).
+	 */
+	private transient BlockDefinition[] blocksArray;
+	
+	/**
+	 * Default private constructor.
+	 */
+	private BlockManager() {
+		/* empty */
+	}
+	
+	/**
+	 * Resolves the block manager after deserialization.
+	 * @return The resolved object.
+	 */
+	private Object readResolve() {
+		blocksArray = new BlockDefinition[256];
+		for(BlockDefinition def : blockList) {
+			blocksArray[def.getId()] = def;
+		}
+		return this;
+	}
+
+	/**
+	 * Gets an incoming block definition.
+	 * @param id The id.
+	 * @return The block definition.
+	 */
+	public BlockDefinition getBlock(int id) {
+		return blocksArray[id];
+	}
+
+
 }

@@ -85,6 +85,7 @@ public class UpdateTask extends ScheduledTask {
 		for(Player player : world.getPlayerList().getPlayers()) {
 			player.resetOldPositionAndRotation();
 		}
+		world.getLevel().applyBlockBehaviour();
 	}
 
 }

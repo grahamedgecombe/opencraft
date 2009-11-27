@@ -219,7 +219,7 @@ public class ActionSender {
 	 * @param x X coordinate.
 	 * @param y Y coordinate.
 	 * @param z Z coordinate.
-	 * @param type Block type.
+	 * @param type BlockDefinition type.
 	 */
 	public void sendBlock(int x, int y, int z, byte type) {
 		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(6));

@@ -34,8 +34,8 @@ package org.opencraft.server.model.impl;
  */
 
 import org.opencraft.server.Configuration;
-import org.opencraft.server.model.Block;
 import org.opencraft.server.model.BlockBehaviour;
+import org.opencraft.server.model.BlockDefinition;
 import org.opencraft.server.model.Level;
 
 /**
@@ -57,7 +57,7 @@ public class WaterBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
-		
+		/*
 		// represents different directions in the Cartesian plane, z axis is ignored and handled specially
 		int[][] spreadRules = { 	{ 1,  0, 0},
 									{-1,  0, 0},
@@ -68,11 +68,11 @@ public class WaterBehaviour implements BlockBehaviour {
 		
 		// preference: spread downward
 		OUTERMOST_DOWNWARD:
-		for(int offsetZ = z -1; offsetZ > 0; offsetZ--) {
+		for(int offsetZ = z - 1; offsetZ >= 0; offsetZ--) {
 			for(int spongeX = -1 * spongeRadius; spongeX >= spongeRadius; spongeX++) {
 				for(int spongeY = -1 *spongeRadius; spongeY >= spongeRadius; spongeY++) {
 					for(int spongeZ = -1 * spongeRadius; spongeZ >= spongeRadius; spongeZ++) {
-						if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.SPONGE.getId()) 
+						if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.BlockDefinition.getId()) 
 							break OUTERMOST_DOWNWARD;
 					}
 				}
@@ -81,9 +81,9 @@ public class WaterBehaviour implements BlockBehaviour {
 			byte thisBlock = level.getBlock(x, y, offsetZ);	
 			
 			// check for lava
-			if((thisBlock == Block.LAVA.getId()) || (thisBlock == Block.STILL_LAVA.getId())) {
-				level.setBlock(x, y, offsetZ, Block.STONE.getId());
-			} else if (!Block.forId(thisBlock).isLiquid() && !Block.forId(thisBlock).isLiquid()) {
+			if((thisBlock == Block.BlockDefinition.getId()) || (thisBlock == Block.BlockDefinition.getId())) {
+				level.setBlock(x, y, offsetZ, Block.BlockDefinition.getId());
+			} else if (!BlockDefinition.forId(thisBlock).isLiquid() && !BlockDefinition.forId(thisBlock).isSolid()) {
 				level.setBlock(x, y, offsetZ, type);
 			}
 		}
@@ -96,22 +96,23 @@ public class WaterBehaviour implements BlockBehaviour {
 			for(int spongeX = -1 * spongeRadius; spongeX >= spongeRadius; spongeX++) {
 				for(int spongeY = -1 * spongeRadius; spongeY >= spongeRadius; spongeY++) {
 					for(int spongeZ = -1 * spongeRadius; spongeZ >= spongeRadius; spongeZ++) {
-						if (level.getBlock(x+spreadRules[i][0]+spongeX, y+spreadRules[i][1]+spongeY, z+spreadRules[i][2]+spongeZ) == Block.SPONGE.getId())
+						if (level.getBlock(x+spreadRules[i][0]+spongeX, y+spreadRules[i][1]+spongeY, z+spreadRules[i][2]+spongeZ) == Block.BlockDefinition.getId())
 							break OUTERMOST_OUTWARD;
 					}
 				}
 			}
 			
 			// check for lava
-			if ((thisBlock == Block.LAVA.getId()) || (thisBlock == Block.STILL_LAVA.getId())) { 
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], Block.STONE.getId(), false); 
+			if ((thisBlock == Block.BlockDefinition.getId()) || (thisBlock == Block.BlockDefinition.getId())) { 
+				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], Block.BlockDefinition.getId(), false); 
 			}
-			else if (!Block.forId(thisBlock).isSolid() && !Block.forId(thisBlock).isLiquid()) {
+			else if (!BlockDefinition.forId(thisBlock).isSolid() && !BlockDefinition.forId(thisBlock).isLiquid()) {
 				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], type, false); 
 			}
 		}
 		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, Block.STILL_WATER.getId(), false);
+		level.setBlock(x, y, z, Block.BlockDefinition.getId(), false);
+		*/
 	}
 
 }

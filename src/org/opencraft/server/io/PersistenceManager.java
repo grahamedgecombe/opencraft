@@ -37,6 +37,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import org.opencraft.server.model.BlockDefinition;
+import org.opencraft.server.model.BlockManager;
 import org.opencraft.server.net.packet.PacketDefinition;
 import org.opencraft.server.net.packet.PacketField;
 import org.opencraft.server.net.packet.PacketManager;
@@ -76,6 +78,8 @@ public final class PersistenceManager {
 		xstream.alias("packets", PacketManager.class);
 		xstream.alias("packet", PacketDefinition.class);
 		xstream.alias("field", PacketField.class);
+		xstream.alias("blocks", BlockManager.class);
+		xstream.alias("block", BlockDefinition.class);
 	}
 	
 	/**

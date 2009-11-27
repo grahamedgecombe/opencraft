@@ -34,8 +34,10 @@ package org.opencraft.server.model;
  */
 
 import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
-import java.util.Vector;
+
 
 /**
  * Represents the actual level.
@@ -75,14 +77,14 @@ public final class Level {
 	private Position spawnPosition;
 	
 	/**
-	 * The active water on the map.
+	 * The active "thinking" blocks on the map.
 	 */
-	private Queue<Position> activeWater = new ArrayDeque<Position>();
+	private Map<Integer, ArrayDeque<Position>> activeBlocks = new HashMap<Integer, ArrayDeque<Position>>();
 	
 	/**
-	 * The active lava on the map.
+	 * The timers for the active "thinking" blocks on the map.
 	 */
-	private Queue<Position> activeLava = new ArrayDeque<Position>();
+	private Map<Integer, Long> activeTimers = new HashMap<Integer, Long>();
 	
 	/**
 	 * A queue of positions to update at the next tick.
@@ -97,14 +99,35 @@ public final class Level {
 		this.height = 256;
 		this.depth = 64;
 		this.blocks = new byte[width][height][depth];
-		this.spawnPosition = new Position(0, 0, 0);
+		this.spawnPosition = new Position(0, 0, 50);
 		this.spawnRotation = new Rotation(0, 0);
+		for(int i = 0; i < 256; i++) {
+			BlockDefinition b = BlockManager.getBlockManager().getBlock(i);
+			if(b != null && b.doesThink()) {
+				activeBlocks.put(i, new ArrayDeque<Position>());
+				activeTimers.put(i, System.currentTimeMillis());
+			}
+		}
 		// temporary:
+		/*
 		for(int z = 0; z < depth / 2; z++) {
 			for(int x = 0; x < width; x++) {
 				for(int y = 0; y < height; y++) {
-					int type = z == (depth / 2 - 1) ? Block.GRASS.getId() : Block.DIRT.getId();
+					int type = z == (depth / 2 - 1) ? BlockDefinition.GRASS.getId() : BlockDefinition.DIRT.getId();
 					this.blocks[x][y][z] = (byte) type;
+				}
+			}
+		}
+		*/
+		for(int z = 0; z < 7; z++) {
+			for(int x = 0; x < width; x++) {
+				for(int y = 0; y < height; y++) {
+					if(z <= 5) {
+						this.blocks[x][y][z] = (byte) BlockConstants.DIRT;
+					} else {
+						this.blocks[x][y][z] = (byte) BlockConstants.WATER;
+						activeBlocks.get(BlockConstants.WATER).add(new Position(x, y, z));
+					}
 				}
 			}
 		}
@@ -113,29 +136,25 @@ public final class Level {
 	/**
 	 * Performs physics updates on queued blocks.
 	 */
-	public void applyPassiveBlockBehaviour() {
+	public void applyBlockBehaviour() {
 		Queue<Position> currentQueue = new ArrayDeque<Position>(updateQueue);
 		updateQueue.clear();
 		for(Position pos : currentQueue) {
-			BlockBehaviourManager.getPacketHandlerManager().handlePassiveBehaviour(this, pos.getX(), pos.getY(), pos.getZ(), this.getBlock(pos.getX(), pos.getY(), pos.getZ()));
+			BlockManager.getBlockManager().getBlock(this.getBlock(pos.getX(), pos.getY(), pos.getZ())).behavePassive(this, pos.getX(), pos.getY(), pos.getZ());
 		}
-	}
-	
-	/**
-	 * Performs scheduled block events.
-	 */
-	public void applyScheduledBlockBehaviour(int type) {
-		if(type == Block.WATER.getId()) {
-			Queue<Position> currentQueue = new ArrayDeque<Position>(activeWater);
-			activeWater.clear();
-			for(Position pos : currentQueue) {
-				BlockBehaviourManager.getPacketHandlerManager().handlePassiveBehaviour(this, pos.getX(), pos.getY(), pos.getZ(), Block.WATER.getId());
-			}
-		} else if(type == Block.LAVA.getId()) {
-			Queue<Position> currentQueue = new ArrayDeque<Position>(activeLava);
-			activeLava.clear();
-			for(Position pos : currentQueue) {
-				BlockBehaviourManager.getPacketHandlerManager().handlePassiveBehaviour(this, pos.getX(), pos.getY(), pos.getZ(), Block.LAVA.getId());
+		for(int type = 0; type < 256; type++) {
+			if(BlockManager.getBlockManager().getBlock(type) != null)  {
+				if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
+					for(int i = 0; i < 20; i++) {
+						Position pos = activeBlocks.get(type).poll();
+						if(pos == null)
+							return;
+						if(System.currentTimeMillis() - activeTimers.get(i) > BlockManager.getBlockManager().getBlock(i).getTimer()) {
+							BlockManager.getBlockManager().getBlock(type).behaveSchedule(this, pos.getX(), pos.getY(), pos.getZ());
+							activeTimers.put(i, System.currentTimeMillis());
+						}
+					}
+				}
 			}
 		}
 	}
@@ -202,14 +221,10 @@ public final class Level {
 		if(update) {
 			updateNeighboursAt(x, y, z);
 		}
-		if(type == Block.WATER.getId()) {
-			activeWater.add(new Position(x, y, z));
-		} else if (type == Block.LAVA.getId()) {
-			activeLava.add(new Position(x, y, z));
+		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
+			activeBlocks.get(type).add(new Position(x, y, z));
 		}
-		if(type != Block.AIR.getId()) {
-			queueTileUpdate(x, y, z);
-		}
+
 	}
 	
 	/**
@@ -234,7 +249,7 @@ public final class Level {
 	 * @param z Z coordinate.
 	 */
 	private void queueTileUpdate(int x, int y, int z) {
-		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth && this.getBlock(x, y, z) != Block.AIR.getId()) {
+		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
 			Position pos = new Position(x, y, z);
 			if(!updateQueue.contains(pos)) {
 				updateQueue.add(pos);
