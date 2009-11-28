@@ -33,11 +33,21 @@ package org.opencraft.server.game;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
+
+import org.opencraft.server.cmd.Command;
+
 /**
  * An interface which represents a specific type of game mode.
  * @author Graham Edgecombe
  * 
  */
 public interface GameMode {
+	
+	/**
+	 * Gets a map of commands that are supported in this game mode.
+	 * @return The map of commands.
+	 */
+	public Map<String, Command> getCommands();
 
 }

@@ -1,4 +1,4 @@
-package org.opencraft.server.game.impl;
+package org.opencraft.server.game;
 
 /*
  * OpenCraft License
@@ -33,13 +33,36 @@ package org.opencraft.server.game.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.game.GameModeAdapter;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.opencraft.server.cmd.Command;
 
 /**
- * An implementation of the creative game mode.
+ * An implementation of a game mode that does the majority of the work for the
+ * game mode developer.
  * @author Graham Edgecombe
  *
  */
-public class CreativeGameMode extends GameModeAdapter {
+public abstract class GameModeAdapter implements GameMode {
+
+	/**
+	 * The command map.
+	 */
+	private final Map<String, Command> commands = new HashMap<String, Command>();
+	
+	/**
+	 * Adds a command
+	 * @param name The command name.
+	 * @param command The command.
+	 */
+	public void registerCommand(String name, Command command) {
+		commands.put(name, command);
+	}
+	
+	@Override
+	public Map<String, Command> getCommands() {
+		return commands;
+	}
 
 }

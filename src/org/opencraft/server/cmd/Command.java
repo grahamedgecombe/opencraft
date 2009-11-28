@@ -1,4 +1,6 @@
-package org.opencraft.server.game.impl;
+package org.opencraft.server.cmd;
+
+import org.opencraft.server.model.Player;
 
 /*
  * OpenCraft License
@@ -33,13 +35,18 @@ package org.opencraft.server.game.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.game.GameModeAdapter;
-
 /**
- * An implementation of the creative game mode.
+ * Represents a specific command.
  * @author Graham Edgecombe
  *
  */
-public class CreativeGameMode extends GameModeAdapter {
+public interface Command {
+	
+	/**
+	 * Executes this command for the specified player.
+	 * @param player The player.
+	 * @param args The arguments.
+	 */
+	public void execute(Player player, String[] args);
 
 }
