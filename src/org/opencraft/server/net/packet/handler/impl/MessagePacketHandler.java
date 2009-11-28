@@ -33,6 +33,11 @@ package org.opencraft.server.net.packet.handler.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.opencraft.server.cmd.Command;
 import org.opencraft.server.model.World;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.packet.Packet;
@@ -53,6 +58,23 @@ public class MessagePacketHandler implements PacketHandler {
 		String message = packet.getStringField("message");
 		if(message.startsWith("/")) {
 			// interpret as command
+			String tokens = message.substring(1);
+			String[] parts = tokens.split(" ");
+			final Map<String, Command> commands = World.getWorld().getGameMode().getCommands();
+			Command c = commands.get(parts[0]);
+			if(c != null) {
+				parts[0] = null;
+				List<String> partsList = new ArrayList<String>();
+				for(String s : parts) {
+					if(s != null) {
+						partsList.add(s);
+					}
+				}
+				parts = partsList.toArray(new String[0]);
+				c.execute(session.getPlayer(), parts);
+			} else {
+				session.getActionSender().sendChatMessage("Invalid command.");
+			}
 		} else {
 			World.getWorld().broadcast(session.getPlayer(), message);
 		}
