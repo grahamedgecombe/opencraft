@@ -41,6 +41,7 @@ import java.util.logging.Logger;
 
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.opencraft.server.model.World;
 import org.opencraft.server.net.SessionHandler;
 import org.opencraft.server.task.TaskQueue;
 import org.opencraft.server.task.impl.HeartbeatTask;
@@ -87,6 +88,8 @@ public final class Server {
 		acceptor.setHandler(new SessionHandler());
 		TaskQueue.getTaskQueue().schedule(new UpdateTask());
 		TaskQueue.getTaskQueue().schedule(new HeartbeatTask());
+		logger.info("Initializing game...");
+		World.getWorld();
 	}
 	
 	/**
@@ -94,6 +97,7 @@ public final class Server {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public void start() throws IOException {
+		logger.info("Initializing server...");
 		logger.info("Binding to port " + Constants.PORT + "...");
 		acceptor.bind(new InetSocketAddress(Constants.PORT));
 		logger.info("Ready for connections.");
