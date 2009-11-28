@@ -39,7 +39,6 @@ import java.util.Set;
 import org.opencraft.server.model.Entity;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
-import org.opencraft.server.model.npc.Npc;
 import org.opencraft.server.task.ScheduledTask;
 
 /**
@@ -64,47 +63,29 @@ public class UpdateTask extends ScheduledTask {
 	@Override
 	public void execute() {
 		final World world = World.getWorld();
-		for(Entity entity : world.getEntityControl().getPlayers().getEntities()) {
-			
-			Player player  = (Player) entity;
-			Set<Entity> localEntities = entity.getLocalEntities();
+		for(Player player : world.getPlayerList().getPlayers()) {
+			Set<Entity> localEntities = player.getLocalEntities();
 			Iterator<Entity> localEntitiesIterator = localEntities.iterator();
 			while(localEntitiesIterator.hasNext()) {
-				updateEntitiesInLevel(player, localEntitiesIterator, world);
-
+				Entity localEntity = localEntitiesIterator.next();
+				if(localEntity.getId() == -1) {
+					localEntitiesIterator.remove();
+					player.getSession().getActionSender().sendRemoveEntity(localEntity);
+				} else {
+					player.getSession().getActionSender().sendUpdateEntity(localEntity);
+				}
 			}
-			checkToAddNewEntities(player, localEntities, world);
-
+			for(Player otherEntity : world.getPlayerList().getPlayers()) {
+				if(!localEntities.contains(otherEntity) && otherEntity != player) {
+					localEntities.add(otherEntity);
+					player.getSession().getActionSender().sendAddEntity(otherEntity);
+				}
+			}
 		}
-		resetOldPositionsAndRotations(world);
-	}
-
-	private void updateEntitiesInLevel(Player player, Iterator<Entity> localEntitiesIterator, World world) {
-		// TODO Auto-generated method stub
-		Entity localEntity = localEntitiesIterator.next();
-		if(localEntity.getId() == -1) {
-			localEntitiesIterator.remove();
-			player.getSession().getActionSender().sendRemoveEntity(localEntity);
-		} else {
-			player.getSession().getActionSender().sendUpdateEntity(localEntity);
+		for(Player player : world.getPlayerList().getPlayers()) {
+			player.resetOldPositionAndRotation();
 		}
 		world.getLevel().applyBlockBehaviour();
 	}
 
-	private void resetOldPositionsAndRotations(final World world)
-	{
-		for(Entity entity : world.getEntityControl().getAllEntities().getEntities()) {
-			entity.resetOldPositionAndRotation();
-		}
-	}
-	
-	private void checkToAddNewEntities(Player player, Set<Entity> localEntities, final World world)
-	{
-		for(Entity otherEntity : world.getEntityControl().getAllEntities().getEntities()) {
-			if(!localEntities.contains(otherEntity) && otherEntity != player) {
-				localEntities.add(otherEntity);
-				player.getSession().getActionSender().sendAddEntity(otherEntity);
-			}
-		}
-	}
 }

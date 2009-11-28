@@ -95,11 +95,6 @@ public class Configuration {
 	private static String mapFilename;
 	
 	/**
-	 * The EXP rate of the server.
-	 */
-	private static int expRate;
-	
-	/**
 	 * The maximum allowed player count.
 	 */
 	private int maximumPlayers;
@@ -130,9 +125,7 @@ public class Configuration {
 		publicServer = Boolean.valueOf(props.getProperty("public", "false"));
 		verifyNames = Boolean.valueOf(props.getProperty("verify_names", "false"));
 		mapFilename = props.getProperty("filename", "server_level.dat");
-		expRate  = Integer.valueOf(props.getProperty("exprate", "1"));
 		spongeRadius = Integer.valueOf(props.getProperty("sponge_radius", "2"));
-
 	}
 	
 	/**
@@ -182,16 +175,6 @@ public class Configuration {
 	public static String getMapFilename() {
 		return mapFilename;
 	}
-
-	/**
-	 * 
-	 * @return The exp rate of the server.
-	 */
-
-	public static int getExpRate() {
-		return expRate;
-	}
-
 
 
 	/**

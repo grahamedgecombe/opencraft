@@ -33,7 +33,6 @@ package org.opencraft.server.net.packet.handler.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.net.commands.CommandLauncher;
 import org.opencraft.server.model.World;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.packet.Packet;
@@ -54,10 +53,8 @@ public class MessagePacketHandler implements PacketHandler {
 		String message = packet.getStringField("message");
 		if(message.startsWith("/")) {
 			// interpret as command
-			CommandLauncher launcher = new CommandLauncher(
-					message.substring(1), session);
 		} else {
-			World.getWorld().broadcastWithHeader(session.getPlayer(), message);
+			World.getWorld().broadcast(session.getPlayer(), message);
 		}
 	}
 

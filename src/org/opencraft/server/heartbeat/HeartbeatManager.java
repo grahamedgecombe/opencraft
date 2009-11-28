@@ -163,7 +163,7 @@ public class HeartbeatManager {
 						conn.disconnect();
 					}
 				} catch (IOException ex) {
-					logger.log(Level.WARNING, "Error sending heartbeat.", ex);
+					logger.log(Level.WARNING, "Error sending hearbeat.", ex);
 				}
 			}
 		});

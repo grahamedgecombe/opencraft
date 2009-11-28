@@ -38,8 +38,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-import org.opencraft.server.Configuration;
-import org.opencraft.server.io.UtilizableColor;
 
 /**
  * Represents the actual level.
@@ -110,12 +108,22 @@ public final class Level {
 				activeTimers.put(i, System.currentTimeMillis());
 			}
 		}
-		int landfill = 5;
+		// temporary:
+		/*
+		for(int z = 0; z < depth / 2; z++) {
+			for(int x = 0; x < width; x++) {
+				for(int y = 0; y < height; y++) {
+					int type = z == (depth / 2 - 1) ? BlockDefinition.GRASS.getId() : BlockDefinition.DIRT.getId();
+					this.blocks[x][y][z] = (byte) type;
+				}
+			}
+		}
+		*/
 		for(int z = 0; z < 7; z++) {
 			for(int x = 0; x < width; x++) {
 				for(int y = 0; y < height; y++) {
-					if(z <= landfill) {
-						this.blocks[x][y][z] = (z == landfill) ? UtilizableColor.WARM.generateColor() : (byte) BlockConstants.DIRT;
+					if(z <= 5) {
+						this.blocks[x][y][z] = (byte) BlockConstants.DIRT;
 					} else {
 						this.blocks[x][y][z] = (byte) BlockConstants.WATER;
 						activeBlocks.get(BlockConstants.WATER).add(new Position(x, y, z));
@@ -208,8 +216,8 @@ public final class Level {
 			return;
 		}
 		blocks[x][y][z] = (byte) type;
-		for(Entity player : World.getWorld().getEntityControl().getPlayers().getEntities()) {
-			((Player) player).getSession().getActionSender().sendBlock(x, y, z, (byte)type);
+		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
+			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
 		}
 		if(update) {
 			updateNeighboursAt(x, y, z);
@@ -291,20 +299,6 @@ public final class Level {
 	 */
 	public Position getSpawnPosition() {
 		return spawnPosition;
-	}
-
-	/**
-	 * -Mark Farrell
-	 * Preserves a block at the specified location.
-	 * This method would come in useful for cases where something occurs on the client,
-	 * but needs to be addressed on the server to update and reverse unwanted client effects.
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	public void preserveBlock(int x, int y, int z) {
-		// TODO Auto-generated method stub
-		setBlock(x, y, z, getBlock(x, y, z));
 	}
 
 }

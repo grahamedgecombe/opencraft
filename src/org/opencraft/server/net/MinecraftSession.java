@@ -198,8 +198,7 @@ public final class MinecraftSession {
 	 * resources.
 	 */
 	public void destroy() {
-		World.getWorld().unregister(this.getPlayer());
+		World.getWorld().unregister(this);
 	}
-	
 
 }

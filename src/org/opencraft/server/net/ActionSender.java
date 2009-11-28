@@ -207,22 +207,11 @@ public class ActionSender {
 	 * Sends a chat message. 
 	 * @param message The message.
 	 */
-	public void sendChatMessage(String... message) {
-		
-		for(int i = 0; i < message.length; i++)
-		{
-			while(message[i].length() > 64)
-			{
-
-				constructChatPacket(message[i].substring(0, 63));
-				message[i] = message[i].substring(63);
-			}
-			if(message[i].length() >= 1)
-			{
-				constructChatPacket(message[i]);
-			}
-			
-		}
+	public void sendChatMessage(String message) {
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(13));
+		bldr.putByte("id", -1);
+		bldr.putString("message", message);
+		session.send(bldr.toPacket());
 	}
 
 	/**
@@ -249,21 +238,6 @@ public class ActionSender {
 	public void sendChatMessage(int id, String message) {
 		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(13));
 		bldr.putByte("id", id);
-		bldr.putString("message", message);
-		session.send(bldr.toPacket());
-	}
-	
-	
-	/**
-	 * Sends no more than 64 bytes to the client containing 
-	 * your message string.
-	 * @param message
-	 */
-	protected void constructChatPacket(String message)
-	{
-		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(13));
-		bldr.putByte("id", -1);
-	
 		bldr.putString("message", message);
 		session.send(bldr.toPacket());
 	}
