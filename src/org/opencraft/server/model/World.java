@@ -36,9 +36,11 @@ package org.opencraft.server.model;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 import org.opencraft.server.Configuration;
 import org.opencraft.server.Constants;
+import org.opencraft.server.game.GameMode;
 import org.opencraft.server.heartbeat.HeartbeatManager;
 import org.opencraft.server.io.LevelGzipper;
 import org.opencraft.server.net.MinecraftSession;
@@ -54,7 +56,22 @@ public final class World {
 	/**
 	 * The singleton instance.
 	 */
-	private static final World INSTANCE = new World();
+	private static final World INSTANCE;
+	
+	/**
+	 * Logger instance.
+	 */
+	private static final Logger logger = Logger.getLogger(World.class.getName());
+	
+	static {
+		World w = null;
+		try {
+			w = new World();
+		} catch(Throwable t) {
+			throw new ExceptionInInitializerError(t);
+		}
+		INSTANCE = w;
+	}
 	
 	/**
 	 * Gets the world instance.
@@ -63,7 +80,7 @@ public final class World {
 	public static World getWorld() {
 		return INSTANCE;
 	}
-	
+		
 	/**
 	 * The level.
 	 */
@@ -75,10 +92,27 @@ public final class World {
 	private final PlayerList playerList = new PlayerList();
 	
 	/**
-	 * Default private constructor.
+	 * The game mode.
 	 */
-	private World() {
-		/* empty */
+	private GameMode gameMode;
+	
+	/**
+	 * Default private constructor.
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 */
+	private World() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		gameMode = (GameMode) Class.forName(Configuration.getConfiguration().getGameMode()).newInstance();
+		logger.info("Active game mode : " + gameMode.getClass().getName() + ".");
+	}
+	
+	/**
+	 * Gets the current game mode.
+	 * @return The current game mode.
+	 */
+	public GameMode getGameMode() {
+		return gameMode;
 	}
 	
 	/**

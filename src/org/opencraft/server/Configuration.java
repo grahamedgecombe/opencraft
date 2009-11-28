@@ -39,6 +39,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.opencraft.server.game.impl.CreativeGameMode;
+
 /**
  * Manages server configuration.
  * @author Graham Edgecombe
@@ -115,6 +117,11 @@ public class Configuration {
 	private boolean verifyNames;
 	
 	/**
+	 * The game mode.
+	 */
+	private String gameMode;
+	
+	/**
 	 * Creates the configuration from the specified properties object.
 	 * @param props The properties object.
 	 */
@@ -126,6 +133,7 @@ public class Configuration {
 		verifyNames = Boolean.valueOf(props.getProperty("verify_names", "false"));
 		mapFilename = props.getProperty("filename", "server_level.dat");
 		spongeRadius = Integer.valueOf(props.getProperty("sponge_radius", "2"));
+		gameMode = props.getProperty("game_mode", CreativeGameMode.class.getName());
 	}
 	
 	/**
@@ -172,10 +180,9 @@ public class Configuration {
 	 * Gets the map filename.
 	 * @return The map's filename.
 	 */
-	public static String getMapFilename() {
+	public String getMapFilename() {
 		return mapFilename;
 	}
-
 
 	/**
 	 * Gets the range at which a sponge is effective.
@@ -183,6 +190,14 @@ public class Configuration {
 	 */
 	public int getSpongeRadius() {
 		return spongeRadius;
+	}
+	
+	/**
+	 * Gets the game mode class.
+	 * @return The game mode class.
+	 */
+	public String getGameMode() {
+		return gameMode;
 	}
 
 }
