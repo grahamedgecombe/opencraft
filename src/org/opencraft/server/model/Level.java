@@ -235,6 +235,7 @@ public final class Level {
 	 * @param z Z coordinate.
 	 */
 	private void updateNeighboursAt(int x, int y, int z) {
+		queueTileUpdate(x, y, z);
 		queueTileUpdate(x - 1, y, z);
 		queueTileUpdate(x, y - 1, z);
 		queueTileUpdate(x + 1, y, z);
