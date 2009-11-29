@@ -56,7 +56,7 @@ public class GravityBehaviour implements BlockBehaviour {
 			if(i == 0 || BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isSolid()) {
 				// drop it on top of that block
 				level.setBlock(x, y, z, BlockConstants.AIR);
-				level.setBlock(x, y, i + (i == 0 && !BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isSolid() ? 0 : 1), type, false);
+				level.setBlock(x, y, i + (i == 0 && !BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isSolid() ? 0 : 1), type);
 				return;
 			}
 		}

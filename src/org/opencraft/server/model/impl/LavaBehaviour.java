@@ -81,5 +81,6 @@ public class LavaBehaviour implements BlockBehaviour {
 		level.setBlock(x, y, z, Block.BlockDefinition.getId(), false);
 		*/
 	}
+
 	
 }

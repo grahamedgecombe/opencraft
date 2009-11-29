@@ -125,8 +125,7 @@ public final class Level {
 					if(z <= 5) {
 						this.blocks[x][y][z] = (byte) BlockConstants.DIRT;
 					} else {
-						this.blocks[x][y][z] = (byte) BlockConstants.WATER;
-						activeBlocks.get(BlockConstants.WATER).add(new Position(x, y, z));
+						this.blocks[x][y][z] = (byte) BlockConstants.STILL_WATER;
 					}
 				}
 			}
@@ -144,16 +143,14 @@ public final class Level {
 		}
 		// we only process 20 of each type of thinking block every tick, or we'd probably be here all day.
 		for(int type = 0; type < 256; type++) {
-			if(BlockManager.getBlockManager().getBlock(type) != null)  {
-				if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
-					for(int i = 0; i < 20; i++) {
+			if(activeBlocks.containsKey(type)) {
+				for(int i = 0; i < 20; i++) {
+					if(System.currentTimeMillis() - activeTimers.get(type) > BlockManager.getBlockManager().getBlock(type).getTimer()) {
 						Position pos = activeBlocks.get(type).poll();
 						if(pos == null)
-							return;
-						if(System.currentTimeMillis() - activeTimers.get(i) > BlockManager.getBlockManager().getBlock(i).getTimer()) {
-							BlockManager.getBlockManager().getBlock(type).behaveSchedule(this, pos.getX(), pos.getY(), pos.getZ());
-							activeTimers.put(i, System.currentTimeMillis());
-						}
+							break;
+						BlockManager.getBlockManager().getBlock(type).behaveSchedule(this, pos.getX(), pos.getY(), pos.getZ());
+						activeTimers.put(type, System.currentTimeMillis());
 					}
 				}
 			}
@@ -209,9 +206,9 @@ public final class Level {
 	 * @param y The y coordinate.
 	 * @param z The z coordinate.
 	 * @param type The type id.
-	 * @param update Update neighbours flag.
+	 * @param updateNeighbors Update neighbours flag.
 	 */
-	public void setBlock(int x, int y, int z, int type, boolean update) {
+	public void setBlock(int x, int y, int z, int type, boolean updateSelf) {
 		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
 			return;
 		}
@@ -219,7 +216,10 @@ public final class Level {
 		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
 			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
 		}
-		if(update) {
+		if(updateSelf) {
+			queueTileUpdate(x, y, z);
+		}
+		if(type == 0) {
 			updateNeighboursAt(x, y, z);
 		}
 		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
@@ -235,7 +235,6 @@ public final class Level {
 	 * @param z Z coordinate.
 	 */
 	private void updateNeighboursAt(int x, int y, int z) {
-		queueTileUpdate(x, y, z);
 		queueTileUpdate(x - 1, y, z);
 		queueTileUpdate(x, y - 1, z);
 		queueTileUpdate(x + 1, y, z);
@@ -267,7 +266,11 @@ public final class Level {
 	 * @return The type id.
 	 */
 	public byte getBlock(int x, int y, int z) {
-		return blocks[x][y][z];
+		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
+			return blocks[x][y][z];
+		} else {
+			return 0;
+		}
 	}
 
 	/**

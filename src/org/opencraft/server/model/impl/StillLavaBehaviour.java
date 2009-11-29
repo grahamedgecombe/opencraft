@@ -14,6 +14,7 @@ public class StillLavaBehaviour implements BlockBehaviour {
 	@Override
 	public void handlePassive(Level level, int x, int y, int z, int type) {
 		/* level.setBlock(x, y, z, Block.BlockDefinition.getId()); */
+		
 	}
 
 	@Override
@@ -21,5 +22,6 @@ public class StillLavaBehaviour implements BlockBehaviour {
 			int type) {
 		
 	}
+
 
 }

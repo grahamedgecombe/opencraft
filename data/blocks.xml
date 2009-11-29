@@ -102,7 +102,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <blocksLight>false</blocksLight>
       <halfBlock>false</halfBlock>
       <behaviourName></behaviourName>
-      <doesThink>true</doesThink>
+      <doesThink>false</doesThink>
     </block>
     <block>
       <bid>7</bid>
@@ -123,7 +123,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <halfBlock>false</halfBlock>
       <behaviourName>org.opencraft.server.model.impl.WaterBehaviour</behaviourName>
       <doesThink>true</doesThink>
-    </block>
+      <thinkTimer>100</thinkTimer></block>
     <block>
       <bid>9</bid>
       <name>water_still</name>

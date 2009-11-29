@@ -70,5 +70,4 @@ public interface BlockBehaviour {
 	 * @param type The block type.
 	 */
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type);
-	
 }
