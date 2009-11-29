@@ -42,6 +42,7 @@ import java.util.Queue;
 /**
  * Represents the actual level.
  * @author Graham Edgecombe
+ * @author Brett Russell
  *
  */
 public final class Level {
@@ -125,7 +126,11 @@ public final class Level {
 					if(z <= 5) {
 						this.blocks[x][y][z] = (byte) BlockConstants.DIRT;
 					} else {
-						this.blocks[x][y][z] = (byte) BlockConstants.STILL_WATER;
+						if(y < 40) {
+							//this.blocks[x][y][z] = (byte) BlockConstants.STILL_WATER;
+						} else if(y > 60) {
+							this.blocks[x][y][z] = (byte) BlockConstants.STILL_LAVA;
+						}
 					}
 				}
 			}
@@ -141,11 +146,11 @@ public final class Level {
 		for(Position pos : currentQueue) {
 			BlockManager.getBlockManager().getBlock(this.getBlock(pos.getX(), pos.getY(), pos.getZ())).behavePassive(this, pos.getX(), pos.getY(), pos.getZ());
 		}
-		// we only process 20 of each type of thinking block every tick, or we'd probably be here all day.
+		// we only process 40 of each type of thinking block every tick, or we'd probably be here all day.
 		for(int type = 0; type < 256; type++) {
 			if(activeBlocks.containsKey(type)) {
-				for(int i = 0; i < 20; i++) {
-					if(System.currentTimeMillis() - activeTimers.get(type) > BlockManager.getBlockManager().getBlock(type).getTimer()) {
+				if(System.currentTimeMillis() - activeTimers.get(type) > BlockManager.getBlockManager().getBlock(type).getTimer()) {
+					for(int i = 0; i < 40; i++) {
 						Position pos = activeBlocks.get(type).poll();
 						if(pos == null)
 							break;

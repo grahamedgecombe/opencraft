@@ -34,8 +34,11 @@ package org.opencraft.server.model.impl;
  */
 
 import org.opencraft.server.model.BlockBehaviour;
+import org.opencraft.server.model.BlockConstants;
 import org.opencraft.server.model.BlockDefinition;
+import org.opencraft.server.model.BlockManager;
 import org.opencraft.server.model.Level;
+import org.opencraft.server.model.World;
 
 /**
  * A block behaviour that handles lava.
@@ -56,7 +59,6 @@ public class LavaBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
-		/*
 		// represents the different directions lava can spread
 		//							  x,  y, z
 		int[][] spreadRules = { 	{ 0,  0,-1},
@@ -64,22 +66,21 @@ public class LavaBehaviour implements BlockBehaviour {
 									{-1,  0, 0},
 									{ 0,  1, 0},
 									{ 0, -1, 0}, };
-		
-		// spread outward
-		for(int i = 0; i >= spreadRules.length - 1; i++) {
-			byte thisBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]);	
+		// then, spread outward
+		for(int i = 0; i <= spreadRules.length - 1; i++) {
+			byte thisOutwardBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]);	
 			
-			// check for water
-			if ((thisBlock == Block.BlockDefinition.getId()) || (thisBlock == Block.BlockDefinition.getId())) { 
-				level.setBlock(x, y, z, Block.BlockDefinition.getId(), false); 
+			// check for lava
+			if (thisOutwardBlock == BlockConstants.WATER || thisOutwardBlock == BlockConstants.STILL_WATER) { 
+				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.STONE); 
 			}
-			else if (!BlockDefinition.forId(thisBlock).isSolid() && !BlockDefinition.forId(thisBlock).isLiquid()) {
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], type, false); 
+			else if (!BlockManager.getBlockManager().getBlock(thisOutwardBlock).isSolid() && !BlockManager.getBlockManager().getBlock(thisOutwardBlock).isLiquid()) {
+				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.LAVA); 
 			}
 		}
 		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, Block.BlockDefinition.getId(), false);
-		*/
+		level.setBlock(x, y, z, BlockConstants.STILL_LAVA, false);
+		
 	}
 
 	

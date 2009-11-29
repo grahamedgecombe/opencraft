@@ -143,7 +143,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <halfBlock>false</halfBlock>
       <behaviourName>org.opencraft.server.model.impl.LavaBehaviour</behaviourName>
       <doesThink>true</doesThink>
-    </block>
+      <thinkTimer>3000</thinkTimer></block>
     <block>
       <bid>11</bid>
       <name>lava_still</name>
