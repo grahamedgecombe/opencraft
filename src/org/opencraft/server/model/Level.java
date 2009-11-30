@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe.
+ * Copyright (c) 2009 Graham Edgecombe and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -127,7 +127,7 @@ public final class Level {
 						this.blocks[x][y][z] = (byte) BlockConstants.DIRT;
 					} else {
 						if(y < 40) {
-							//this.blocks[x][y][z] = (byte) BlockConstants.STILL_WATER;
+							this.blocks[x][y][z] = (byte) BlockConstants.STILL_WATER;
 						} else if(y > 60) {
 							this.blocks[x][y][z] = (byte) BlockConstants.STILL_LAVA;
 						}
@@ -146,16 +146,20 @@ public final class Level {
 		for(Position pos : currentQueue) {
 			BlockManager.getBlockManager().getBlock(this.getBlock(pos.getX(), pos.getY(), pos.getZ())).behavePassive(this, pos.getX(), pos.getY(), pos.getZ());
 		}
-		// we only process 40 of each type of thinking block every tick, or we'd probably be here all day.
+		// we only process 5 of each type of thinking block every tick, or we'd probably be here all day.
 		for(int type = 0; type < 256; type++) {
 			if(activeBlocks.containsKey(type)) {
 				if(System.currentTimeMillis() - activeTimers.get(type) > BlockManager.getBlockManager().getBlock(type).getTimer()) {
-					for(int i = 0; i < 40; i++) {
+					activeTimers.put(type, System.currentTimeMillis());
+					for(int i = 0; i < 5; i++) {
 						Position pos = activeBlocks.get(type).poll();
 						if(pos == null)
 							break;
-						BlockManager.getBlockManager().getBlock(type).behaveSchedule(this, pos.getX(), pos.getY(), pos.getZ());
-						activeTimers.put(type, System.currentTimeMillis());
+						// this block  that occupies this space might have changed.
+						if(this.getBlock(pos.getX(), pos.getY(), pos.getZ()) == type) {
+							// World.getWorld().broadcast("Processing thinker at ("+pos.getX()+","+pos.getY()+","+pos.getZ()+")");
+							BlockManager.getBlockManager().getBlock(type).behaveSchedule(this, pos.getX(), pos.getY(), pos.getZ());
+						}
 					}
 				}
 			}
@@ -217,6 +221,7 @@ public final class Level {
 		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
 			return;
 		}
+		byte formerBlock = this.getBlock(x, y, z);
 		blocks[x][y][z] = (byte) type;
 		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
 			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
@@ -225,6 +230,7 @@ public final class Level {
 			queueTileUpdate(x, y, z);
 		}
 		if(type == 0) {
+			BlockManager.getBlockManager().getBlock(formerBlock).behaveDestruct(this, x, y, z);
 			updateNeighboursAt(x, y, z);
 		}
 		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {

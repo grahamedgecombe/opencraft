@@ -3,7 +3,7 @@ package org.opencraft.server.model.impl;
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe.
+ * Copyright (c) 2009 Graham Edgecombe and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,10 +36,8 @@ package org.opencraft.server.model.impl;
 import org.opencraft.server.Configuration;
 import org.opencraft.server.model.BlockBehaviour;
 import org.opencraft.server.model.BlockConstants;
-import org.opencraft.server.model.BlockDefinition;
 import org.opencraft.server.model.BlockManager;
 import org.opencraft.server.model.Level;
-import org.opencraft.server.model.World;
 
 /**
  * A block behaviour that handles water. Takes into account water's preference for downward flow.
@@ -89,7 +87,7 @@ public class WaterBehaviour implements BlockBehaviour {
 				level.setBlock(x, y, offsetZ, BlockConstants.STONE);
 			} else if (!BlockManager.getBlockManager().getBlock(thisBlock).isSolid() && !BlockManager.getBlockManager().getBlock(thisBlock).isLiquid()) {
 				level.setBlock(x, y, offsetZ, BlockConstants.WATER);
-			}
+			} else break;
 		}
 		
 		// then, spread outward

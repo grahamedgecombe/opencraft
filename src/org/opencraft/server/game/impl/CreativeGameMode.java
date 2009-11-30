@@ -3,7 +3,7 @@ package org.opencraft.server.game.impl;
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe.
+ * Copyright (c) 2009 Graham Edgecombe and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

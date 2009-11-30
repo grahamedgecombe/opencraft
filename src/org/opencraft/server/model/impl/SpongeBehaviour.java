@@ -3,7 +3,7 @@ package org.opencraft.server.model.impl;
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe.
+ * Copyright (c) 2009 Graham Edgecombe and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ package org.opencraft.server.model.impl;
  */
 
 import org.opencraft.server.model.BlockBehaviour;
-import org.opencraft.server.model.BlockDefinition;
+import org.opencraft.server.model.BlockConstants;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.Configuration;
 
@@ -49,30 +49,28 @@ public class SpongeBehaviour implements BlockBehaviour {
 	private int spongeRadius = Configuration.getConfiguration().getSpongeRadius();
 
 	public void handlePassive(Level level, int x, int y, int z, int type) {
-		/*
-		for(int spongeX = -1 * spongeRadius; spongeX >= spongeRadius; spongeX++) {
-			for(int spongeY = -1 *spongeRadius; spongeY >= spongeRadius; spongeY++) {
-				for(int spongeZ = -1 * spongeRadius; spongeZ >= spongeRadius; spongeZ++) {
-					if ((level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.BlockDefinition.getId()) || (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.BlockDefinition.getId())) 
-						level.setBlock(x+spongeX, y+spongeY, z+spongeZ, Block.BlockDefinition.getId());
+		
+		for(int spongeX = -1 * spongeRadius; spongeX <= spongeRadius; spongeX++) {
+			for(int spongeY = -1 *spongeRadius; spongeY <= spongeRadius; spongeY++) {
+				for(int spongeZ = -1 * spongeRadius; spongeZ <= spongeRadius; spongeZ++) {
+					if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == BlockConstants.WATER || level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == BlockConstants.STILL_WATER) 
+						level.setBlock(x+spongeX, y+spongeY, z+spongeZ, BlockConstants.AIR);
 				}
 			}
 		}
-		*/
+		
 	}
 
 	@Override
 	public void handleDestroy(Level level, int x, int y, int z, int type) {
-		/*
-		for(int spongeX = -1 * (spongeRadius + 1); spongeX >= spongeRadius + 1; spongeX++) {
-			for(int spongeY = -1 * (spongeRadius + 1); spongeY >= spongeRadius + 1; spongeY++) {
-				for(int spongeZ = -1 * (spongeRadius + 1); spongeZ >= spongeRadius + 1; spongeZ++) {
-					if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == Block.BlockDefinition.getId())
-						level.setBlock(x+spongeX, y+spongeY, z+spongeZ, Block.BlockDefinition.getId());
+		for(int spongeX = -1 * (spongeRadius + 1); spongeX <= spongeRadius + 1; spongeX++) {
+			for(int spongeY = -1 * (spongeRadius + 1); spongeY <= spongeRadius + 1; spongeY++) {
+				for(int spongeZ = -1 * (spongeRadius + 1); spongeZ <= spongeRadius + 1; spongeZ++) {
+					if (level.getBlock(x+spongeX, y+spongeY, z+spongeZ) == BlockConstants.STILL_WATER)
+						level.setBlock(x+spongeX, y+spongeY, z+spongeZ, BlockConstants.WATER);
 				}
 			}
 		}
-		*/
 	}
 
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
