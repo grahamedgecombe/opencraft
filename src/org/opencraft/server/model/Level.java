@@ -146,21 +146,22 @@ public final class Level {
 		for(Position pos : currentQueue) {
 			BlockManager.getBlockManager().getBlock(this.getBlock(pos.getX(), pos.getY(), pos.getZ())).behavePassive(this, pos.getX(), pos.getY(), pos.getZ());
 		}
-		// we only process 5 of each type of thinking block every tick, or we'd probably be here all day.
+		// we only process up to 20 of each type of thinking block every tick, or we'd probably be here all day.
 		for(int type = 0; type < 256; type++) {
 			if(activeBlocks.containsKey(type)) {
 				if(System.currentTimeMillis() - activeTimers.get(type) > BlockManager.getBlockManager().getBlock(type).getTimer()) {
-					activeTimers.put(type, System.currentTimeMillis());
-					for(int i = 0; i < 5; i++) {
+					int cyclesThisTick = (activeBlocks.get(type).size() > 20 ? 20 : activeBlocks.get(type).size());
+					for(int i = 0; i < cyclesThisTick; i++) {
 						Position pos = activeBlocks.get(type).poll();
 						if(pos == null)
 							break;
-						// this block  that occupies this space might have changed.
+						// the block  that occupies this space might have changed.
 						if(this.getBlock(pos.getX(), pos.getY(), pos.getZ()) == type) {
 							// World.getWorld().broadcast("Processing thinker at ("+pos.getX()+","+pos.getY()+","+pos.getZ()+")");
 							BlockManager.getBlockManager().getBlock(type).behaveSchedule(this, pos.getX(), pos.getY(), pos.getZ());
 						}
 					}
+					activeTimers.put(type, System.currentTimeMillis());
 				}
 			}
 		}
