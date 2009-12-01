@@ -115,6 +115,7 @@ public class HeartbeatManager {
 	 * @param parameters The parameters.
 	 */
 	public void sendHeartbeat(final Map<String, String> parameters) {
+		
 		service.submit(new Runnable() {
 			public void run() {
 				// assemble POST data

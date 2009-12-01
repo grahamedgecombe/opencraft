@@ -39,16 +39,11 @@ import org.opencraft.server.model.BlockManager;
 import org.opencraft.server.model.Level;
 
 /**
- * A block behaviour that handles lava.
+ * A block behaviour that handles plants which require dirt and sunlight to survive.
  * @author Brett Russell
  *
  */
-
-public class LavaBehaviour implements BlockBehaviour {
-	@Override
-	public void handlePassive(Level level, int x, int y, int z, int type) {
-		
-	}
+public class SurfacePlantBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handleDestroy(Level level, int x, int y, int z, int type) {
@@ -56,30 +51,32 @@ public class LavaBehaviour implements BlockBehaviour {
 	}
 
 	@Override
-	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
-		// represents the different directions lava can spread
-		//							  x,  y, z
-		int[][] spreadRules = { 	{ 0,  0,-1},
-									{ 1,  0, 0},
-									{-1,  0, 0},
-									{ 0,  1, 0},
-									{ 0, -1, 0} };
-		// then, spread outward
-		for(int i = 0; i <= spreadRules.length - 1; i++) {
-			byte thisOutwardBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]);	
-			
-			// check for lava
-			if (thisOutwardBlock == BlockConstants.WATER || thisOutwardBlock == BlockConstants.STILL_WATER) { 
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.STONE); 
-			}
-			else if (!BlockManager.getBlockManager().getBlock(thisOutwardBlock).isSolid() && !BlockManager.getBlockManager().getBlock(thisOutwardBlock).isLiquid()) {
-				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.LAVA); 
-			}
-		}
-		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, BlockConstants.STILL_LAVA, false);
+	public void handlePassive(Level level, int x, int y, int z, int type) {
 		
 	}
 
-	
+	@Override
+	public void handleScheduledBehaviour(Level level, int x, int y, int z,
+			int type) {
+		boolean found = false;
+		if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.DIRT && BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.GRASS) {
+			found = true;
+		}
+		// we don't care
+		if(!found) {
+			for(int i = z + 1; i <= level.getHeight(); i++) {
+				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isSolid()) {
+					found = true;
+					break;
+				}
+			}
+		}
+		if(found) {
+			level.setBlock(x, y, z, BlockConstants.AIR);
+			return;
+		}
+			// schedule this block to be checked again later
+			level.queueActiveBlockUpdate(x, y, z);
+	}
+
 }

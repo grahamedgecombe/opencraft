@@ -411,8 +411,9 @@ POSSIBILITY OF SUCH DAMAGE.
       <liquid>false</liquid>
       <blocksLight>false</blocksLight>
       <halfBlock>false</halfBlock>
-      <behaviourName></behaviourName>
-      <doesThink>false</doesThink>
+      <behaviourName>org.opencraft.server.model.impl.SurfacePlantBehaviour</behaviourName>
+      <doesThink>true</doesThink>
+      <thinkTimer>4000</thinkTimer>
     </block>
     <block>
       <bid>38</bid>
@@ -421,8 +422,9 @@ POSSIBILITY OF SUCH DAMAGE.
       <liquid>false</liquid>
       <blocksLight>false</blocksLight>
       <halfBlock>false</halfBlock>
-      <behaviourName></behaviourName>
-      <doesThink>false</doesThink>
+      <behaviourName>org.opencraft.server.model.impl.SurfacePlantBehaviour</behaviourName>
+      <doesThink>true</doesThink>
+      <thinkTimer>4000</thinkTimer>
     </block>
     <block>
       <bid>39</bid>

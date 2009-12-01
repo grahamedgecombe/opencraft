@@ -269,6 +269,21 @@ public final class Level {
 			}
 		}
 	}
+	
+	/**
+	 * Forces a tile update to be queued. Use with caution.
+	 * @param x X coordinate.
+	 * @param y Y coordinate.
+	 * @param z Z coordinate.
+	 */
+	public void queueActiveBlockUpdate(int x, int y, int z) {
+		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
+			int blockAt = this.getBlock(x, y, z);
+			if(BlockManager.getBlockManager().getBlock(blockAt).doesThink()) {
+				activeBlocks.get(blockAt).add(new Position(x, y, z));
+			}
+		}
+	}
 
 	/**
 	 * Gets a block.
