@@ -39,11 +39,11 @@ import org.opencraft.server.model.BlockManager;
 import org.opencraft.server.model.Level;
 
 /**
- * A block behaviour that handles plants which require dirt and sunlight to survive.
+ * A block behaviour that handles plants which require darkness.
  * @author Brett Russell
  *
  */
-public class SurfacePlantBehaviour implements BlockBehaviour {
+public class CavePlantBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handleDestroy(Level level, int x, int y, int z, int type) {
@@ -57,25 +57,15 @@ public class SurfacePlantBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
-		boolean found = false;
-		if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.DIRT && BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.GRASS || BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).isLiquid()) {
-			found = true;
-		}
-		// we don't care
-		if(!found) {
 			for(int i = z + 1; i <= level.getHeight(); i++) {
-				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isBlocksLight()) {
-					found = true;
+				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isLiquid() && i == z + 1) //drown
 					break;
+				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isBlocksLight()) {
+					level.queueActiveBlockUpdate(x, y, z);
+					return;
 				}
 			}
-		}
-		if(found) {
 			level.setBlock(x, y, z, BlockConstants.AIR);
-			return;
-		}
-			// schedule this block to be checked again later
-			level.queueActiveBlockUpdate(x, y, z);
 	}
 
 }
