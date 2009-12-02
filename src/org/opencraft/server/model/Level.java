@@ -128,6 +128,9 @@ public final class Level {
 					} else {
 						if(y < 40) {
 							this.blocks[x][y][z] = (byte) BlockConstants.STILL_WATER;
+						} else if(y == 50) {
+							this.blocks[x][y][z-1] = (byte) BlockConstants.GRASS;
+							this.queueActiveBlockUpdate(x, y, z-1);
 						} else if(y > 60) {
 							this.blocks[x][y][z] = (byte) BlockConstants.STILL_LAVA;
 						}
