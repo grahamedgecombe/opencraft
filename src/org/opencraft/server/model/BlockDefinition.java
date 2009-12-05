@@ -98,6 +98,11 @@ public class BlockDefinition {
 	private boolean doesThink;
 	
 	/**
+	 * Whether this block is a plant (whether it cares about the blocks above it)
+	 */
+	private boolean isPlant;
+	
+	/**
 	 * The timer, in milliseconds, on which this block thinks.
 	 */
 	private long thinkTimer;
@@ -108,7 +113,7 @@ public class BlockDefinition {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	private BlockDefinition(String name, int bid, boolean solid, boolean liquid, boolean blocksLight, boolean halfBlock, boolean doesThink, long thinkTimer, String behaviourName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	private BlockDefinition(String name, int bid, boolean solid, boolean liquid, boolean blocksLight, boolean halfBlock, boolean doesThink, boolean isPlant, long thinkTimer, String behaviourName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		this.name = name;
 		this.bid = bid;
 		this.solid = solid;
@@ -116,6 +121,7 @@ public class BlockDefinition {
 		this.blocksLight = blocksLight;
 		this.halfBlock = halfBlock;
 		this.doesThink = doesThink;
+		this.isPlant = isPlant;
 		this.thinkTimer = thinkTimer;
 		this.behaviourName = behaviourName.trim();
 		if(behaviourName.length() > 0) {
@@ -131,7 +137,7 @@ public class BlockDefinition {
 	 * @throws InstantiationException 
 	 */
 	private Object readResolve() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return new BlockDefinition(name, bid, solid, liquid, blocksLight, halfBlock, doesThink, thinkTimer, behaviourName);
+		return new BlockDefinition(name, bid, solid, liquid, blocksLight, halfBlock, doesThink, isPlant, thinkTimer, behaviourName);
 	}
 	
 	/**
@@ -170,7 +176,7 @@ public class BlockDefinition {
 	 * Gets the transparency.
 	 * @return The transparency.
 	 */
-	public boolean isBlocksLight() {
+	public boolean doesBlockLight() {
 		return blocksLight;
 	}
 
@@ -235,8 +241,20 @@ public class BlockDefinition {
 		this.behaviour.handleScheduledBehaviour(level, x, y, z, this.bid);
 	}
 	
+	/**
+	 * Gets the speed at which this block "thinks."
+	 * @return The think speed.
+	 */
 	public long getTimer() {
 		return thinkTimer;
+	}
+
+	/**
+	 * Gets this blocks' "plant" state.
+	 * @return Whether or not this block is a plant.
+	 */
+	public boolean isPlant() {
+		return isPlant;
 	}
 }
 	

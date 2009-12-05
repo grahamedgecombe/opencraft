@@ -61,10 +61,10 @@ public class SurfacePlantBehaviour implements BlockBehaviour {
 		if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.DIRT && BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.GRASS || BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).isLiquid()) {
 			found = true;
 		}
-		// we don't care
+		// we may not care
 		if(!found) {
 			for(int i = z + 1; i <= level.getHeight(); i++) {
-				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isBlocksLight()) {
+				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).doesBlockLight()) {
 					found = true;
 					break;
 				}
@@ -72,10 +72,7 @@ public class SurfacePlantBehaviour implements BlockBehaviour {
 		}
 		if(found) {
 			level.setBlock(x, y, z, BlockConstants.AIR);
-			return;
 		}
-			// schedule this block to be checked again later
-			level.queueActiveBlockUpdate(x, y, z);
 	}
 
 }

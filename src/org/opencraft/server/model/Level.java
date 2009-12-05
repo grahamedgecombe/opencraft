@@ -240,9 +240,30 @@ public final class Level {
 		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
 			activeBlocks.get(type).add(new Position(x, y, z));
 		}
+		if(BlockManager.getBlockManager().getBlock(type).doesBlockLight()) {
+			this.scheduleZPlantThink(x, y, z);
+		}
 
 	}
 	
+	/**
+	 * Schedules plants to think in a Z coordinate if a block above them changed.
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void scheduleZPlantThink(int x, int y, int z) {
+		for(int i = z - 1; i > 0; i--) {
+			if(BlockManager.getBlockManager().getBlock(this.getBlock(x, y, i)).isPlant()) {
+				queueActiveBlockUpdate(x, y, i);
+				return;
+			}
+			if(BlockManager.getBlockManager().getBlock(this.getBlock(x, y, i)).doesBlockLight()) {
+				return;
+			}
+		}
+	}
+
 	/**
 	 * Updates neighbours at the specified coordinate.
 	 * @param x X coordinate.

@@ -60,8 +60,7 @@ public class CavePlantBehaviour implements BlockBehaviour {
 			for(int i = z + 1; i <= level.getHeight(); i++) {
 				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isLiquid() && i == z + 1) //drown
 					break;
-				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isBlocksLight()) {
-					level.queueActiveBlockUpdate(x, y, z);
+				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).doesBlockLight()) {
 					return;
 				}
 			}

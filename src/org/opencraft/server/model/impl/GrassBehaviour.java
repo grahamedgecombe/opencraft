@@ -59,10 +59,10 @@ public class GrassBehaviour implements BlockBehaviour {
 	@Override
 	public void handleScheduledBehaviour(Level level, int x, int y, int z,
 			int type) {
-		
+		/*
 		// do we need to die?
 		for(int checkZ = z + 1; checkZ <= level.getHeight(); checkZ++) {
-			if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, checkZ)).isBlocksLight()) {
+			if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, checkZ)).doesBlockLight()) {
 				level.setBlock(x, y, z, BlockConstants.DIRT);
 				return;
 			}
@@ -89,7 +89,7 @@ public class GrassBehaviour implements BlockBehaviour {
 			if(level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2]) == BlockConstants.DIRT) {
 				for(int checkZ = z + 1; checkZ <= level.getHeight(); checkZ++) {
 					byte thisBlock = level.getBlock(x+spreadRules[i][0], y+spreadRules[i][1], checkZ+spreadRules[i][2]);	
-					if(BlockManager.getBlockManager().getBlock(thisBlock).isBlocksLight()) {
+					if(BlockManager.getBlockManager().getBlock(thisBlock).doesBlockLight()) {
 						found = true;
 						break;
 					}
@@ -105,6 +105,7 @@ public class GrassBehaviour implements BlockBehaviour {
 			}
 		}
 		level.queueActiveBlockUpdate(x, y, z);
+		*/
 	}
 
 }
