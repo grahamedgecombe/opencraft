@@ -69,12 +69,6 @@ public class GrassBehaviour implements BlockBehaviour {
 		
 		Random generator = new Random();
 		
-		// think later
-		if(generator.nextInt(10) <= 6) {
-			level.queueActiveBlockUpdate(x, y, z);
-			return;
-		}
-		
 		// represents the different directions grass can spread
 		//							  x,  y, z
 		int[][] spreadRules = {		{ 1,  0, 0},
@@ -101,7 +95,7 @@ public class GrassBehaviour implements BlockBehaviour {
 				}
 	
 				if (!found) { 
-					if(generator.nextInt(10) >= 4) {
+					if(generator.nextInt(10) >= 7) {
 						level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.GRASS); 
 						hasGrown = true;
 					}
