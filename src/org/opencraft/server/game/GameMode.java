@@ -36,11 +36,13 @@ package org.opencraft.server.game;
 import java.util.Map;
 
 import org.opencraft.server.cmd.Command;
+import org.opencraft.server.model.Level;
+import org.opencraft.server.model.Player;
 
 /**
  * An interface which represents a specific type of game mode.
  * @author Graham Edgecombe
- * 
+ * @author Søren Enevoldsen
  */
 public interface GameMode {
 	
@@ -50,4 +52,25 @@ public interface GameMode {
 	 */
 	public Map<String, Command> getCommands();
 
+	/**
+	 * Notification of player connected
+	 * @param player The connected player
+	 */
+	public void playerConnected(Player player);
+	
+	/**
+	 * Event handler for a player disconnect
+	 * Remember player has already disconnected!
+	 * @param player The disconnected player
+	 */
+	public void playerDisconnected(Player player);
+	
+	/**
+	 * Handles block adding and removing
+	 * @param player The player setting the block
+	 * @param level The level
+	 * @param mode 1/0 adding/removing
+	 * @param type typeId of the block
+	 */
+	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type);
 }

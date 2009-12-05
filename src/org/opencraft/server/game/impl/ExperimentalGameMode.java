@@ -1,4 +1,4 @@
-package org.opencraft.server.game;
+package org.opencraft.server.game.impl;
 
 /*
  * OpenCraft License
@@ -33,55 +33,42 @@ package org.opencraft.server.game;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.opencraft.server.cmd.Command;
-import org.opencraft.server.model.Level;
+import org.opencraft.server.game.GameModeAdapter;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
 
-/**
- * An implementation of a game mode that does the majority of the work for the
- * game mode developer.
- * @author Graham Edgecombe
- *
+/*
+ * An experimental game mode. Useful for testing things.
+ * Currently logs players in memory and greets them accordingly.
+ * @author Søren Enevoldsen
  */
-public abstract class GameModeAdapter implements GameMode {
 
-	/**
-	 * The command map.
-	 */
-	private final Map<String, Command> commands = new HashMap<String, Command>();
-	
-	/**
-	 * Adds a command
-	 * @param name The command name.
-	 * @param command The command.
-	 */
-	public void registerCommand(String name, Command command) {
-		commands.put(name, command);
-	}
+public class ExperimentalGameMode extends GameModeAdapter {
+
+	private Map<String,Date> visitors = new HashMap<String,Date>();
 	
 	@Override
-	public Map<String, Command> getCommands() {
-		return commands;
-	}
-	
-	//Default implementation
 	public void playerConnected(Player player) {
-		World.getWorld().broadcast("Welcome " + player.getName());
+		String name = player.getName();
+		//New player?
+		if (!visitors.containsKey(name)) {
+			World.getWorld().broadcast("Welcome " + name + ".");
+		}
+		else {
+			//Welcome back.
+			String lastConnectDate = DateFormat.getDateTimeInstance(DateFormat.SHORT,
+					DateFormat.SHORT).format(visitors.get(name));
+			World.getWorld().broadcast("Welcome back " + name + ".");
+			player.getSession().getActionSender().sendChatMessage("You last connect was: " + lastConnectDate + ".");
+			
+		}
+		
+		//Remember connection time
+		visitors.put(name, new Date());
 	}
 	
-	//Default implementation
-	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type)
-	{
-		level.setBlock(x, y, z, (byte) (mode == 1 ? type : 0));
-	}
-	
-	//Default implementation
-	public void playerDisconnected(Player player) {
-		World.getWorld().broadcast(player.getName() + " disconnected.");
-	}
-
 }

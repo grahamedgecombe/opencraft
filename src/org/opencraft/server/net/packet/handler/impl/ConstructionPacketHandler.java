@@ -55,7 +55,8 @@ public class ConstructionPacketHandler implements PacketHandler {
 		int z = packet.getNumericField("z").intValue();
 		int mode = packet.getNumericField("mode").intValue();
 		int type = packet.getNumericField("type").intValue();
-		World.getWorld().getLevel().setBlock(x, y, z, (byte) (mode == 1 ? type : 0));
+		World.getWorld().getGameMode().setBlock(session.getPlayer(),
+				World.getWorld().getLevel(),x, y, z, mode, type);
 	}
 
 }
