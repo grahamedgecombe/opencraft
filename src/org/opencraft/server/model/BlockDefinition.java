@@ -83,6 +83,11 @@ public class BlockDefinition {
 	private boolean halfBlock;
 	
 	/**
+	 * The block's "full" version if it is a halfblock.
+	 */
+	private int fullCounterpart;
+	
+	/**
 	 * The block's behaviour, as a string.
 	 */
 	private String behaviourName;
@@ -113,7 +118,7 @@ public class BlockDefinition {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	private BlockDefinition(String name, int bid, boolean solid, boolean liquid, boolean blocksLight, boolean halfBlock, boolean doesThink, boolean isPlant, long thinkTimer, String behaviourName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	private BlockDefinition(String name, int bid, boolean solid, boolean liquid, boolean blocksLight, boolean halfBlock, boolean doesThink, boolean isPlant, long thinkTimer, int fullCounterpart, String behaviourName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		this.name = name;
 		this.bid = bid;
 		this.solid = solid;
@@ -123,6 +128,7 @@ public class BlockDefinition {
 		this.doesThink = doesThink;
 		this.isPlant = isPlant;
 		this.thinkTimer = thinkTimer;
+		this.fullCounterpart = fullCounterpart;
 		this.behaviourName = behaviourName.trim();
 		if(behaviourName.length() > 0) {
 			this.behaviour = (BlockBehaviour) Class.forName(this.behaviourName).newInstance();
@@ -137,7 +143,7 @@ public class BlockDefinition {
 	 * @throws InstantiationException 
 	 */
 	private Object readResolve() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return new BlockDefinition(name, bid, solid, liquid, blocksLight, halfBlock, doesThink, isPlant, thinkTimer, behaviourName);
+		return new BlockDefinition(name, bid, solid, liquid, blocksLight, halfBlock, doesThink, isPlant, thinkTimer, fullCounterpart, behaviourName);
 	}
 	
 	/**
@@ -255,6 +261,18 @@ public class BlockDefinition {
 	 */
 	public boolean isPlant() {
 		return isPlant;
+	}
+
+	/**
+	 * Gets the fullsize counterpart for this block.
+	 * @return The fullsize counterpart ID.
+	 */
+	public int getFullCounterpart() {
+		if(halfBlock) {
+			return fullCounterpart;
+		} else {
+			return 0;
+		}
 	}
 }
 	

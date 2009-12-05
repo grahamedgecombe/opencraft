@@ -530,10 +530,10 @@ POSSIBILITY OF SUCH DAMAGE.
       <liquid>false</liquid>
       <blocksLight>true</blocksLight>
       <halfBlock>true</halfBlock>
-      <behaviourName></behaviourName>
+      <behaviourName>org.opencraft.server.model.impl.HalfBlockBehaviour</behaviourName>
       <doesThink>false</doesThink>
       <isPlant>false</isPlant>
-    </block>
+      <fullCounterpart>43</fullCounterpart></block>
     <block>
       <bid>45</bid>
       <name>brick_red</name>
