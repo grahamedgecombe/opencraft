@@ -133,7 +133,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <liquid>true</liquid>
       <blocksLight>false</blocksLight>
       <halfBlock>false</halfBlock>
-      <behaviourName>org.opencraft.server.model.impl.StillWaterBehaviour</behaviourName>
+      <behaviourName></behaviourName>
       <doesThink>false</doesThink>
     </block>
     <block>
@@ -153,7 +153,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <liquid>true</liquid>
       <blocksLight>true</blocksLight>
       <halfBlock>false</halfBlock>
-      <behaviourName>org.opencraft.server.model.impl.StillLavaBehaviour</behaviourName>
+      <behaviourName></behaviourName>
       <doesThink>false</doesThink>
     </block>
     <block>

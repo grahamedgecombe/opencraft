@@ -47,7 +47,7 @@ import org.opencraft.server.model.Level;
 public class LavaBehaviour implements BlockBehaviour {
 	@Override
 	public void handlePassive(Level level, int x, int y, int z, int type) {
-		
+		level.queueActiveBlockUpdate(x, y, z);
 	}
 
 	@Override
@@ -76,9 +76,6 @@ public class LavaBehaviour implements BlockBehaviour {
 				level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.LAVA); 
 			}
 		}
-		// set the block as inactive until a neighbor update reactivates it
-		level.setBlock(x, y, z, BlockConstants.STILL_LAVA, false);
-		
 	}
 
 	
