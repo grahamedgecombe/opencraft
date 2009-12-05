@@ -37,19 +37,45 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.opencraft.server.cmd.Command;
+import org.opencraft.server.extensions.Brushes.Brush;
+import org.opencraft.server.extensions.Brushes.DiamondBrush;
+import org.opencraft.server.extensions.Brushes.SquareBrush;
+import org.opencraft.server.extensions.Brushes.LineBrush;
+
 import org.opencraft.server.game.GameModeAdapter;
+import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
+import org.opencraft.server.net.ActionSender;
 
-/*
+/**
  * An experimental game mode. Useful for testing things.
  * Currently logs players in memory and greets them accordingly.
+ * Now also has the ability to use brushes
  * @author Søren Enevoldsen
  */
 
 public class ExperimentalGameMode extends GameModeAdapter {
 
+	//People who have connected
 	private Map<String,Date> visitors = new HashMap<String,Date>();
+	//Their brushes
+	public Map<String,Brush> brushes = new HashMap<String, Brush>();
+	
+	
+	public ExperimentalGameMode() {
+		registerCommand("brush", brushCommand);
+	}
+	
+	/**
+	 * Get default 1 size block brush
+	 * @return A 1 size block brush
+	 */
+	private Brush getDefaultBrush() {
+		return new SquareBrush(0);
+	}
 	
 	@Override
 	public void playerConnected(Player player) {
@@ -66,9 +92,104 @@ public class ExperimentalGameMode extends GameModeAdapter {
 			player.getSession().getActionSender().sendChatMessage("You last connect was: " + lastConnectDate + ".");
 			
 		}
-		
 		//Remember connection time
 		visitors.put(name, new Date());
+		
+		//Give them a brush
+		brushes.put(name, getDefaultBrush());
 	}
 	
+	@Override
+	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type) {
+			brushes.get(player.getName()).paint(player, level, x, y, z, mode, type);
+	}
+	
+	//Handles the /brush command
+	Command brushCommand = new Command() {
+		private String[] usage = new String[] {
+				"/brush radius[0-3]",
+				"/brush default|standard",
+				"/brush delete [1|0]",
+				"/brush type [square|diamond|line]"
+		};
+		
+		public void execute(Player player, String args[]) {
+			ActionSender as = player.getSession().getActionSender();
+			try {
+				if (args[0].equals("radius")) {
+					try {
+					int radius = Integer.parseInt(args[1]);
+					brushes.get(player.getName()).setRadius(radius);
+					as.sendChatMessage("Brush radius changed.");
+					}
+					catch (Exception e) {
+						usage(player, 0);
+					}
+				}
+				else if (args[0].equals("default") || args[0].equals("standard")) {
+					brushes.remove(player.getName());
+					brushes.put(player.getName(), getDefaultBrush());
+					as.sendChatMessage("Using standard brush");
+				}
+				else if (args[0].equals("delete")) {
+					if (args[1].equals("1")) {
+						brushes.get(player.getName()).setUseForDelete(true);
+						as.sendChatMessage("Now using this brush to delete");
+					}
+					else if (args[1].equals("0")) {
+						brushes.get(player.getName()).setUseForDelete(false);
+						as.sendChatMessage("No longer using this brush to delete");
+					}
+					else
+						usage(player, 2);
+				}
+				else if (args[0].equals("type")) {
+					String brush;
+					try {
+						brush = args[1];
+					} catch (Exception e) {
+						usage(player, 3);
+						return;
+					}
+					int bRadius = brushes.get(player.getName()).getRadius();
+					Brush newBrush;
+					if (brush.equals("square"))
+						newBrush = new SquareBrush();
+					else if (brush.equals("diamond"))
+						newBrush = new DiamondBrush();
+					else if (brush.equals("line"))
+						newBrush = new LineBrush();
+					else {
+						usage(player, 3);
+						return;
+					}	
+					newBrush.setRadius(bRadius);
+					brushes.remove(player.getName());
+					brushes.put(player.getName(), newBrush);
+					as.sendChatMessage("Brush type changed");
+				}
+				else {
+					usage(player);
+				}
+			} catch (Exception e) {
+				as.sendChatMessage("Error occurred. Wrong arguments perhaps.");
+				usage(player);
+			}
+		}
+		
+		//Send usage message
+		public void usage(Player player) {
+			ActionSender as = player.getSession().getActionSender();
+			as.sendChatMessage("Usage:");
+			for (String use : usage)	
+				as.sendChatMessage(use);
+		}
+		
+		//Send a specific usage message
+		public void usage(Player player, int usageIndex)
+		{
+			player.getSession().getActionSender().sendChatMessage(usage[usageIndex]);
+		}
+	};
 }
+
