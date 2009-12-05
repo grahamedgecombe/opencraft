@@ -128,7 +128,7 @@ public final class Level {
 					} else {
 						if(y < 40) {
 							this.blocks[x][y][z] = (byte) BlockConstants.WATER;
-						} else if(y == 50) {
+						} else if(y == 50 && x == 50) {
 							this.blocks[x][y][z-1] = (byte) BlockConstants.GRASS;
 							this.queueActiveBlockUpdate(x, y, z-1);
 						} else if(y > 60) {
@@ -240,9 +240,7 @@ public final class Level {
 		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
 			activeBlocks.get(type).add(new Position(x, y, z));
 		}
-		if(BlockManager.getBlockManager().getBlock(type).doesBlockLight()) {
-			this.scheduleZPlantThink(x, y, z);
-		}
+		this.scheduleZPlantThink(x, y, z);
 
 	}
 	

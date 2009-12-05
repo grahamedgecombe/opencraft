@@ -33,6 +33,7 @@ package org.opencraft.server.model.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import java.util.Random;
 
 import org.opencraft.server.model.BlockBehaviour;
@@ -53,13 +54,11 @@ public class GrassBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handlePassive(Level level, int x, int y, int z, int type) {
-		
+		level.queueActiveBlockUpdate(x, y, z);
 	}
 
 	@Override
-	public void handleScheduledBehaviour(Level level, int x, int y, int z,
-			int type) {
-		/*
+	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
 		// do we need to die?
 		for(int checkZ = z + 1; checkZ <= level.getHeight(); checkZ++) {
 			if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, checkZ)).doesBlockLight()) {
@@ -68,10 +67,10 @@ public class GrassBehaviour implements BlockBehaviour {
 			}
 		}
 		
-		// are we going to bother thinking?
 		Random generator = new Random();
-		int chance = generator.nextInt(10);
-		if(chance <= 6) {
+		
+		// think later
+		if(generator.nextInt(10) <= 6) {
 			level.queueActiveBlockUpdate(x, y, z);
 			return;
 		}
@@ -82,7 +81,9 @@ public class GrassBehaviour implements BlockBehaviour {
 									{-1,  0, 0},
 									{ 0,  1, 0},
 									{ 0, -1, 0} };
-
+		
+		boolean hasGrown = false;
+		
 		// spread
 		for(int i = 0; i <= spreadRules.length - 1; i++) {
 			boolean found = false;
@@ -100,12 +101,19 @@ public class GrassBehaviour implements BlockBehaviour {
 				}
 	
 				if (!found) { 
-					level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.GRASS); 
+					if(generator.nextInt(10) >= 4) {
+						level.setBlock(x+spreadRules[i][0], y+spreadRules[i][1], z+spreadRules[i][2], BlockConstants.GRASS); 
+						hasGrown = true;
+					}
 				}
 			}
 		}
-		level.queueActiveBlockUpdate(x, y, z);
-		*/
+		
+		if(!hasGrown) {
+			level.queueActiveBlockUpdate(x, y, z);
+		}
+
+		
 	}
 
 }

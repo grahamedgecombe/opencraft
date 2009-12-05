@@ -65,7 +65,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <halfBlock>false</halfBlock>
       <behaviourName>org.opencraft.server.model.impl.GrassBehaviour</behaviourName>
       <doesThink>true</doesThink>
-      <isPlant>false</isPlant>
+      <isPlant>true</isPlant>
       <thinkTimer>5000</thinkTimer>
     </block>
     <block>
