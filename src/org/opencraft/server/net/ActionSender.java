@@ -125,11 +125,28 @@ public class ActionSender {
 				bldr.putShort("width", level.getWidth());
 				bldr.putShort("height", level.getHeight());
 				bldr.putShort("depth", level.getDepth());
+				sendTeleport(level.getSpawnPosition(), level.getSpawnRotation());
 				session.send(bldr.toPacket());
 				session.setReady();
 				World.getWorld().completeRegistration(session);
 			}
 		});
+	}
+	
+	/**
+	 * Sends a teleport.
+	 * @param position The new position.
+	 * @param rotation The new rotation.
+	 */
+	public void sendTeleport(Position position, Rotation rotation) {
+		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(8));
+		bldr.putByte("id", -1);
+		bldr.putShort("x", position.getX());
+		bldr.putShort("y", position.getY());
+		bldr.putShort("z", position.getZ());
+		bldr.putByte("rotation", rotation.getRotation());
+		bldr.putByte("look", rotation.getLook());
+		session.send(bldr.toPacket());
 	}
 	
 	/**

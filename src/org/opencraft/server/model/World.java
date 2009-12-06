@@ -199,6 +199,10 @@ public final class World {
 	 * @param session The session.
 	 */
 	public void completeRegistration(MinecraftSession session) {
+		if(!session.isAuthenticated()) {
+			session.close();
+			return;
+		}
 		session.getActionSender().sendChatMessage("Welcome to OpenCraft!");
 		//Notify game mode
 		World.getWorld().getGameMode().playerConnected(session.getPlayer());
