@@ -161,28 +161,30 @@ public final class MinecraftSession {
 	}
 	
 	/**
-	 * Sends a packet.
+	 * Sends a packet. This method may be called from multiple threads.
 	 * @param packet The packet to send.
 	 */
 	public void send(Packet packet) {
-		final String name = packet.getDefinition().getName();
-		final boolean unqueuedPacket = name.equals("authentication_response")
-			|| name.endsWith("level_init")
-			|| name.equals("level_block")
-			|| name.equals("level_finish")
-			|| name.equals("disconnect");
-		if(state == State.READY) {
-			if(queuedPackets.size() > 0) {
-				for(Packet queuedPacket : queuedPackets) {
-					session.write(queuedPacket);
+		synchronized(this) {
+			final String name = packet.getDefinition().getName();
+			final boolean unqueuedPacket = name.equals("authentication_response")
+				|| name.endsWith("level_init")
+				|| name.equals("level_block")
+				|| name.equals("level_finish")
+				|| name.equals("disconnect");
+			if(state == State.READY) {
+				if(queuedPackets.size() > 0) {
+					for(Packet queuedPacket : queuedPackets) {
+						session.write(queuedPacket);
+					}
+					queuedPackets.clear();
 				}
-				queuedPackets.clear();
+				session.write(packet);
+			} else if(unqueuedPacket) {
+				session.write(packet);
+			} else {
+				queuedPackets.add(packet);
 			}
-			session.write(packet);
-		} else if(unqueuedPacket) {
-			session.write(packet);
-		} else {
-			queuedPackets.add(packet);
 		}
 	}
 

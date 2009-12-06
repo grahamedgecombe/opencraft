@@ -184,7 +184,7 @@ public final class World {
 
 	/**
 	 * Unregisters a session.
-	 * @param session
+	 * @param session The session.
 	 */
 	public void unregister(MinecraftSession session) {
 		if(session.isAuthenticated()) {
@@ -196,7 +196,7 @@ public final class World {
 
 	/**
 	 * Completes registration of a session.
-	 * @param session The sessino.
+	 * @param session The session.
 	 */
 	public void completeRegistration(MinecraftSession session) {
 		session.getActionSender().sendChatMessage("Welcome to OpenCraft!");
