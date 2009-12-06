@@ -107,7 +107,7 @@ public class ExperimentalGameMode extends GameModeAdapter {
 	//Handles the /brush command
 	Command brushCommand = new Command() {
 		private String[] usage = new String[] {
-				"/brush radius[0-3]",
+				"/brush radius [0-3]",
 				"/brush default|standard",
 				"/brush delete [1|0]",
 				"/brush type [square|diamond|line]"

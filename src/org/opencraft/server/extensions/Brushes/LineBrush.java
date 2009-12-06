@@ -67,9 +67,7 @@ public class LineBrush extends Brush {
 		int adx = Math.abs(dx);
 		int ady = Math.abs(dy);
 		int adz = Math.abs(dz);
-		
-		World.getWorld().broadcast(dx + "-" + dy + "-" + dz);
-		
+				
 		int offsetZ = 0;
 		int offsetY = 0;
 		int offsetX = 0;
@@ -82,9 +80,7 @@ public class LineBrush extends Brush {
 			offsetZ = clamp(dz, -1, 1);
 		else
 			return;
-		
-		World.getWorld().broadcast(offsetX + "+" + offsetY + "+" + offsetZ);
-		
+				
 		for (int nthBlock=0; nthBlock<=radius; nthBlock++)
 			if (positionIsBuildable(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z) == build &&
 					Math.abs(offsetX)+Math.abs(offsetY)+Math.abs(offsetZ) <= Math.abs(radius)) {
