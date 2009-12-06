@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project name="opencraft" default="build" basedir=".">
+	<path id="libs">
+		<fileset dir="lib" includes="**/*.jar"/>
+	</path>
+	<path id="classes">
+		<fileset dir="bin" includes="**/*.class"/>
+	</path>
+	<target name="init">
+		<mkdir dir="bin"/>
+	</target>
+	<target name="build" depends="init">
+		<javac srcdir="src" classpath="${toString:libs}" destdir="bin"/>
+	</target>
+	<target name="clean">
+		<delete dir="bin"/>
+	</target>
+	<target name="rebuild" depends="clean,build"/>
+	<target name="run">
+		<java classname="org.opencraft.server.Server">
+			<classpath>
+				<pathelement path="${toString:libs}"/>
+				<pathelement path="bin"/>
+		   	</classpath>
+		</java>
+	</target>
+	<target name="release" depends="rebuild">
+		<mkdir dir="release"/>
+		<jar destfile="release/opencraft.jar" basedir="bin" includes="**/*.class" update="true"/>
+		<copy todir="release/data">
+			<fileset dir="data">
+				<include name="*.xml"/>
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		<copy todir="release">
+			<fileset dir="lib" includes="*.jar"/>
+			<fileset dir="." includes="*.TXT"/>
+			<fileset dir="." includes="run-release.bat"/>
+		</copy>
+	</target>
+</project>
