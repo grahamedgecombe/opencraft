@@ -39,10 +39,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.opencraft.server.cmd.Command;
-import org.opencraft.server.extensions.Brushes.Brush;
-import org.opencraft.server.extensions.Brushes.DiamondBrush;
-import org.opencraft.server.extensions.Brushes.SquareBrush;
-import org.opencraft.server.extensions.Brushes.LineBrush;
+import org.opencraft.server.extensions.brushes.Brush;
+import org.opencraft.server.extensions.brushes.DiamondBrush;
+import org.opencraft.server.extensions.brushes.SquareBrush;
+import org.opencraft.server.extensions.brushes.LineBrush;
 
 import org.opencraft.server.game.GameModeAdapter;
 import org.opencraft.server.model.Level;

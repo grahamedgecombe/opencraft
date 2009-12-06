@@ -1,4 +1,4 @@
-package org.opencraft.server.extensions.Brushes;
+package org.opencraft.server.extensions.brushes;
 
 /*
  * OpenCraft License
