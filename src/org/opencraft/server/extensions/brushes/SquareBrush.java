@@ -44,7 +44,7 @@ import org.opencraft.server.model.Player;
 
 public class SquareBrush extends Brush {
 
-	public SquareBrush() { };
+	public SquareBrush() {}
 	
 	public SquareBrush(int radius) {
 		setRadius(radius);

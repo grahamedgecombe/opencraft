@@ -47,9 +47,13 @@ import org.opencraft.server.model.World;
 abstract public class Brush {
 	//0 is a point, eg. one block
 	protected int radius = 0;
-	private int minRadius = 0;
-	private int maxRadius = 3;
+	protected int minRadius = 0;
+	protected int maxRadius = 3;
 	private boolean useForDelete = false;
+
+	public Brush() {
+		
+	}
 	
 	/**
 	 * Handles the "painting". Implementation should be done with paintBlocks

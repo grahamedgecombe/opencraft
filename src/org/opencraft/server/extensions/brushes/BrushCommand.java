@@ -19,7 +19,7 @@ public final class BrushCommand extends CommandAdapter {
 		sendError("/brush radius [radius]", true);
 		sendError("/brush [standard|default", false);
 		sendError("/brush delete [1|0]", false);
-		sendError("/brush type [square|diamond|line]", false);
+		sendError("/brush type [square|diamond|line|flat]", false);
 	}
 	
 	public void execute(Player player, String args[]) {
@@ -72,8 +72,10 @@ public final class BrushCommand extends CommandAdapter {
 					newBrush = new DiamondBrush();
 				else if (brush.equals("line"))
 					newBrush = new LineBrush();
+				else if (brush.equals("flat"))
+					newBrush = new FlatBrush();
 				else {
-					sendError("/brush type [square|diamond|line]");
+					sendError("/brush type [square|diamond|line|flat]");
 					return;
 				}
 				newBrush.setRadius(bRadius);

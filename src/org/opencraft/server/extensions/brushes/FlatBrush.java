@@ -33,58 +33,30 @@ package org.opencraft.server.extensions.brushes;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.opencraft.server.extensions.brushes.Brush;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
 
 /**
- * A brush that makes a line away from player
+ * A brush that creates a flat area (1 in height)
  * @author Søren Enevoldsen
  *
  */
 
-public class LineBrush extends Brush {
-
-	private static int BLOCKSIZE = 32;
+public class FlatBrush extends Brush {
 	
-	public LineBrush() {
-		setMaxRadius(6);
-	}
+	public FlatBrush() {}
 	
-	public LineBrush(int radius) {
-		setMaxRadius(6);
+	public FlatBrush(int radius) {
 		setRadius(radius);
 	}
-	
-	
+
 	@Override
 	protected void paintBlocks(Player player, int x, int y, int z, boolean build, int type) {
-		int[] playerPosition = new int[] { player.getPosition().getX()/BLOCKSIZE,
-				player.getPosition().getY()/BLOCKSIZE, player.getPosition().getZ()/BLOCKSIZE};
-		
-		
-		int dx = x-playerPosition[0];
-		int dy = y-playerPosition[1];
-		int dz = z-playerPosition[2]+1;
-		int adx = Math.abs(dx);
-		int ady = Math.abs(dy);
-		int adz = Math.abs(dz);
-				
-		int offsetZ = 0;
-		int offsetY = 0;
-		int offsetX = 0;
-		
-		if (adx > Math.max(ady, adz) && adx >= 1)
-			offsetX = clamp(dx, -1, 1);
-		else if (ady > Math.max(adx, adz) && ady >= 1)
-			offsetY = clamp(dy, -1, 1);
-		else if (adz > Math.max(adx, ady) && adz >= 1)
-			offsetZ = clamp(dz, -1, 1);
-		else
-			return;
-				
-		for (int nthBlock=0; nthBlock<=radius; nthBlock++)
-			if (positionIsBuildable(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z) == build &&
-					Math.abs(offsetX)+Math.abs(offsetY)+Math.abs(offsetZ) <= Math.abs(radius))
-				World.getWorld().getLevel().setBlock(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z, type);
+			for (int offsetY=-radius; offsetY<=radius; offsetY++)
+				for (int offsetX=-radius; offsetX<=radius; offsetX++)
+					if (positionIsBuildable(offsetX+x, offsetY+y, z) == build)
+						World.getWorld().getLevel().setBlock(offsetX+x, offsetY+y, z, type);
 	}
+	
 }

@@ -43,13 +43,13 @@ import org.opencraft.server.model.Player;
  */
 
 public class DiamondBrush extends Brush {
-	
-	public DiamondBrush() { };
+
+	public DiamondBrush() {}
 	
 	public DiamondBrush(int radius) {
 		setRadius(radius);
 	}
-	
+
 	@Override
 	protected void paintBlocks(Player player, int x, int y, int z, boolean build, int type) {
 		for (int offsetZ=-radius; offsetZ<=radius; offsetZ++)
