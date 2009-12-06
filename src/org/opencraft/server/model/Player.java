@@ -33,6 +33,9 @@ package org.opencraft.server.model;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.opencraft.server.net.MinecraftSession;
 
 /**
@@ -53,12 +56,57 @@ public final class Player extends Entity {
 	private final String name;
 	
 	/**
+	 * A map of attributes that can be attached to this player.
+	 */
+	private final Map<String, Object> attributes = new HashMap<String, Object>();
+	
+	/**
 	 * Creates the player.
 	 * @param name The player's name.
 	 */
 	public Player(MinecraftSession session, String name) {
 		this.session = session;
 		this.name = name;
+	}
+	
+	/**
+	 * Sets an attribute of this player.
+	 * @param name The name of the attribute.
+	 * @param value The value of the attribute.
+	 * @return The old value of the attribute, or <code>null</code> if there
+	 * was no previous attribute with that name.
+	 */
+	public Object setAttribute(String name, Object value) {
+		return attributes.put(name, value);
+	}
+	
+	/**
+	 * Gets an attribute.
+	 * @param name The name of the attribute.
+	 * @return The attribute, or <code>null</code> if there is not an
+	 * attribute with that name.
+	 */
+	public Object getAttribute(String name) {
+		return attributes.get(name);
+	}
+	
+	/**
+	 * Checks if an attribute is set.
+	 * @param name The name of the attribute.
+	 * @return <code>true</code> if set, <code>false</code> if not.
+	 */
+	public boolean isAttributeSet(String name) {
+		return attributes.containsKey(name);
+	}
+	
+	/**
+	 * Removes an attribute.
+	 * @param name The name of the attribute.
+	 * @return The old value of the attribute, or <code>null</code> if an
+	 * attribute with that name did not exist.
+	 */
+	public Object removeAttribute(String name) {
+		return attributes.remove(name);
 	}
 	
 	@Override

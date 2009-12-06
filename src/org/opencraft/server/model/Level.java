@@ -68,6 +68,11 @@ public final class Level {
 	private byte[][][] blocks;
 	
 	/**
+	 * Light depth array.
+	 */
+	private short[][] lightDepths;
+	
+	/**
 	 * The spawn rotation.
 	 */
 	private Rotation spawnRotation;
@@ -100,6 +105,7 @@ public final class Level {
 		this.height = 256;
 		this.depth = 64;
 		this.blocks = new byte[width][height][depth];
+		this.lightDepths = new short[width][height];
 		this.spawnPosition = new Position(0, 0, 50);
 		this.spawnRotation = new Rotation(0, 0);
 		for(int i = 0; i < 256; i++) {
@@ -138,8 +144,46 @@ public final class Level {
 				}
 			}
 		}
+		recalculateAllLightDepths();
 	}
 	
+	/**
+	 * Recalculates all light depths. WARNING: this is a costly function and
+	 * should only be used when it really is necessary.
+	 */
+	public void recalculateAllLightDepths() {
+		for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				recalculateLightDepth(x, y);
+			}
+		}
+	}
+	
+	/**
+	 * Recalculates the light depth of the specified coordinates.
+	 * @param x The x coordinates.
+	 * @param y The y coordinates.
+	 */
+	public void recalculateLightDepth(int x, int y) {
+		for(int z = depth - 1; z >= 0; z--) {
+			if(BlockManager.getBlockManager().getBlock(blocks[x][y][z]).doesBlockLight()) {
+				lightDepths[x][y] = (short) z;
+				return;
+			}
+		}
+		lightDepths[x][y] = (short) -1;
+	}
+	
+	/**
+	 * Gets the light depth at the specific coordinate.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @return The light depth.
+	 */
+	public int getLightDepth(int x, int y) {
+		return (int) lightDepths[x][y];
+	}
+
 	/**
 	 * Performs physics updates on queued blocks.
 	 */
@@ -275,6 +319,7 @@ public final class Level {
 		queueTileUpdate(x, y + 1, z);
 		queueTileUpdate(x, y, z - 1);
 		queueTileUpdate(x, y, z + 1);
+		recalculateLightDepth(x, y);
 	}
 	
 	/**
