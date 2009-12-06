@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.opencraft.server.cmd.Command;
+import org.opencraft.server.cmd.CommandAdapter;
 import org.opencraft.server.extensions.brushes.Brush;
 import org.opencraft.server.extensions.brushes.DiamondBrush;
 import org.opencraft.server.extensions.brushes.SquareBrush;
@@ -48,7 +49,6 @@ import org.opencraft.server.game.GameModeAdapter;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
-import org.opencraft.server.net.ActionSender;
 
 /**
  * An experimental game mode. Useful for testing things.
@@ -61,10 +61,7 @@ public class ExperimentalGameMode extends GameModeAdapter {
 
 	//People who have connected
 	private Map<String,Date> visitors = new HashMap<String,Date>();
-	//Their brushes
-	public Map<String,Brush> brushes = new HashMap<String, Brush>();
-	
-	
+		
 	public ExperimentalGameMode() {
 		registerCommand("brush", brushCommand);
 	}
@@ -96,99 +93,82 @@ public class ExperimentalGameMode extends GameModeAdapter {
 		visitors.put(name, new Date());
 		
 		//Give them a brush
-		brushes.put(name, getDefaultBrush());
+		player.setAttribute("brush", getDefaultBrush());
+	}
+	
+	@Override
+	public void playerDisconnected(Player player) {
+		player.removeAttribute("brush");
 	}
 	
 	@Override
 	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type) {
-			brushes.get(player.getName()).paint(player, level, x, y, z, mode, type);
+			((Brush)player.getAttribute("brush")).paint(player, level, x, y, z, mode, type);
 	}
 	
 	//Handles the /brush command
-	Command brushCommand = new Command() {
-		private String[] usage = new String[] {
-				"/brush radius [0-3]",
-				"/brush default|standard",
-				"/brush delete [1|0]",
-				"/brush type [square|diamond|line]"
-		};
+	Command brushCommand = new CommandAdapter() {
 		
 		public void execute(Player player, String args[]) {
-			ActionSender as = player.getSession().getActionSender();
-			try {
-				if (args[0].equals("radius")) {
-					try {
-					int radius = Integer.parseInt(args[1]);
-					brushes.get(player.getName()).setRadius(radius);
-					as.sendChatMessage("Brush radius changed.");
-					}
-					catch (Exception e) {
-						usage(player, 0);
-					}
+			setup(player, args);
+
+			String action = nextString("error");
+			
+			if (action.equals("radius")) {
+				int newRadius = nextInt(-1);
+				if (newRadius != -1) {
+					((Brush)player.getAttribute("brush")).setRadius(newRadius);
+					sendMsg("Brush radius changed");
 				}
-				else if (args[0].equals("default") || args[0].equals("standard")) {
-					brushes.remove(player.getName());
-					brushes.put(player.getName(), getDefaultBrush());
-					as.sendChatMessage("Using standard brush");
-				}
-				else if (args[0].equals("delete")) {
-					if (args[1].equals("1")) {
-						brushes.get(player.getName()).setUseForDelete(true);
-						as.sendChatMessage("Now using this brush to delete");
-					}
-					else if (args[1].equals("0")) {
-						brushes.get(player.getName()).setUseForDelete(false);
-						as.sendChatMessage("No longer using this brush to delete");
-					}
-					else
-						usage(player, 2);
-				}
-				else if (args[0].equals("type")) {
-					String brush;
-					try {
-						brush = args[1];
-					} catch (Exception e) {
-						usage(player, 3);
-						return;
-					}
-					int bRadius = brushes.get(player.getName()).getRadius();
-					Brush newBrush;
-					if (brush.equals("square"))
-						newBrush = new SquareBrush();
-					else if (brush.equals("diamond"))
-						newBrush = new DiamondBrush();
-					else if (brush.equals("line"))
-						newBrush = new LineBrush();
-					else {
-						usage(player, 3);
-						return;
-					}	
-					newBrush.setRadius(bRadius);
-					brushes.remove(player.getName());
-					brushes.put(player.getName(), newBrush);
-					as.sendChatMessage("Brush type changed");
-				}
-				else {
-					usage(player);
-				}
-			} catch (Exception e) {
-				as.sendChatMessage("Error occurred. Wrong arguments perhaps.");
-				usage(player);
+				else
+					sendError("/brush radius [radius]");
+				return;
 			}
-		}
-		
-		//Send usage message
-		public void usage(Player player) {
-			ActionSender as = player.getSession().getActionSender();
-			as.sendChatMessage("Usage:");
-			for (String use : usage)	
-				as.sendChatMessage(use);
-		}
-		
-		//Send a specific usage message
-		public void usage(Player player, int usageIndex)
-		{
-			player.getSession().getActionSender().sendChatMessage(usage[usageIndex]);
+			else if (action.equals("default") || action.equals("standard")) {
+				player.removeAttribute("brush");
+				player.setAttribute("brush", getDefaultBrush());
+				sendMsg("Now using standard brush");
+				return;
+			}
+			else if (action.equals("delete")) {
+				String onOff = nextString("error");
+				if (onOff.equals("1")) {
+					((Brush)player.getAttribute("brush")).setUseForDelete(true);
+					sendMsg("Using this brush to delete");
+				}
+				else if (onOff.equals("0")) {
+					((Brush)player.getAttribute("brush")).setUseForDelete(false);
+					sendMsg("Using standard brush to delete");
+				}
+				else
+					sendError("/brush delete [1|0]");
+				return;
+			}
+			else if (action.equals("type")) {
+				String brush = nextString("error");
+				int bRadius = ((Brush)player.getAttribute("brush")).getRadius();
+				Brush newBrush;
+				if (brush.equals("square"))
+					newBrush = new SquareBrush();
+				else if (brush.equals("diamond"))
+					newBrush = new DiamondBrush();
+				else if (brush.equals("line"))
+					newBrush = new LineBrush();
+				else {			
+					sendError("/brush type [square|diamond|line]");
+					return;
+				}
+				newBrush.setRadius(bRadius);
+				player.setAttribute("brush", newBrush);
+				sendMsg("Brush type changed to " + brush);
+				return;
+			}
+			else {
+				sendError("/brush radius [radius]", true);
+				sendError("/brush [standard|default", false);
+				sendError("/brush delete [1|0]", false);
+				sendError("/brush type [square|diamond|line]", false);
+			}
 		}
 	};
 }

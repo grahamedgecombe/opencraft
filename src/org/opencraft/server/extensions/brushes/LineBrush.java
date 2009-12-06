@@ -83,10 +83,7 @@ public class LineBrush extends Brush {
 				
 		for (int nthBlock=0; nthBlock<=radius; nthBlock++)
 			if (positionIsBuildable(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z) == build &&
-					Math.abs(offsetX)+Math.abs(offsetY)+Math.abs(offsetZ) <= Math.abs(radius)) {
+					Math.abs(offsetX)+Math.abs(offsetY)+Math.abs(offsetZ) <= Math.abs(radius))
 				World.getWorld().getLevel().setBlock(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z, type);
-				World.getWorld().broadcast(offsetX*nthBlock + "*" + offsetY*nthBlock + "*" + offsetZ*nthBlock);
-			}
-				
 	}
 }
