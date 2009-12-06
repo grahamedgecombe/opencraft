@@ -34,7 +34,6 @@ package org.opencraft.server.cmd;
  */
 
 import org.opencraft.server.model.Player;
-import org.opencraft.server.net.ActionSender;
 
 /**
  * A class designed to make commands easier to make and
@@ -46,79 +45,46 @@ import org.opencraft.server.net.ActionSender;
 
 abstract public class CommandAdapter implements Command {
 	
-	private int index = 0;
 	private String[] arguments;
-	ActionSender as;
+	protected Player player;
 	protected String preError = "USAGE:\n";
 	
 	/**
-	 * Returns next argument as a int
-	 * @param onerror Value to return on error (eg. exception)
-	 * @return Next value as int
+	 * Sets up the getter methods 
+	 * and enables changes to be done to players
+	 * @param player The player
+	 * @param args The argument array
 	 */
-	protected int nextInt(int onError) {
-		int result;
-		try {
-			result = Integer.parseInt(arguments[index++]);
-		} catch (Exception e) {
-			return onError;
-		}
-		return result;
+	protected void setup(Player player, String[] args) {
+		this.player = player;
+		this.arguments = args;
 	}
 	
 	/**
-	 * Returns next argument as a String
-	 * @param onError Value to return on error (eg. exception)
-	 * @return Next value as String
+	 * Get a String at the given index
+	 * @param index The index into the arguments
+	 * @return The String
 	 */
-	protected String nextString(String onError) {
-		String result;
-		try {
-			result = arguments[index++];
-		} catch (Exception e) {
-			return onError;
-		}
-		return result;
+	protected String getStringArg(int index) {
+		return arguments[index];
 	}
 	
 	/**
-	 * Returns next argument as a double
-	 * @param onError Value to return on error (eg. exception)
-	 * @return Next value as double
+	 * Get an int value at the given index
+	 * @param index The index into the arguments
+	 * @return The int
 	 */
-	protected double nextDouble(Float onError) {
-		double result;
-		try {
-			result = Double.parseDouble(arguments[index++]);
-		} catch (Exception e) {
-			return onError;
-		}
-		return result;
+	protected int getIntArg(int index) {
+		return Integer.parseInt(arguments[index]);
 	}
 	
 	/**
-	 * Resets the argument index to zero
+	 * Get a double value at the given index
+	 * @param index The index into the arguments
+	 * @return The double
 	 */
-	protected void reset() {
-		index = 0;
-	}
-	
-	/**
-	 * Resets the argument index to specific value
-	 * @param newArgIndex The new arg index value
-	 */
-	protected void reset(int newArgIndex) {
-		index = newArgIndex;
-	}
-	
-	/**
-	 * Setup the internal counters and arguments
-	 * and error handling
-	 */
-	protected void setup(Player player, String args[]) {
-		reset();
-		arguments = args;
-		as = player.getSession().getActionSender();
+	protected double getDoubleArg(int index) {
+		return Double.parseDouble(arguments[index]);
 	}
 	
 	/**
@@ -126,8 +92,8 @@ abstract public class CommandAdapter implements Command {
 	 * @param error The error to send
 	 */
 	protected void sendError(String error) {
-		as.sendChatMessage(preError);
-		as.sendChatMessage(error);
+		player.getSession().getActionSender().sendChatMessage(preError);
+		player.getSession().getActionSender().sendChatMessage(error);
 	}
 	
 	/**
@@ -147,7 +113,7 @@ abstract public class CommandAdapter implements Command {
 	 * @param msg The message
 	 */
 	protected void sendMsg(String msg) {
-		as.sendChatMessage(msg);
+		player.getSession().getActionSender().sendChatMessage(msg);
 	}
 	
 	@Override
