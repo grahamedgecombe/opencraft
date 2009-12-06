@@ -38,5 +38,8 @@
 			<fileset dir="." includes="*.TXT"/>
 			<fileset dir="." includes="run-release.bat"/>
 		</copy>
+		<copy todir="release/doc">
+			<fileset dir="doc" includes="**/*.TXT"/>
+		</copy>
 	</target>
 </project>
