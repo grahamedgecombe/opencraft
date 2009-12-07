@@ -4,6 +4,13 @@ import org.opencraft.server.cmd.Command;
 import org.opencraft.server.cmd.CommandParameters;
 import org.opencraft.server.model.Player;
 
+/**
+ * 
+ * @author Søren Enevoldsen
+ * @author Graham Edgecombe
+ *
+ */
+
 public final class BrushCommand implements Command {
 	
 	private static final BrushCommand INSTANCE = new BrushCommand(); 
@@ -48,11 +55,11 @@ public final class BrushCommand implements Command {
 			else if (action.equals("delete")) {
 				String onOff = parameters.getStringArgument(1);
 				if (onOff.equals("1")) {
-					((Brush)player.getAttribute("brush")).setUseForDelete(true);
+					((Brush)player.getAttribute("brush")).useForDelete(true);
 					player.getActionSender().sendChatMessage("Using this brush to delete");
 				}
 				else if (onOff.equals("0")) {
-					((Brush)player.getAttribute("brush")).setUseForDelete(false);
+					((Brush)player.getAttribute("brush")).useForDelete(false);
 					player.getActionSender().sendChatMessage("Using standard brush to delete");
 				}
 				else

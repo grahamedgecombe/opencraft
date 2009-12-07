@@ -33,8 +33,8 @@ package org.opencraft.server.extensions.brushes;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
-import org.opencraft.server.model.World;
 
 /**
  * A brush that makes a line away from player
@@ -42,22 +42,22 @@ import org.opencraft.server.model.World;
  *
  */
 
-public class LineBrush extends Brush {
+public class LineBrush extends BrushAdapter {
 
 	private static int BLOCKSIZE = 32;
 	
 	public LineBrush() {
-		setMaxRadius(6);
+		
 	}
 	
 	public LineBrush(int radius) {
-		setMaxRadius(6);
+		
 		setRadius(radius);
 	}
 	
 	
 	@Override
-	protected void paintBlocks(Player player, int x, int y, int z, boolean build, int type) {
+	protected void paintBlocks(Player player, Level level, int x, int y, int z, boolean adding, int type) {
 		int[] playerPosition = new int[] { player.getPosition().getX()/BLOCKSIZE,
 				player.getPosition().getY()/BLOCKSIZE, player.getPosition().getZ()/BLOCKSIZE};
 		
@@ -83,8 +83,8 @@ public class LineBrush extends Brush {
 			return;
 				
 		for (int nthBlock=0; nthBlock<=radius; nthBlock++)
-			if (positionIsBuildable(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z) == build &&
+			if (positionIsBuildable(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z) == adding &&
 					Math.abs(offsetX)+Math.abs(offsetY)+Math.abs(offsetZ) <= Math.abs(radius))
-				World.getWorld().getLevel().setBlock(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z, type);
+				level.setBlock(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z, type);
 	}
 }

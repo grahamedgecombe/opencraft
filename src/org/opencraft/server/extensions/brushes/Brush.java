@@ -33,10 +33,8 @@ package org.opencraft.server.extensions.brushes;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.model.BlockConstants;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
-import org.opencraft.server.model.World;
 
 /**
  * Represents the brush used to "paint" the level with.
@@ -45,14 +43,12 @@ import org.opencraft.server.model.World;
  */
 
 abstract public class Brush {
-	//0 is a point, eg. one block
-	protected int radius = 0;
-	protected int minRadius = 0;
-	protected int maxRadius = 3;
-	private boolean useForDelete = false;
 
 	public Brush() {
 		
+	}
+	
+	public Brush(int radius) {
 	}
 	
 	/**
@@ -64,106 +60,64 @@ abstract public class Brush {
 	 * @param mode  
 	 * @param type Type of block
 	 */
-	public void paint(Player player, Level level, int x, int y, int z, int mode, int type) {
-		boolean build = (mode == 1 ? true : false); 
-		if (build)	
-			paintBlocks(player, x, y, z, build, type);
-		else if (useForDelete)
-			paintBlocks(player, x, y, z, build, BlockConstants.AIR);
-		else
-			World.getWorld().getLevel().setBlock(x, y, z, BlockConstants.AIR);
-	}
+	public abstract void paint(Player player, Level level, int x, int y, int z, int mode, int type);
+	
+	/**
+	 * Set the radius
+	 * @param newRadius
+	 * @return Whether the radius was set
+	 */
+	public abstract boolean setRadius(int newRadius);
 
 	/**
-	 * Paints the blocks
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param build
-	 * @param type
+	 * Sets the width
+	 * @param newWidth
+	 * @return Return the width that was set
 	 */
-	protected void paintBlocks(Player player, int x, int y, int z, boolean build, int type)
-	{
-		if ((positionIsBuildable(x,y,z) == build))
-			World.getWorld().getLevel().setBlock(x, y, z, type);
-	}
+	public abstract int setWidth(int newWidth);
 	
 	/**
-	 * Set radius of brush
-	 * @param radius The radius
+	 * Sets the height
+	 * @param newHeight
+	 * @return Return the height that was set
 	 */
-	public void setRadius(int newRadius) {
-		this.radius = clampRadius(newRadius);
-	}
+	public abstract int setHeight(int newHeight);
 	
 	/**
-	 * Gets the radius of brush
+	 * Sets the length
+	 * @param newLength
+	 * @return Return the length that was set
+	 */
+	public abstract int setLength(int newLength);	
+
+	/**
+	 * Sets whether this brush will delete also
+	 * @param enable
+	 * @return The old value
+	 */
+	public abstract boolean useForDelete(boolean enable);
+	
+	/**
+	 * Gets the width
+	 * @return The width
+	 */
+	public abstract int getWidth();
+	
+	/**
+	 * Gets the length
+	 * @return The length
+	 */
+	public abstract int getLength();
+	
+	/**
+	 * Gets the height
+	 * @return The height
+	 */
+	public abstract int getHeight();
+	
+	/**
+	 * Gets the radius
 	 * @return The radius
 	 */
-	public int getRadius() {
-		return this.radius;
-	}
-	
-	/**
-	 * Sets the max radius
-	 * @param newMaxRadius The new max radius
-	 */
-	protected void setMaxRadius(int newMaxRadius) {
-		this.maxRadius = newMaxRadius;
-	}
-	
-	/**
-	 * Bounds a value to min, max or between.
-	 * @value The value
-	 * @min Minimum value
-	 * @max Maxium value
-	 */
-	protected int clamp(int value, int min, int max) {
-		if (value > max)
-			return max;
-		if (value < min)
-			return min;
-		return value;
-	}
-	
-	/**
-	 * Returns a valid radius.
-	 * @param value The value
-	 * @return Valid radius
-	 */
-	private int clampRadius(int value) {
-		return clamp(value, minRadius, maxRadius);
-	}
-	
-	/**
-	 * Checks to see if a type can be built upon
-	 * @param type The type questioned
-	 * @return Returns true if the type is build-able (changeable)
-	 */
-	protected boolean typeIsBuildable(int type) {
-		if (type == BlockConstants.AIR ||
-				type == BlockConstants.WATER ||
-				type == BlockConstants.STILL_WATER)
-			return true;
-		return false;
-	}
-	
-	/**
-	 * Checks to see if a block is build-able
-	 * @param x x position
-	 * @param y y position
-	 * @param z z position
-	 * @return Returns true if block at position is build-able (changeable)
-	 */
-	protected boolean positionIsBuildable(int x, int y, int z) {
-		return typeIsBuildable(World.getWorld().getLevel().getBlock(x, y, z));
-	}
-	
-	/**
-	 * Sets whether this brush will be used for deleting
-	 * @param b Boolean indicating whether this brush will be used to delete.
-	 */
-	public void setUseForDelete(boolean b) {
-		this.useForDelete = b;
-	}
+	public abstract int getRadius();
 }

@@ -33,7 +33,7 @@ package org.opencraft.server.extensions.brushes;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.model.World;
+import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
 
 /**
@@ -42,7 +42,7 @@ import org.opencraft.server.model.Player;
  *
  */
 
-public class SquareBrush extends Brush {
+public class SquareBrush extends BrushAdapter {
 
 	public static final SquareBrush DEFAULT_BRUSH = new SquareBrush(0);
 
@@ -53,12 +53,12 @@ public class SquareBrush extends Brush {
 	}
 	
 	@Override
-	protected void paintBlocks(Player player, int x, int y, int z, boolean build, int type) {
+	protected void paintBlocks(Player player, Level level, int x, int y, int z, boolean adding, int type) {
 		for (int offsetZ=-radius; offsetZ<=radius; offsetZ++)
 			for (int offsetY=-radius; offsetY<=radius; offsetY++)
 				for (int offsetX=-radius; offsetX<=radius; offsetX++)
-					if (positionIsBuildable(offsetX+x, offsetY+y, offsetZ+z) == build)
-						World.getWorld().getLevel().setBlock(offsetX+x, offsetY+y, offsetZ+z, type);
+					if (positionIsBuildable(offsetX+x, offsetY+y, offsetZ+z) == adding)
+						level.setBlock(offsetX+x, offsetY+y, offsetZ+z, type);
 	}
 
 	
