@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe and Brett Russell.
+ * Copyright (c) 2009 Søren Enevoldsen.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
