@@ -46,6 +46,12 @@ import org.opencraft.server.model.World;
 
 public class TeleportCommand implements Command {
 
+	private static final TeleportCommand INSTANCE = new TeleportCommand();
+	
+	public static TeleportCommand getCommand() {
+		return INSTANCE;
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?

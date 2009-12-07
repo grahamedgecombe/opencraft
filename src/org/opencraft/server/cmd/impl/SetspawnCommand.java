@@ -46,6 +46,12 @@ import org.opencraft.server.model.World;
 
 public class SetspawnCommand implements Command {
 
+	private static final SetspawnCommand INSTANCE = new SetspawnCommand();
+	
+	public static SetspawnCommand getCommand() {
+		return INSTANCE;
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?

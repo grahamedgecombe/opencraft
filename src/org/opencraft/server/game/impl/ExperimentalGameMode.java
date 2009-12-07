@@ -38,6 +38,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opencraft.server.cmd.impl.DeOperatorCommand;
+import org.opencraft.server.cmd.impl.KickCommand;
+import org.opencraft.server.cmd.impl.OperatorCommand;
+import org.opencraft.server.cmd.impl.SayCommand;
+import org.opencraft.server.cmd.impl.SetspawnCommand;
+import org.opencraft.server.cmd.impl.TeleportCommand;
 import org.opencraft.server.extensions.brushes.Brush;
 import org.opencraft.server.extensions.brushes.BrushCommand;
 import org.opencraft.server.extensions.brushes.StandardBrush;
@@ -61,6 +67,13 @@ public class ExperimentalGameMode extends GameModeAdapter {
 		
 	public ExperimentalGameMode() {
 		registerCommand("brush", BrushCommand.getBrushCommand());
+		//Official commands
+		registerCommand("op", OperatorCommand.getCommand());
+		registerCommand("deop", DeOperatorCommand.getCommand());
+		registerCommand("say", SayCommand.getCommand());
+		registerCommand("kick", KickCommand.getCommand());
+		registerCommand("tp", TeleportCommand.getCommand());
+		registerCommand("setspawn", SetspawnCommand.getCommand());
 	}
 	
 	/**

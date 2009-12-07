@@ -47,6 +47,12 @@ import org.opencraft.server.model.World;
 
 public class OperatorCommand implements Command {
 
+	private static final OperatorCommand INSTANCE = new OperatorCommand();
+	
+	public static OperatorCommand getCommand() {
+		return INSTANCE;
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?

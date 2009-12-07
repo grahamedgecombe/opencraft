@@ -1,9 +1,14 @@
 package org.opencraft.server.cmd.impl;
 
+import org.opencraft.server.cmd.Command;
+import org.opencraft.server.cmd.CommandParameters;
+import org.opencraft.server.model.Player;
+import org.opencraft.server.model.World;
+
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Søren Enevoldsen.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,22 +38,18 @@ package org.opencraft.server.cmd.impl;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.cmd.Command;
-import org.opencraft.server.cmd.CommandParameters;
-import org.opencraft.server.model.Player;
-import org.opencraft.server.model.World;
-
 /**
- * Official /say command
+ * Official /deop command
+ *  **NEEDS PERSISTENCE**
  * @author Søren Enevoldsen
  *
  */
 
-public class SayCommand implements Command {
+public class KickCommand implements Command {
 
-	private static final SayCommand INSTANCE = new SayCommand();
+	private static final KickCommand INSTANCE = new KickCommand();
 	
-	public static SayCommand getCommand() {
+	public static KickCommand getCommand() {
 		return INSTANCE;
 	}
 	
@@ -56,19 +57,22 @@ public class SayCommand implements Command {
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?
 		if (player.getAttribute("isOperator") != null && player.getAttribute("IsOperator").equals("true")) {
-			if (params.getArgumentCount() == 0) {
-				player.getActionSender().sendChatMessage("No message to send");
-				player.getActionSender().sendChatMessage("/say <message>");
-				return;
+			if (params.getArgumentCount() == 1) {		
+				for (Player other : World.getWorld().getPlayerList().getPlayers()) {
+					if (other.getName().equals(params.getStringArgument(0))) {
+						other.getSession().close();
+						player.getActionSender().sendChatMessage(other.getName() + " has been kicked");
+						return;
+					}
+				}
+				//Player not found
+				player.getActionSender().sendChatMessage(params.getStringArgument(0) + " was not found");
 			}
-			String message = "";
-			for (int i=0; i < params.getArgumentCount()-1; i++)
-				message += params.getStringArgument(i-1) + " ";
-			message += params.getStringArgument(params.getArgumentCount()-1);
-			World.getWorld().broadcast(message);
+			else
+				player.getActionSender().sendChatMessage("Wrong number of arguments");
+				player.getActionSender().sendChatMessage("/kick <name>");
 		}
 		else
 			player.getActionSender().sendChatMessage("You must be OP to do that");			
 	}
 }
-

@@ -47,6 +47,12 @@ import org.opencraft.server.model.World;
 
 public class DeOperatorCommand implements Command {
 
+	private static final DeOperatorCommand INSTANCE = new DeOperatorCommand();
+	
+	public static DeOperatorCommand getCommand() {
+		return INSTANCE;
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?
