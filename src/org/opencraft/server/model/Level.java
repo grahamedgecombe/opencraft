@@ -175,6 +175,18 @@ public final class Level {
 	}
 	
 	/**
+	 * Manually assign a light depth to a given Cartesian coordinate.
+	 * @param x The X coordinate.
+	 * @param y The Y coordinate.
+	 * @param depth The lowest-lit block.
+	 */
+	public void assignLightDepth(int x, int y, int depth) {
+		if(depth > this.height)
+			return;
+		lightDepths[x][y] = (short) depth;
+	}
+	
+	/**
 	 * Gets the light depth at the specific coordinate.
 	 * @param x The x coordinate.
 	 * @param y The y coordinate.
@@ -263,7 +275,7 @@ public final class Level {
 	 * @param y The y coordinate.
 	 * @param z The z coordinate.
 	 * @param type The type id.
-	 * @param updateNeighbors Update neighbours flag.
+	 * @param updateSelf Update self flag.
 	 */
 	public void setBlock(int x, int y, int z, int type, boolean updateSelf) {
 		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
@@ -284,7 +296,10 @@ public final class Level {
 		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
 			activeBlocks.get(type).add(new Position(x, y, z));
 		}
-		this.scheduleZPlantThink(x, y, z);
+		if(BlockManager.getBlockManager().getBlock(type).doesBlockLight()) {
+			this.assignLightDepth(x, y, z);
+			this.scheduleZPlantThink(x, y, z);
+		}
 
 	}
 	

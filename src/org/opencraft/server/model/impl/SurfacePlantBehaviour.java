@@ -57,20 +57,7 @@ public class SurfacePlantBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
-		boolean found = false;
-		if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.DIRT && BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.GRASS || BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).isLiquid()) {
-			found = true;
-		}
-		// we may not care
-		if(!found) {
-			for(int i = z + 1; i <= level.getHeight(); i++) {
-				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).doesBlockLight()) {
-					found = true;
-					break;
-				}
-			}
-		}
-		if(found) {
+		if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.DIRT && BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).getId() != BlockConstants.GRASS || level.getLightDepth(x, y) > z || BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z + 1)).isLiquid()) {
 			level.setBlock(x, y, z, BlockConstants.AIR);
 		}
 	}

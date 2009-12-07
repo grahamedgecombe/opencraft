@@ -57,14 +57,9 @@ public class CavePlantBehaviour implements BlockBehaviour {
 
 	@Override
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
-			for(int i = z + 1; i <= level.getHeight(); i++) {
-				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).isLiquid() && i == z + 1) //drown
-					break;
-				if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, i)).doesBlockLight()) {
-					return;
-				}
-			}
+		if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z + 1)).isLiquid() || level.getLightDepth(x, y) < z) {
 			level.setBlock(x, y, z, BlockConstants.AIR);
+		}
 	}
 
 }
