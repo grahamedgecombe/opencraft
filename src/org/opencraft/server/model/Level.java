@@ -292,6 +292,9 @@ public final class Level {
 		if(type == 0) {
 			BlockManager.getBlockManager().getBlock(formerBlock).behaveDestruct(this, x, y, z);
 			updateNeighboursAt(x, y, z);
+			if(this.getLightDepth(x, y) == z) {
+				this.recalculateLightDepth(x, y);
+			}
 		}
 		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
 			activeBlocks.get(type).add(new Position(x, y, z));
