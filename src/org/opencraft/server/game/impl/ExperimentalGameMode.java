@@ -40,6 +40,7 @@ import java.util.Map;
 
 import org.opencraft.server.extensions.brushes.Brush;
 import org.opencraft.server.extensions.brushes.BrushCommand;
+import org.opencraft.server.extensions.brushes.SquareBrush;
 
 import org.opencraft.server.game.GameModeAdapter;
 import org.opencraft.server.model.Level;
@@ -67,7 +68,7 @@ public class ExperimentalGameMode extends GameModeAdapter {
 	 * @return A 1 size block brush
 	 */
 	private Brush getDefaultBrush() {
-		return BrushCommand.getBrushCommand().getDefaultBrush();
+		return SquareBrush.DEFAULT_BRUSH;
 	}
 	
 	@Override

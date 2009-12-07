@@ -36,6 +36,7 @@ package org.opencraft.server.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opencraft.server.net.ActionSender;
 import org.opencraft.server.net.MinecraftSession;
 
 /**
@@ -120,6 +121,14 @@ public final class Player extends Entity {
 	 */
 	public MinecraftSession getSession() {
 		return session;
+	}
+
+	/**
+	 * Gets this player's action sender.
+	 * @return The action sender.
+	 */
+	public ActionSender getActionSender() {
+		return session.getActionSender();
 	}
 
 }

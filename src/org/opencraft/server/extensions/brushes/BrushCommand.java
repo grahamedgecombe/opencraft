@@ -1,9 +1,10 @@
 package org.opencraft.server.extensions.brushes;
 
-import org.opencraft.server.cmd.CommandAdapter;
+import org.opencraft.server.cmd.Command;
+import org.opencraft.server.cmd.CommandParameters;
 import org.opencraft.server.model.Player;
 
-public final class BrushCommand extends CommandAdapter {
+public final class BrushCommand implements Command {
 	
 	private static final BrushCommand INSTANCE = new BrushCommand(); 
 	
@@ -11,59 +12,54 @@ public final class BrushCommand extends CommandAdapter {
 		return INSTANCE;
 	}
 	
-	public Brush getDefaultBrush() {
-		return new SquareBrush(0);
+	private void usage(Player player) {
+		player.getActionSender().sendChatMessage("/brush radius [radius]");
+		player.getActionSender().sendChatMessage("/brush [standard|default");
+		player.getActionSender().sendChatMessage("/brush delete [1|0]");
+		player.getActionSender().sendChatMessage("/brush type [square|diamond|line|flat]");
 	}
 	
-	protected void usage() {
-		sendError("/brush radius [radius]", true);
-		sendError("/brush [standard|default", false);
-		sendError("/brush delete [1|0]", false);
-		sendError("/brush type [square|diamond|line|flat]", false);
-	}
-	
-	public void execute(Player player, String args[]) {
-		setup(player, args);
+	public void execute(Player player, CommandParameters parameters) {
 
-		String action = getStringArg(0);
+		String action = parameters.getStringArgument(0);
 		
-		if (args.length == 1) {
+		if (parameters.getArgumentCount() == 1) {
 			if (action.equals("default") ||
 					action.equals("standard")) {
-				player.setAttribute("brush", getDefaultBrush());
-				sendMsg("Now using standard brush");
+				player.setAttribute("brush", SquareBrush.DEFAULT_BRUSH);
+				player.getActionSender().sendChatMessage("Now using standard brush");
 			}
 			else
-				usage();
+				usage(player);
 		}
-		else if (args.length == 2) {
+		else if (parameters.getArgumentCount() == 2) {
 			
 			if (action.equals("radius")) {
 				try {
-					int newRadius = getIntArg(1);
+					int newRadius = parameters.getIntegerArgument(1);
 					((Brush)player.getAttribute("brush")).setRadius(newRadius);
-					sendMsg("Brush radius changed");
+					player.getActionSender().sendChatMessage("Brush radius changed");
 				} catch (Exception e) {
-					sendError("/brush radius [radius]");
+					player.getActionSender().sendChatMessage("/brush radius [radius]");
 				}
 				
 				
 			}
 			else if (action.equals("delete")) {
-				String onOff = getStringArg(1);
+				String onOff = parameters.getStringArgument(1);
 				if (onOff.equals("1")) {
 					((Brush)player.getAttribute("brush")).setUseForDelete(true);
-					sendMsg("Using this brush to delete");
+					player.getActionSender().sendChatMessage("Using this brush to delete");
 				}
 				else if (onOff.equals("0")) {
 					((Brush)player.getAttribute("brush")).setUseForDelete(false);
-					sendMsg("Using standard brush to delete");
+					player.getActionSender().sendChatMessage("Using standard brush to delete");
 				}
 				else
-					sendError("/brush delete [1|0]");
+					player.getActionSender().sendChatMessage("/brush delete [1|0]");
 			}
 			else if (action.equals("type")) {
-				String brush = getStringArg(1);
+				String brush = parameters.getStringArgument(1);
 				int bRadius = ((Brush)player.getAttribute("brush")).getRadius();
 				Brush newBrush;
 				if (brush.equals("square"))
@@ -75,17 +71,17 @@ public final class BrushCommand extends CommandAdapter {
 				else if (brush.equals("flat"))
 					newBrush = new FlatBrush();
 				else {
-					sendError("/brush type [square|diamond|line|flat]");
+					player.getActionSender().sendChatMessage("/brush type [square|diamond|line|flat]");
 					return;
 				}
 				newBrush.setRadius(bRadius);
 				player.setAttribute("brush", newBrush);
-				sendMsg("Brush type changed to " + brush);
+				player.getActionSender().sendChatMessage("Brush type changed to " + brush);
 			}
 			else
-				usage();
+				usage(player);
 		}
 		else
-			usage();
+			usage(player);
 	}
 }

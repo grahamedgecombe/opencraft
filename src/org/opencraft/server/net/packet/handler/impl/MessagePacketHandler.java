@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.opencraft.server.cmd.Command;
+import org.opencraft.server.cmd.CommandParameters;
 import org.opencraft.server.model.World;
 import org.opencraft.server.net.MinecraftSession;
 import org.opencraft.server.net.packet.Packet;
@@ -71,7 +72,7 @@ public class MessagePacketHandler implements PacketHandler {
 					}
 				}
 				parts = partsList.toArray(new String[0]);
-				c.execute(session.getPlayer(), parts);
+				c.execute(session.getPlayer(), new CommandParameters(parts));
 			} else {
 				session.getActionSender().sendChatMessage("Invalid command.");
 			}

@@ -45,8 +45,8 @@ public interface Command {
 	/**
 	 * Executes this command for the specified player.
 	 * @param player The player.
-	 * @param args The arguments.
+	 * @param params The parameters.
 	 */
-	public void execute(Player player, String[] args);
+	public void execute(Player player, CommandParameters params);
 
 }
