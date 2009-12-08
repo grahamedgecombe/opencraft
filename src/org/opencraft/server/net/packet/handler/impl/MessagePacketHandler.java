@@ -77,7 +77,7 @@ public class MessagePacketHandler implements PacketHandler {
 				session.getActionSender().sendChatMessage("Invalid command.");
 			}
 		} else {
-			World.getWorld().broadcast(session.getPlayer(), message);
+			World.getWorld().getGameMode().broadcastChatMessage(session.getPlayer(), message);
 		}
 	}
 

@@ -73,4 +73,11 @@ public interface GameMode {
 	 * @param type typeId of the block
 	 */
 	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type);
+	
+	/**
+	 * Broadcasts a chat message.
+	 * @param player The sending player.
+	 * @param message The chat message.
+	 */
+	public void broadcastChatMessage(Player player, String message);
 }

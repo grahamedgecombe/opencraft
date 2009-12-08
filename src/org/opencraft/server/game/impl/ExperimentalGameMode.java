@@ -116,5 +116,10 @@ public class ExperimentalGameMode extends GameModeAdapter {
 			((Brush)player.getAttribute("brush")).paint(player, level, x, y, z, mode, type);
 	}
 	
+	@Override
+	public void broadcastChatMessage(Player player, String message) { // TODO: rank colors?
+		World.getWorld().broadcast(player, player.getName() + ": " + message);
+	}
+	
 }
 

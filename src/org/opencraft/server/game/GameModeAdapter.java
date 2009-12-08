@@ -83,5 +83,10 @@ public abstract class GameModeAdapter implements GameMode {
 	public void playerDisconnected(Player player) {
 		World.getWorld().broadcast(player.getName() + " disconnected.");
 	}
+	
+	//Default implementation
+	public void broadcastChatMessage(Player player, String message) {
+		World.getWorld().broadcast(player, player.getName() + ": " + message);
+	}
 
 }
