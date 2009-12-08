@@ -59,7 +59,7 @@ public class DeOperatorCommand implements Command {
 		if (player.getAttribute("isOperator") != null && player.getAttribute("IsOperator").equals("true")) {
 			if (params.getArgumentCount() == 1) {		
 				for (Player other : World.getWorld().getPlayerList().getPlayers()) {
-					if (other.getName().equals(params.getStringArgument(0))) {
+					if (other.getName().toLowerCase().equals(params.getStringArgument(0).toLowerCase())) {
 						other.removeAttribute("IsOperator");
 						other.getActionSender().sendChatMessage("You are no longer an OP");
 						player.getActionSender().sendChatMessage(other.getName() + " is no longer an OP");

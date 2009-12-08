@@ -44,8 +44,6 @@ import org.opencraft.server.model.Player;
 
 public class SquareBrush extends BrushAdapter {
 
-	public static final SquareBrush DEFAULT_BRUSH = new SquareBrush(0);
-
 	public SquareBrush() {}
 	
 	public SquareBrush(int radius) {

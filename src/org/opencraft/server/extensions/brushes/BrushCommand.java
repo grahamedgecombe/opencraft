@@ -61,12 +61,12 @@ public final class BrushCommand implements Command {
 	
 	public void execute(Player player, CommandParameters parameters) {
 
-		String action = parameters.getStringArgument(0);
+		String action = parameters.getStringArgument(0).toLowerCase();
 		
 		if (parameters.getArgumentCount() == 1) {
 			if (action.equals("default") ||
 					action.equals("standard")) {
-				player.setAttribute("brush", SquareBrush.DEFAULT_BRUSH);
+				player.setAttribute("brush", new StandardBrush());
 				player.getActionSender().sendChatMessage("Now using standard brush");
 			}
 			else
@@ -99,7 +99,7 @@ public final class BrushCommand implements Command {
 					player.getActionSender().sendChatMessage("/brush delete [1|0]");
 			}
 			else if (action.equals("type")) {
-				String brush = parameters.getStringArgument(1);
+				String brush = parameters.getStringArgument(1).toLowerCase();
 				int bRadius = ((Brush)player.getAttribute("brush")).getRadius();
 				Brush newBrush;
 				if (brush.equals("square"))

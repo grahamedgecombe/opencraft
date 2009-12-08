@@ -59,7 +59,7 @@ public class OperatorCommand implements Command {
 		if (player.getAttribute("isOperator") != null && player.getAttribute("IsOperator").equals("true")) {
 			if (params.getArgumentCount() == 1) {		
 				for (Player other : World.getWorld().getPlayerList().getPlayers()) {
-					if (other.getName().equals(params.getStringArgument(0))) {
+					if (other.getName().toLowerCase().equals(params.getStringArgument(0).toLowerCase())) {
 						other.setAttribute("IsOperator", "true");
 						other.getActionSender().sendChatMessage("You are now an OP");
 						player.getActionSender().sendChatMessage(other.getName() + " is now an OP");

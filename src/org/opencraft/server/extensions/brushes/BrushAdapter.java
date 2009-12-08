@@ -49,13 +49,13 @@ import org.opencraft.server.model.World;
 public abstract class BrushAdapter extends Brush {
 
 	boolean useForDelete = false;
-	protected static int minWidth = 1;
-	protected static int minHeight = 1;
-	protected static int minLength = 1;
+	protected int minWidth = 1;
+	protected int minHeight = 1;
+	protected int minLength = 1;
 	
-	protected static int maxWidth = 7;
-	protected static int maxHeight = 7;
-	protected static int maxLength = 7;
+	protected int maxWidth = 7;
+	protected int maxHeight = 7;
+	protected int maxLength = 7;
 	
 	protected int radius = 0;
 	protected int width = 0;
@@ -73,7 +73,17 @@ public abstract class BrushAdapter extends Brush {
 	protected int dDown = 0;
 	
 	public BrushAdapter() {
-		setRadius(3);
+		setRadius(1);
+	}
+	
+	public BrushAdapter(int radius) {
+		setRadius(radius);
+	}
+	
+	public BrushAdapter(int width, int length, int height) {
+		setWidth(width);
+		setLength(length);
+		setHeight(height);
 	}
 	
 	/**
@@ -105,7 +115,7 @@ public abstract class BrushAdapter extends Brush {
 	 * @return The new height
 	 */
 	protected int clampHeight(int height) {
-		return clamp(width, minHeight, maxHeight);
+		return clamp(height, minHeight, maxHeight);
 	}
 	
 	/**
@@ -181,24 +191,24 @@ public abstract class BrushAdapter extends Brush {
 	@Override
 	public int setHeight(int newHeight) {
 		height = clampHeight(newHeight);
-		dUp = (int)Math.ceil(height/2.0);
-		dDown = (int)Math.floor(height/2.0);
+		dUp = (int)Math.ceil((height-1)/2.0);
+		dDown = (int)Math.floor((height-1)/2.0);
 		return height;
 	}
 
 	@Override
 	public int setLength(int newLength) {
 		length = clampLength(newLength);
-		dFront = (int)Math.ceil(length/2.0);
-		dBack = (int)Math.floor(length/2.0);
+		dFront = (int)Math.ceil((length-1)/2.0);
+		dBack = (int)Math.floor((length-1)/2.0);
 		return length;
 	}
 
 	@Override
 	public int setWidth(int newWidth) {
 		width = clampWidth(newWidth);
-		dRight = (int)Math.ceil(width/2.0);
-		dLeft = (int)Math.floor(width/2.0);
+		dRight = (int)Math.ceil((width-1)/2.0);
+		dLeft = (int)Math.floor((width-1)/2.0);
 		return width;
 	}
 	
