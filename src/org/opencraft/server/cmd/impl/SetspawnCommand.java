@@ -55,7 +55,7 @@ public class SetspawnCommand implements Command {
 	@Override
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?
-		if (player.getAttribute("isOperator") != null && player.getAttribute("IsOperator").equals("true")) {
+		if (player.getAttribute("IsOperator") != null && player.getAttribute("IsOperator").equals("true")) {
 			World.getWorld().getLevel().setSpawnPosition(player.getPosition());
 			World.getWorld().getLevel().setSpawnRotation(player.getRotation());
 		}

@@ -55,7 +55,7 @@ public class SayCommand implements Command {
 	@Override
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?
-		if (player.getAttribute("isOperator") != null && player.getAttribute("IsOperator").equals("true")) {
+		if (player.getAttribute("IsOperator") != null && player.getAttribute("IsOperator").equals("true")) {
 			if (params.getArgumentCount() == 0) {
 				player.getActionSender().sendChatMessage("No message to send");
 				player.getActionSender().sendChatMessage("/say <message>");

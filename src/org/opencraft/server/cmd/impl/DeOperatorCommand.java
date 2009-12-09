@@ -56,7 +56,7 @@ public class DeOperatorCommand implements Command {
 	@Override
 	public void execute(Player player, CommandParameters params) {
 		//Player using command is OP?
-		if (player.getAttribute("isOperator") != null && player.getAttribute("IsOperator").equals("true")) {
+		if (player.getAttribute("IsOperator") != null && player.getAttribute("IsOperator").equals("true")) {
 			if (params.getArgumentCount() == 1) {		
 				for (Player other : World.getWorld().getPlayerList().getPlayers()) {
 					if (other.getName().toLowerCase().equals(params.getStringArgument(0).toLowerCase())) {
