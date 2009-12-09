@@ -65,12 +65,22 @@ public abstract class BrushAdapter extends Brush {
 	/* If even dimensions, prioriterize
 	 * right, front and up
 	 */
-	protected int dLeft = 0;
-	protected int dRight = 0;
-	protected int dBack = 0;
-	protected int dFront = 0;
-	protected int dUp = 0;
-	protected int dDown = 0;
+	protected int offLeft = 0;
+	protected int offRight = 0;
+	protected int offBack = 0;
+	protected int offForward = 0;
+	protected int offTop = 0;
+	protected int offBot = 0;
+	
+	/*
+	 * Offsets for paintBlock
+	 */
+	protected int xOffStart;
+	protected int xOffEnd;
+	protected int yOffStart;
+	protected int yOffEnd;
+	protected int zOffStart;
+	protected int zOffEnd;
 	
 	public BrushAdapter() {
 		setRadius(1);
@@ -191,30 +201,34 @@ public abstract class BrushAdapter extends Brush {
 	@Override
 	public int setHeight(int newHeight) {
 		height = clampHeight(newHeight);
-		dUp = (int)Math.ceil((height-1)/2.0);
-		dDown = (int)Math.floor((height-1)/2.0);
+		offTop = (int)Math.ceil((height-1)/2.0);
+		offBot = (int)Math.floor((height-1)/2.0);
 		return height;
 	}
 
 	@Override
 	public int setLength(int newLength) {
 		length = clampLength(newLength);
-		dFront = (int)Math.ceil((length-1)/2.0);
-		dBack = (int)Math.floor((length-1)/2.0);
+		offForward = (int)Math.ceil((length-1)/2.0);
+		offBack = (int)Math.floor((length-1)/2.0);
 		return length;
 	}
 
 	@Override
 	public int setWidth(int newWidth) {
 		width = clampWidth(newWidth);
-		dRight = (int)Math.ceil((width-1)/2.0);
-		dLeft = (int)Math.floor((width-1)/2.0);
+		offRight = (int)Math.ceil((width-1)/2.0);
+		offLeft = (int)Math.floor((width-1)/2.0);
 		return width;
 	}
 	
 	@Override
 	public boolean setRadius(int newRadius) {
-		radius = newRadius;
+		//Prevent too great radius
+		radius = clamp(newRadius,(minWidth-1)/2, maxWidth);
+		radius = clamp(radius,(minHeight-1)/2, maxHeight);
+		radius = clamp(radius,(minLength-1)/2, maxLength);
+		
 		setHeight(newRadius*2+1);
 		setLength(newRadius*2+1);
 		setWidth(newRadius*2+1);
@@ -232,5 +246,54 @@ public abstract class BrushAdapter extends Brush {
 	public int getRadius() {
 		return radius;
 	}
+	
+	@Override
+	public boolean getUseForDelete() {
+		return useForDelete;
+	}
 
+	/**
+	 * Sets the start and end offsets using the 
+	 * @param player The player
+	 */
+	protected void setOffsetsFromPerspective(Player player) {
+		zOffStart = -offBot;
+		zOffEnd = offTop;
+		
+		int rotation = player.getRotation().getRotation();
+		
+		/*
+		 * START HAVE TO BE LOWEST
+		 */
+		//looking x-pos forward y-pos right
+		if (rotation >= 32 && rotation < 96) {
+			xOffStart = -offBack;
+			xOffEnd = offForward;
+			yOffStart = -offLeft;
+			yOffEnd = offRight;
+		}
+		//Looking x-pos right and y-pos behind
+		else if (rotation >= -32 && rotation < 32) {
+			xOffStart = -offLeft;
+			xOffEnd = offRight;
+			yOffStart = -offForward;
+			yOffEnd = offBack;
+		}
+		//Looking x-pos behind and y-pos left
+		else if (rotation >= -96 && rotation < -32) {
+			xOffStart = -offForward;
+			xOffEnd = offBack;
+			yOffStart = -offRight;
+			yOffEnd = offLeft;
+		}
+		//Looking x-pos left and y-pos forward
+		else {
+			xOffStart = -offLeft;
+			xOffEnd = offRight;
+			yOffStart = -offBack;
+			yOffEnd = offForward; 
+		}
+		
+	}
+	
 }

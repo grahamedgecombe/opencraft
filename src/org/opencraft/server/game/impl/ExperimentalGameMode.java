@@ -57,6 +57,7 @@ import org.opencraft.server.model.World;
  * An experimental game mode. Useful for testing things.
  * Currently logs players in memory and greets them accordingly.
  * Now also has the ability to use brushes
+ * Has some of the official commands of which op and deop relies on memory
  * @author Søren Enevoldsen
  */
 
