@@ -1,7 +1,5 @@
 package org.opencraft.server.cmd;
 
-import org.opencraft.server.model.Player;
-
 /*
  * OpenCraft License
  * 
@@ -34,6 +32,8 @@ import org.opencraft.server.model.Player;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import org.opencraft.server.model.Player;
 
 /**
  * Represents a specific command.

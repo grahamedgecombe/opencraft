@@ -70,6 +70,13 @@ public final class LevelGzipper {
 	private ExecutorService service = Executors.newCachedThreadPool();
 	
 	/**
+	 * Default private constructor.
+	 */
+	private LevelGzipper() {
+		/* empty */
+	}
+	
+	/**
 	 * Gzips and sends the level for the specified session.
 	 * @param session The session.
 	 */
