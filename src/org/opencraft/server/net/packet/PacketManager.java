@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import org.opencraft.server.io.PersistenceManager;
 /**
  * A utility class for managing the whole packet system.
  * @param Graham Edgecombe
- * 
  */
 public final class PacketManager {
 	
@@ -91,16 +90,16 @@ public final class PacketManager {
 	 */
 	private Object readResolve() {
 		incomingArray = new PacketDefinition[256];
-		for(PacketDefinition def : incoming) {
+		for (PacketDefinition def : incoming) {
 			incomingArray[def.getOpcode()] = def;
 		}
 		outgoingArray = new PacketDefinition[256];
-		for(PacketDefinition def : outgoing) {
+		for (PacketDefinition def : outgoing) {
 			outgoingArray[def.getOpcode()] = def;
 		}
 		return this;
 	}
-
+	
 	/**
 	 * Gets an incoming packet definition.
 	 * @param opcode The opcode.
@@ -118,5 +117,5 @@ public final class PacketManager {
 	public PacketDefinition getOutgoingPacket(int opcode) {
 		return outgoingArray[opcode];
 	}
-
+	
 }

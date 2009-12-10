@@ -4,7 +4,6 @@ package org.opencraft.server.cmd;
  * An immutable class which holds and parses the parameters passed to a
  * commmand.
  * @author Graham Edgecombe
- *
  */
 public class CommandParameters {
 	
@@ -57,5 +56,5 @@ public class CommandParameters {
 	public int getIntegerArgument(int pos) {
 		return Integer.valueOf(args[pos]);
 	}
-
+	
 }

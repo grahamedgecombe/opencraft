@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package org.opencraft.server.model;
 /**
  * Represents a rotation in the game world.
  * @author Graham Edgecombe
- * 
  */
 public final class Rotation {
 	
@@ -75,5 +74,5 @@ public final class Rotation {
 	public int getLook() {
 		return look;
 	}
-
+	
 }

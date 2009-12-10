@@ -3,7 +3,7 @@ package org.opencraft.server.cmd.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,20 +41,23 @@ import org.opencraft.server.model.World;
 /**
  * Official /say command
  * @author Søren Enevoldsen
- *
  */
 
 public class SayCommand implements Command {
-
+	
 	private static final SayCommand INSTANCE = new SayCommand();
 	
 	public static SayCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	private SayCommand() {
+		/* empty */
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
-		//Player using command is OP?
+		// Player using command is OP?
 		if (player.getAttribute("IsOperator") != null && player.getAttribute("IsOperator").equals("true")) {
 			if (params.getArgumentCount() == 0) {
 				player.getActionSender().sendChatMessage("No message to send");
@@ -62,13 +65,11 @@ public class SayCommand implements Command {
 				return;
 			}
 			String message = "";
-			for (int i=0; i < params.getArgumentCount()-1; i++)
-				message += params.getStringArgument(i-1) + " ";
-			message += params.getStringArgument(params.getArgumentCount()-1);
+			for (int i = 0; i < params.getArgumentCount() - 1; i++)
+				message += params.getStringArgument(i - 1) + " ";
+			message += params.getStringArgument(params.getArgumentCount() - 1);
 			World.getWorld().broadcast(message);
-		}
-		else
-			player.getActionSender().sendChatMessage("You must be OP to do that");			
+		} else
+			player.getActionSender().sendChatMessage("You must be OP to do that");
 	}
 }
-

@@ -3,7 +3,7 @@ package org.opencraft.server.game;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ public interface GameMode {
 	 * @return The map of commands.
 	 */
 	public Map<String, Command> getCommands();
-
+	
 	/**
 	 * Notification of player connected
 	 * @param player The connected player
@@ -59,8 +59,8 @@ public interface GameMode {
 	public void playerConnected(Player player);
 	
 	/**
-	 * Event handler for a player disconnect
-	 * Remember player has already disconnected!
+	 * Event handler for a player disconnect Remember player has already
+	 * disconnected!
 	 * @param player The disconnected player
 	 */
 	public void playerDisconnected(Player player);

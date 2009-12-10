@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,11 +39,10 @@ import org.opencraft.server.model.Player;
 /**
  * A brush that makes a line away from player
  * @author Søren Enevoldsen
- *
  */
 
 public class LineBrush extends BrushAdapter {
-
+	
 	private static int BLOCKSIZE = 32;
 	
 	public LineBrush() {
@@ -55,20 +54,17 @@ public class LineBrush extends BrushAdapter {
 		setRadius(radius);
 	}
 	
-	
 	@Override
 	protected void paintBlocks(Player player, Level level, int x, int y, int z, boolean adding, int type) {
-		int[] playerPosition = new int[] { player.getPosition().getX()/BLOCKSIZE,
-				player.getPosition().getY()/BLOCKSIZE, player.getPosition().getZ()/BLOCKSIZE};
+		int[] playerPosition = new int[] { player.getPosition().getX() / BLOCKSIZE, player.getPosition().getY() / BLOCKSIZE, player.getPosition().getZ() / BLOCKSIZE };
 		
-		
-		int dx = x-playerPosition[0];
-		int dy = y-playerPosition[1];
-		int dz = z-playerPosition[2]+1;
+		int dx = x - playerPosition[0];
+		int dy = y - playerPosition[1];
+		int dz = z - playerPosition[2] + 1;
 		int adx = Math.abs(dx);
 		int ady = Math.abs(dy);
 		int adz = Math.abs(dz);
-				
+		
 		int offsetZ = 0;
 		int offsetY = 0;
 		int offsetX = 0;
@@ -81,10 +77,9 @@ public class LineBrush extends BrushAdapter {
 			offsetZ = clamp(dz, -1, 1);
 		else
 			return;
-				
-		for (int nthBlock=0; nthBlock<=radius; nthBlock++)
-			if (positionIsBuildable(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z) == adding &&
-					Math.abs(offsetX)+Math.abs(offsetY)+Math.abs(offsetZ) <= Math.abs(radius))
-				level.setBlock(offsetX*nthBlock+x, offsetY*nthBlock+y, offsetZ*nthBlock+z, type);
+		
+		for (int nthBlock = 0; nthBlock <= radius; nthBlock++)
+			if (positionIsBuildable(offsetX * nthBlock + x, offsetY * nthBlock + y, offsetZ * nthBlock + z) == adding && Math.abs(offsetX) + Math.abs(offsetY) + Math.abs(offsetZ) <= Math.abs(radius))
+				level.setBlock(offsetX * nthBlock + x, offsetY * nthBlock + y, offsetZ * nthBlock + z, type);
 	}
 }

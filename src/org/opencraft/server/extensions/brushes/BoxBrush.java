@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,12 +39,12 @@ import org.opencraft.server.model.Player;
 /**
  * A Brush that makes boxes
  * @author Søren Enevoldsen
- *
  */
 
 public class BoxBrush extends BrushAdapter {
-
-	public BoxBrush() {}
+	
+	public BoxBrush() {
+	}
 	
 	public BoxBrush(int radius) {
 		setRadius(radius);
@@ -55,12 +55,11 @@ public class BoxBrush extends BrushAdapter {
 		
 		setOffsetsFromPerspective(player);
 		
-		for (int offsetZ=zOffStart; offsetZ<=zOffEnd; offsetZ++)
-			for (int offsetY=yOffStart; offsetY<=yOffEnd; offsetY++)
-				for (int offsetX=xOffStart; offsetX<=xOffEnd; offsetX++)
-					if (positionIsBuildable(offsetX+x, offsetY+y, offsetZ+z) == adding)
-						level.setBlock(offsetX+x, offsetY+y, offsetZ+z, type);
+		for (int offsetZ = zOffStart; offsetZ <= zOffEnd; offsetZ++)
+			for (int offsetY = yOffStart; offsetY <= yOffEnd; offsetY++)
+				for (int offsetX = xOffStart; offsetX <= xOffEnd; offsetX++)
+					if (positionIsBuildable(offsetX + x, offsetY + y, offsetZ + z) == adding)
+						level.setBlock(offsetX + x, offsetY + y, offsetZ + z, type);
 	}
-
 	
 }

@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,10 +39,10 @@ import java.util.List;
 import org.opencraft.server.io.PersistenceManager;
 
 /**
- * A class which manages <code>BlockDefinition</code>s and <code>BlockBehaviour</code>s.
+ * A class which manages <code>BlockDefinition</code>s and
+ * <code>BlockBehaviour</code>s.
  * @author Graham Edgecombe
  * @author Brett Russell
- *
  */
 public final class BlockManager {
 	
@@ -82,12 +82,12 @@ public final class BlockManager {
 	 */
 	private Object readResolve() {
 		blocksArray = new BlockDefinition[256];
-		for(BlockDefinition def : blockList) {
+		for (BlockDefinition def : blockList) {
 			blocksArray[def.getId()] = def;
 		}
 		return this;
 	}
-
+	
 	/**
 	 * Gets an incoming block definition.
 	 * @param id The id.
@@ -96,6 +96,5 @@ public final class BlockManager {
 	public BlockDefinition getBlock(int id) {
 		return blocksArray[id];
 	}
-
-
+	
 }

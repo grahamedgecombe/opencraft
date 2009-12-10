@@ -3,7 +3,7 @@ package org.opencraft.server.task;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package org.opencraft.server.task;
 /**
  * Represents a task that is executed on the <code>TaskQueue</code>.
  * @author Graham Edgecombe
- *
  */
 public interface Task {
 	
@@ -44,5 +43,5 @@ public interface Task {
 	 * Performs whatever action this task is for.
 	 */
 	public void execute();
-
+	
 }

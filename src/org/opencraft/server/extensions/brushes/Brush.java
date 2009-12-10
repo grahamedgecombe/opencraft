@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,11 +39,10 @@ import org.opencraft.server.model.Player;
 /**
  * Represents the brush used to "paint" the level with.
  * @author Søren Enevoldsen
- *
  */
 
 abstract public class Brush {
-
+	
 	public Brush() {
 	}
 	
@@ -56,7 +55,7 @@ abstract public class Brush {
 	 * @param x x position
 	 * @param y y position
 	 * @param z z position
-	 * @param mode  
+	 * @param mode
 	 * @param type Type of block
 	 */
 	public abstract void paint(Player player, Level level, int x, int y, int z, int mode, int type);
@@ -67,7 +66,7 @@ abstract public class Brush {
 	 * @return Whether the radius was set
 	 */
 	public abstract boolean setRadius(int newRadius);
-
+	
 	/**
 	 * Sets the width
 	 * @param newWidth
@@ -87,15 +86,15 @@ abstract public class Brush {
 	 * @param newLength
 	 * @return Return the length that was set
 	 */
-	public abstract int setLength(int newLength);	
-
+	public abstract int setLength(int newLength);
+	
 	/**
 	 * Sets whether this brush will delete also
 	 * @param enable
 	 * @return The old value
 	 */
 	public abstract boolean useForDelete(boolean enable);
-
+	
 	/**
 	 * Returns whether this brush is used to delete
 	 * @return If used for delete

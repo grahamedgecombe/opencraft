@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet.handler;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ import org.opencraft.server.net.packet.Packet;
 /**
  * Describes the methods necessary for a packet handler.
  * @author Graham Edgecombe
- *
  */
 public interface PacketHandler {
 	
@@ -49,5 +48,5 @@ public interface PacketHandler {
 	 * @param packet The packet.
 	 */
 	public void handlePacket(MinecraftSession session, Packet packet);
-
+	
 }

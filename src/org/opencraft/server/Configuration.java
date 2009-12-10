@@ -3,7 +3,7 @@ package org.opencraft.server;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,6 @@ import org.opencraft.server.game.impl.CreativeGameMode;
 /**
  * Manages server configuration.
  * @author Graham Edgecombe
- *
  */
 public class Configuration {
 	
@@ -59,7 +58,7 @@ public class Configuration {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public static void readConfiguration() throws FileNotFoundException, IOException {
-		synchronized(Configuration.class) { 
+		synchronized (Configuration.class) {
 			Properties props = new Properties();
 			InputStream is = new FileInputStream("./data/opencraft.properties");
 			try {
@@ -76,7 +75,7 @@ public class Configuration {
 	 * @return The configuration instance.
 	 */
 	public static Configuration getConfiguration() {
-		synchronized(Configuration.class) {
+		synchronized (Configuration.class) {
 			return configuration;
 		}
 	}
@@ -175,7 +174,7 @@ public class Configuration {
 	public boolean isVerifyingNames() {
 		return verifyNames;
 	}
-
+	
 	/**
 	 * Gets the map filename.
 	 * @return The map's filename.
@@ -183,7 +182,7 @@ public class Configuration {
 	public String getMapFilename() {
 		return mapFilename;
 	}
-
+	
 	/**
 	 * Gets the range at which a sponge is effective.
 	 * @return The sponge radius.
@@ -199,5 +198,5 @@ public class Configuration {
 	public String getGameMode() {
 		return gameMode;
 	}
-
+	
 }

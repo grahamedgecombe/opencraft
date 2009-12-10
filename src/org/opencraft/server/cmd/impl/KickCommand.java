@@ -39,25 +39,27 @@ import org.opencraft.server.model.World;
  */
 
 /**
- * Official /deop command
- *  **NEEDS PERSISTENCE**
+ * Official /deop command **NEEDS PERSISTENCE**
  * @author Søren Enevoldsen
- *
  */
 
 public class KickCommand implements Command {
-
+	
 	private static final KickCommand INSTANCE = new KickCommand();
 	
 	public static KickCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	private KickCommand() {
+		/* empty */
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
-		//Player using command is OP?
+		// Player using command is OP?
 		if (player.getAttribute("IsOperator") != null && player.getAttribute("IsOperator").equals("true")) {
-			if (params.getArgumentCount() == 1) {		
+			if (params.getArgumentCount() == 1) {
 				for (Player other : World.getWorld().getPlayerList().getPlayers()) {
 					if (other.getName().toLowerCase().equals(params.getStringArgument(0).toLowerCase())) {
 						other.getSession().close();
@@ -65,14 +67,12 @@ public class KickCommand implements Command {
 						return;
 					}
 				}
-				//Player not found
+				// Player not found
 				player.getActionSender().sendChatMessage(params.getStringArgument(0) + " was not found");
-			}
-			else
+			} else
 				player.getActionSender().sendChatMessage("Wrong number of arguments");
-				player.getActionSender().sendChatMessage("/kick <name>");
-		}
-		else
-			player.getActionSender().sendChatMessage("You must be OP to do that");			
+			player.getActionSender().sendChatMessage("/kick <name>");
+		} else
+			player.getActionSender().sendChatMessage("You must be OP to do that");
 	}
 }

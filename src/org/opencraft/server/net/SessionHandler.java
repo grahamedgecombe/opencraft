@@ -3,7 +3,7 @@ package org.opencraft.server.net;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,10 +51,9 @@ import org.opencraft.server.task.impl.SessionOpenedTask;
  * from MINA and passes them onto the necessary subsystem in the OpenCraft
  * server.
  * @author Graham Edgecombe
- *
  */
 public final class SessionHandler extends IoHandlerAdapter {
-
+	
 	/**
 	 * Logger instance.
 	 */
@@ -65,21 +64,21 @@ public final class SessionHandler extends IoHandlerAdapter {
 		logger.log(Level.SEVERE, "Exception occurred, closing session.", throwable);
 		session.close(false);
 	}
-
+	
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
 		TaskQueue.getTaskQueue().push(new SessionMessageTask(session, (Packet) message));
 	}
-
+	
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
 		TaskQueue.getTaskQueue().push(new SessionClosedTask(session));
 	}
-
+	
 	@Override
 	public void sessionOpened(IoSession session) throws Exception {
 		session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(new MinecraftCodecFactory()));
 		TaskQueue.getTaskQueue().push(new SessionOpenedTask(session));
 	}
-
+	
 }

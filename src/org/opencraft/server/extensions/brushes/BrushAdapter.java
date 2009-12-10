@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,21 +33,19 @@ package org.opencraft.server.extensions.brushes;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.extensions.brushes.Brush;
 import org.opencraft.server.model.BlockConstants;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
 
 /**
- * Shortcut for creation of Brushes
- * Only constructor and paintBlocks are necessary
+ * Shortcut for creation of Brushes Only constructor and paintBlocks are
+ * necessary
  * @author Søren Enevoldsen
- *
  */
 
 public abstract class BrushAdapter extends Brush {
-
+	
 	boolean useForDelete = false;
 	protected int minWidth = 1;
 	protected int minHeight = 1;
@@ -62,8 +60,8 @@ public abstract class BrushAdapter extends Brush {
 	protected int height = 0;
 	protected int length = 0;
 	
-	/* If even dimensions, prioriterize
-	 * right, front and up
+	/*
+	 * If even dimensions, prioriterize right, front and up
 	 */
 	protected int offLeft = 0;
 	protected int offRight = 0;
@@ -120,7 +118,7 @@ public abstract class BrushAdapter extends Brush {
 	}
 	
 	/**
-	 * Keeps a height between min and max 
+	 * Keeps a height between min and max
 	 * @param height
 	 * @return The new height
 	 */
@@ -143,9 +141,7 @@ public abstract class BrushAdapter extends Brush {
 	 * @return Returns true if the type is build-able (changeable)
 	 */
 	protected boolean typeIsBuildable(int type) {
-		if (type == BlockConstants.AIR ||
-				type == BlockConstants.WATER ||
-				type == BlockConstants.STILL_WATER)
+		if (type == BlockConstants.AIR || type == BlockConstants.WATER || type == BlockConstants.STILL_WATER)
 			return true;
 		return false;
 	}
@@ -160,36 +156,35 @@ public abstract class BrushAdapter extends Brush {
 	protected boolean positionIsBuildable(int x, int y, int z) {
 		return typeIsBuildable(World.getWorld().getLevel().getBlock(x, y, z));
 	}
-
+	
 	@Override
 	public int getHeight() {
 		return height;
 	}
-
+	
 	@Override
 	public int getLength() {
 		return length;
 	}
-
+	
 	@Override
 	public int getWidth() {
 		return width;
 	}
-
+	
 	@Override
 	public void paint(Player player, Level level, int x, int y, int z, int mode, int type) {
-		boolean add = (mode == 1 ? true : false); 
-		if (add)	
+		boolean add = (mode == 1 ? true : false);
+		if (add)
 			paintBlocks(player, level, x, y, z, add, type);
 		else if (useForDelete)
 			paintBlocks(player, level, x, y, z, add, BlockConstants.AIR);
 		else
-			World.getWorld().getLevel().setBlock(x, y, z, BlockConstants.AIR);	
+			World.getWorld().getLevel().setBlock(x, y, z, BlockConstants.AIR);
 	}
 	
 	/**
-	 * Paints the blocks
-	 * Should be implemented
+	 * Paints the blocks Should be implemented
 	 * @param x
 	 * @param y
 	 * @param z
@@ -197,51 +192,51 @@ public abstract class BrushAdapter extends Brush {
 	 * @param type
 	 */
 	protected abstract void paintBlocks(Player player, Level level, int x, int y, int z, boolean add, int type);
-
+	
 	@Override
 	public int setHeight(int newHeight) {
 		height = clampHeight(newHeight);
-		offTop = (int)Math.ceil((height-1)/2.0);
-		offBot = (int)Math.floor((height-1)/2.0);
+		offTop = (int) Math.ceil((height - 1) / 2.0);
+		offBot = (int) Math.floor((height - 1) / 2.0);
 		return height;
 	}
-
+	
 	@Override
 	public int setLength(int newLength) {
 		length = clampLength(newLength);
-		offForward = (int)Math.ceil((length-1)/2.0);
-		offBack = (int)Math.floor((length-1)/2.0);
+		offForward = (int) Math.ceil((length - 1) / 2.0);
+		offBack = (int) Math.floor((length - 1) / 2.0);
 		return length;
 	}
-
+	
 	@Override
 	public int setWidth(int newWidth) {
 		width = clampWidth(newWidth);
-		offRight = (int)Math.ceil((width-1)/2.0);
-		offLeft = (int)Math.floor((width-1)/2.0);
+		offRight = (int) Math.ceil((width - 1) / 2.0);
+		offLeft = (int) Math.floor((width - 1) / 2.0);
 		return width;
 	}
 	
 	@Override
 	public boolean setRadius(int newRadius) {
-		//Prevent too great radius
-		radius = clamp(newRadius,(minWidth-1)/2, maxWidth);
-		radius = clamp(radius,(minHeight-1)/2, maxHeight);
-		radius = clamp(radius,(minLength-1)/2, maxLength);
+		// Prevent too great radius
+		radius = clamp(newRadius, (minWidth - 1) / 2, maxWidth);
+		radius = clamp(radius, (minHeight - 1) / 2, maxHeight);
+		radius = clamp(radius, (minLength - 1) / 2, maxLength);
 		
-		setHeight(newRadius*2+1);
-		setLength(newRadius*2+1);
-		setWidth(newRadius*2+1);
+		setHeight(newRadius * 2 + 1);
+		setLength(newRadius * 2 + 1);
+		setWidth(newRadius * 2 + 1);
 		return true;
 	}
-
+	
 	@Override
 	public boolean useForDelete(boolean enable) {
 		boolean oldValue = useForDelete;
 		useForDelete = enable;
 		return oldValue;
 	}
-
+	
 	@Override
 	public int getRadius() {
 		return radius;
@@ -251,9 +246,9 @@ public abstract class BrushAdapter extends Brush {
 	public boolean getUseForDelete() {
 		return useForDelete;
 	}
-
+	
 	/**
-	 * Sets the start and end offsets using the 
+	 * Sets the start and end offsets using the
 	 * @param player The player
 	 */
 	protected void setOffsetsFromPerspective(Player player) {
@@ -265,33 +260,33 @@ public abstract class BrushAdapter extends Brush {
 		/*
 		 * START HAVE TO BE LOWEST
 		 */
-		//looking x-pos forward y-pos right
+		// looking x-pos forward y-pos right
 		if (rotation >= 32 && rotation < 96) {
 			xOffStart = -offBack;
 			xOffEnd = offForward;
 			yOffStart = -offLeft;
 			yOffEnd = offRight;
 		}
-		//Looking x-pos right and y-pos behind
+		// Looking x-pos right and y-pos behind
 		else if (rotation >= -32 && rotation < 32) {
 			xOffStart = -offLeft;
 			xOffEnd = offRight;
 			yOffStart = -offForward;
 			yOffEnd = offBack;
 		}
-		//Looking x-pos behind and y-pos left
+		// Looking x-pos behind and y-pos left
 		else if (rotation >= -96 && rotation < -32) {
 			xOffStart = -offForward;
 			xOffEnd = offBack;
 			yOffStart = -offRight;
 			yOffEnd = offLeft;
 		}
-		//Looking x-pos left and y-pos forward
+		// Looking x-pos left and y-pos forward
 		else {
 			xOffStart = -offLeft;
 			xOffEnd = offRight;
 			yOffStart = -offBack;
-			yOffEnd = offForward; 
+			yOffEnd = offForward;
 		}
 		
 	}

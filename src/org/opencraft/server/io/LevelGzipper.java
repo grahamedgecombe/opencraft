@@ -3,7 +3,7 @@ package org.opencraft.server.io;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,6 @@ import org.opencraft.server.net.MinecraftSession;
 /**
  * A utility class for gzipping levels.
  * @author Graham Edgecombe
- * 
  */
 public final class LevelGzipper {
 	
@@ -88,9 +87,9 @@ public final class LevelGzipper {
 					int size = width * height * depth;
 					DataOutputStream os = new DataOutputStream(new GZIPOutputStream(out));
 					os.writeInt(size);
-					for(int z = 0; z < depth; z++) {
-						for(int y = 0; y < height; y++) {
-							for(int x = 0; x < width; x++) {
+					for (int z = 0; z < depth; z++) {
+						for (int y = 0; y < height; y++) {
+							for (int x = 0; x < width; x++) {
 								os.write(blockData[x][y][z]);
 							}
 						}
@@ -100,9 +99,9 @@ public final class LevelGzipper {
 					IoBuffer buf = IoBuffer.allocate(data.length);
 					buf.put(data);
 					buf.flip();
-					while(buf.hasRemaining()) {
+					while (buf.hasRemaining()) {
 						int len = buf.remaining();
-						if(len > 1024) {
+						if (len > 1024) {
 							len = 1024;
 						}
 						byte[] chunk = new byte[len];
@@ -117,5 +116,5 @@ public final class LevelGzipper {
 			}
 		});
 	}
-
+	
 }

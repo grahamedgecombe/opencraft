@@ -3,7 +3,7 @@ package org.opencraft.server.heartbeat;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,6 @@ import org.opencraft.server.Constants;
 /**
  * A class which manages heartbeats.
  * @author Graham Edgecombe
- *
  */
 public class HeartbeatManager {
 	
@@ -120,7 +119,7 @@ public class HeartbeatManager {
 			public void run() {
 				// assemble POST data
 				StringBuilder bldr = new StringBuilder();
-				for(Map.Entry<String, String> entry : parameters.entrySet()) {
+				for (Map.Entry<String, String> entry : parameters.entrySet()) {
 					bldr.append(entry.getKey());
 					bldr.append('=');
 					try {
@@ -130,7 +129,7 @@ public class HeartbeatManager {
 					}
 					bldr.append('&');
 				}
-				if(bldr.length() > 0) {
+				if (bldr.length() > 0) {
 					bldr.deleteCharAt(bldr.length() - 1);
 				}
 				// send it off
@@ -140,7 +139,8 @@ public class HeartbeatManager {
 					conn.setDoOutput(true);
 					conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 					conn.setRequestProperty("Content-Length", String.valueOf(bytes.length));
-					// this emulates the minecraft client exactly.. idk why notch added this personally
+					// this emulates the minecraft client exactly.. idk why
+					// notch added this personally
 					conn.setRequestProperty("Content-Language", "en-US");
 					conn.setUseCaches(false);
 					conn.setDoInput(true);
@@ -169,7 +169,7 @@ public class HeartbeatManager {
 			}
 		});
 	}
-
+	
 	/**
 	 * Gets the salt.
 	 * @return The salt.
@@ -177,5 +177,5 @@ public class HeartbeatManager {
 	public long getSalt() {
 		return salt;
 	}
-
+	
 }

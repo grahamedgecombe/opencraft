@@ -3,7 +3,7 @@ package org.opencraft.server.task.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import org.opencraft.server.task.Task;
 /**
  * A task which parses a packet received from a session.
  * @author Graham Edgecombe
- *
  */
 public final class SessionMessageTask implements Task {
 	
@@ -54,7 +53,7 @@ public final class SessionMessageTask implements Task {
 	 * The packet.
 	 */
 	private final Packet packet;
-
+	
 	/**
 	 * Creates the session message task.
 	 * @param session The session.
@@ -64,10 +63,10 @@ public final class SessionMessageTask implements Task {
 		this.session = session;
 		this.packet = packet;
 	}
-
+	
 	@Override
 	public void execute() {
 		((MinecraftSession) session.getAttribute("attachment")).handle(packet);
 	}
-
+	
 }

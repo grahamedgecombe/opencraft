@@ -3,7 +3,7 @@ package org.opencraft.server.cmd.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,22 +41,25 @@ import org.opencraft.server.model.World;
 /**
  * Official /tp command
  * @author Søren Enevoldsen
- *
  */
 
 public class TeleportCommand implements Command {
-
+	
 	private static final TeleportCommand INSTANCE = new TeleportCommand();
 	
 	public static TeleportCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	private TeleportCommand() {
+		/* empty */
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
-		//Player using command is OP?
+		// Player using command is OP?
 		if (player.getAttribute("IsOperator") != null && player.getAttribute("IsOperator").equals("true")) {
-			if (params.getArgumentCount() == 1) {		
+			if (params.getArgumentCount() == 1) {
 				for (Player other : World.getWorld().getPlayerList().getPlayers()) {
 					if (other.getName().toLowerCase().equals(params.getStringArgument(0).toLowerCase())) {
 						player.setPosition(other.getPosition());
@@ -64,14 +67,12 @@ public class TeleportCommand implements Command {
 						return;
 					}
 				}
-				//Player not found
+				// Player not found
 				player.getActionSender().sendChatMessage(params.getStringArgument(0) + " was not found");
-			}
-			else
+			} else
 				player.getActionSender().sendChatMessage("Wrong number of arguments");
-				player.getActionSender().sendChatMessage("/tp <name>");
-		}
-		else
-			player.getActionSender().sendChatMessage("You must be OP to do that");			
+			player.getActionSender().sendChatMessage("/tp <name>");
+		} else
+			player.getActionSender().sendChatMessage("You must be OP to do that");
 	}
 }

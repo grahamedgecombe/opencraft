@@ -3,7 +3,7 @@ package org.opencraft.server.net.codec;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,18 +47,17 @@ import org.opencraft.server.net.packet.PacketField;
  * An implementation of a <code>ProtocolEncoder</code> which encodes Minecraft
  * packet objects into buffers and then dispatches them.
  * @author Graham Edgecombe
- *
  */
 public final class MinecraftProtocolEncoder extends ProtocolEncoderAdapter {
-
+	
 	@Override
 	public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {
 		Packet packet = (Packet) message;
 		PacketDefinition def = packet.getDefinition();
 		IoBuffer buf = IoBuffer.allocate(def.getLength() + 1);
 		buf.put((byte) def.getOpcode());
-		for(PacketField field : def.getFields()) {
-			switch(field.getType()) {
+		for (PacketField field : def.getFields()) {
+			switch (field.getType()) {
 			case BYTE:
 				buf.put(packet.getNumericField(field.getName()).byteValue());
 				break;
@@ -80,8 +79,8 @@ public final class MinecraftProtocolEncoder extends ProtocolEncoderAdapter {
 				String str = packet.getStringField(field.getName());
 				data = str.getBytes();
 				resized = Arrays.copyOf(data, 64);
-				for(int i = 0; i < resized.length; i++) {
-					if(resized[i] == 0) {
+				for (int i = 0; i < resized.length; i++) {
+					if (resized[i] == 0) {
 						resized[i] = ' ';
 					}
 				}
@@ -92,5 +91,5 @@ public final class MinecraftProtocolEncoder extends ProtocolEncoderAdapter {
 		buf.flip();
 		out.write(buf);
 	}
-
+	
 }

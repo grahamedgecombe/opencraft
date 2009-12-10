@@ -3,7 +3,7 @@ package org.opencraft.server;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package org.opencraft.server;
 /**
  * Holds global constants for the OpenCraft server.
  * @author Graham Edgecombe
- *
  */
 public final class Constants {
 	
@@ -55,5 +54,5 @@ public final class Constants {
 	 * The heartbeat server.
 	 */
 	public static final String HEARTBEAT_SERVER = "http://www.minecraft.net/";
-
+	
 }

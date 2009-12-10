@@ -3,7 +3,7 @@ package org.opencraft.server.net;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,6 @@ import org.opencraft.server.task.TaskQueue;
 /**
  * A utility class for sending packets.
  * @author Graham Edgecombe
- *
  */
 public class ActionSender {
 	
@@ -89,7 +88,7 @@ public class ActionSender {
 		session.send(bldr.toPacket());
 		session.close();
 	}
-
+	
 	/**
 	 * Sends the level init packet.
 	 */
@@ -98,7 +97,7 @@ public class ActionSender {
 		PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(2));
 		session.send(bldr.toPacket());
 	}
-
+	
 	/**
 	 * Sends a level block/chunk.
 	 * @param len The length of the chunk.
@@ -112,7 +111,7 @@ public class ActionSender {
 		bldr.putByte("percent", percent);
 		session.send(bldr.toPacket());
 	}
-
+	
 	/**
 	 * Sends the level finish packet.
 	 */
@@ -169,25 +168,21 @@ public class ActionSender {
 	 * Sends the update entity packet.
 	 * @param entity The entity being updated.
 	 */
-	public void sendUpdateEntity(Entity entity) {		
+	public void sendUpdateEntity(Entity entity) {
 		final Position oldPosition = entity.getOldPosition();
 		final Position position = entity.getPosition();
 		
 		final Rotation oldRotation = entity.getOldRotation();
 		final Rotation rotation = entity.getRotation();
 		
-		final int deltaX = - oldPosition.getX() - position.getX();
-		final int deltaY = - oldPosition.getY() - position.getY();
-		final int deltaZ = - oldPosition.getZ() - position.getZ();
+		final int deltaX = -oldPosition.getX() - position.getX();
+		final int deltaY = -oldPosition.getY() - position.getY();
+		final int deltaZ = -oldPosition.getZ() - position.getZ();
 		
-		final int deltaRotation = - oldRotation.getRotation() - rotation.getRotation();
-		final int deltaLook = - oldRotation.getLook() - rotation.getLook();
-				
-		if(deltaX > Byte.MAX_VALUE || deltaX < Byte.MIN_VALUE
-				|| deltaY > Byte.MAX_VALUE || deltaY < Byte.MIN_VALUE
-				|| deltaZ > Byte.MAX_VALUE || deltaZ < Byte.MIN_VALUE
-				|| deltaRotation > Byte.MAX_VALUE || deltaRotation < Byte.MIN_VALUE
-				|| deltaLook > Byte.MAX_VALUE || deltaLook < Byte.MIN_VALUE) {
+		final int deltaRotation = -oldRotation.getRotation() - rotation.getRotation();
+		final int deltaLook = -oldRotation.getLook() - rotation.getLook();
+		
+		if (deltaX > Byte.MAX_VALUE || deltaX < Byte.MIN_VALUE || deltaY > Byte.MAX_VALUE || deltaY < Byte.MIN_VALUE || deltaZ > Byte.MAX_VALUE || deltaZ < Byte.MIN_VALUE || deltaRotation > Byte.MAX_VALUE || deltaRotation < Byte.MIN_VALUE || deltaLook > Byte.MAX_VALUE || deltaLook < Byte.MIN_VALUE) {
 			// teleport
 			PacketBuilder bldr = new PacketBuilder(PacketManager.getPacketManager().getOutgoingPacket(8));
 			bldr.putByte("id", entity.getId());
@@ -219,9 +214,9 @@ public class ActionSender {
 		bldr.putByte("id", entity.getOldId());
 		session.send(bldr.toPacket());
 	}
-
+	
 	/**
-	 * Sends a chat message. 
+	 * Sends a chat message.
 	 * @param message The message.
 	 */
 	public void sendChatMessage(String message) {
@@ -230,7 +225,7 @@ public class ActionSender {
 		bldr.putString("message", message);
 		session.send(bldr.toPacket());
 	}
-
+	
 	/**
 	 * Sends a block.
 	 * @param x X coordinate.
@@ -246,7 +241,7 @@ public class ActionSender {
 		bldr.putByte("type", type);
 		session.send(bldr.toPacket());
 	}
-
+	
 	/**
 	 * Sends a chat message.
 	 * @param id The source player id.
@@ -258,5 +253,5 @@ public class ActionSender {
 		bldr.putString("message", message);
 		session.send(bldr.toPacket());
 	}
-
+	
 }

@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet.handler.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,6 @@ import org.opencraft.server.net.packet.handler.PacketHandler;
 /**
  * Handles the incoming authentication packet.
  * @author Graham Edgecombe
- *
  */
 public final class AuthenticationPacketHandler implements PacketHandler {
 	
@@ -52,10 +51,10 @@ public final class AuthenticationPacketHandler implements PacketHandler {
 	 * Logger instance.
 	 */
 	private static final Logger logger = Logger.getLogger(AuthenticationPacketHandler.class.getName());
-
+	
 	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {
-		if(session.isAuthenticated()) {
+		if (session.isAuthenticated()) {
 			return;
 		}
 		
@@ -64,11 +63,11 @@ public final class AuthenticationPacketHandler implements PacketHandler {
 		int protocolVersion = packet.getNumericField("protocol_version").intValue();
 		logger.info("Received authentication packet : username=" + username + ", verificationKey=" + verificationKey + ", protocolVersion=" + protocolVersion + ".");
 		
-		if(protocolVersion != Constants.PROTOCOL_VERSION) {
+		if (protocolVersion != Constants.PROTOCOL_VERSION) {
 			session.getActionSender().sendLoginFailure("Incorrect protocol version.");
 		} else {
 			World.getWorld().register(session, username, verificationKey);
 		}
 	}
-
+	
 }

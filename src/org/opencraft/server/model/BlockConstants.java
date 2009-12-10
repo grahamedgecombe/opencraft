@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,6 @@ package org.opencraft.server.model;
  * A class which holds block id constants.
  * @author Brett Russell
  * @author Graham Edgecombe
- *
  */
 public class BlockConstants {
 	

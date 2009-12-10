@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package org.opencraft.server.net.packet;
 /**
  * Holds the different Minecraft data types.
  * @author Graham Edgecombe
- *
  */
 public enum DataType {
 	
@@ -44,27 +43,27 @@ public enum DataType {
 	 * Standard byte data type.
 	 */
 	BYTE(1),
-	
+
 	/**
 	 * Standard short data type.
 	 */
 	SHORT(2),
-	
+
 	/**
 	 * Standard integer data type.
 	 */
 	INT(4),
-	
+
 	/**
 	 * Standard long data type.
 	 */
 	LONG(8),
-	
+
 	/**
 	 * Fixed-length (1024) byte array data type.
 	 */
 	BYTE_ARRAY(1024),
-	
+
 	/**
 	 * Fixed length (64 ASCII bytes) string data type.
 	 */
@@ -90,5 +89,5 @@ public enum DataType {
 	public int getLength() {
 		return length;
 	}
-
+	
 }

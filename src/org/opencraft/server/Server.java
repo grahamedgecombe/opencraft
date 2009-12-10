@@ -3,7 +3,7 @@ package org.opencraft.server;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,6 @@ import org.opencraft.server.task.impl.UpdateTask;
 /**
  * The core class of the OpenCraft server.
  * @author Graham Edgecombe
- * 
  */
 public final class Server {
 	
@@ -58,7 +57,7 @@ public final class Server {
 	 * Logger instance.
 	 */
 	private static final Logger logger = Logger.getLogger(Server.class.getName());
-
+	
 	/**
 	 * The entry point of the server application.
 	 * @param args
@@ -102,5 +101,5 @@ public final class Server {
 		acceptor.bind(new InetSocketAddress(Constants.PORT));
 		logger.info("Ready for connections.");
 	}
-
+	
 }

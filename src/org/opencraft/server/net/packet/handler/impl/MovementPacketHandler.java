@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet.handler.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,13 +43,12 @@ import org.opencraft.server.net.packet.handler.PacketHandler;
 /**
  * A packet handler which handles movement packets.
  * @author Graham Edgecombe
- *
  */
 public class MovementPacketHandler implements PacketHandler {
-
+	
 	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {
-		if(!session.isAuthenticated()) {
+		if (!session.isAuthenticated()) {
 			return;
 		}
 		final int x = packet.getNumericField("x").intValue();
@@ -61,5 +60,5 @@ public class MovementPacketHandler implements PacketHandler {
 		player.setPosition(new Position(x, y, z));
 		player.setRotation(new Rotation(rotation, look));
 	}
-
+	
 }

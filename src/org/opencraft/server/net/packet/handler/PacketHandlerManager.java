@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet.handler;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,6 @@ import org.opencraft.server.net.packet.Packet;
 /**
  * A class which manages <code>PacketHandler</code>s.
  * @author Graham Edgecombe
- *
  */
 public final class PacketHandlerManager {
 	
@@ -56,7 +55,7 @@ public final class PacketHandlerManager {
 	 * Logger instance.
 	 */
 	private static final Logger logger = Logger.getLogger(PacketHandlerManager.class.getName());
-
+	
 	/**
 	 * Gets the packet handler manager instance.
 	 * @return The packet handler manager instance.
@@ -77,14 +76,14 @@ public final class PacketHandlerManager {
 	private PacketHandlerManager() {
 		try {
 			Map<Integer, String> handlers = (Map<Integer, String>) PersistenceManager.getPersistenceManager().load("data/packetHandlers.xml");
-			for(Map.Entry<Integer, String> handler : handlers.entrySet()) {
+			for (Map.Entry<Integer, String> handler : handlers.entrySet()) {
 				this.handlers[handler.getKey()] = (PacketHandler) Class.forName(handler.getValue()).newInstance();
 			}
 		} catch (Exception ex) {
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
-
+	
 	/**
 	 * Handles a packet.
 	 * @param session The session.
@@ -92,11 +91,11 @@ public final class PacketHandlerManager {
 	 */
 	public void handlePacket(MinecraftSession session, Packet packet) {
 		PacketHandler handler = handlers[packet.getDefinition().getOpcode()];
-		if(handler != null) {
+		if (handler != null) {
 			handler.handlePacket(session, packet);
 		} else {
 			logger.info("Unhandled packet : " + packet + ".");
 		}
 	}
-
+	
 }

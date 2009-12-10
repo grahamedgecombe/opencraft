@@ -3,7 +3,7 @@ package org.opencraft.server.model.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,24 +42,24 @@ import org.opencraft.server.model.Level;
  * Handles how half-blocks stack when placed overtop eachother.
  * @author Brett Russell
  */
-public class HalfBlockBehaviour implements BlockBehaviour{
-
+public class HalfBlockBehaviour implements BlockBehaviour {
+	
 	@Override
 	public void handleDestroy(Level level, int x, int y, int z, int type) {
 		
 	}
-
+	
 	@Override
 	public void handlePassive(Level level, int x, int y, int z, int type) {
-		if(BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).isHalfBlock()) {
+		if (BlockManager.getBlockManager().getBlock(level.getBlock(x, y, z - 1)).isHalfBlock()) {
 			level.setBlock(x, y, z, BlockConstants.AIR);
 			level.setBlock(x, y, z - 1, BlockManager.getBlockManager().getBlock(type).getFullCounterpart());
 		}
 	}
-
+	
 	@Override
 	public void handleScheduledBehaviour(Level level, int x, int y, int z, int type) {
 		
 	}
-
+	
 }

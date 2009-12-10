@@ -3,7 +3,7 @@ package org.opencraft.server.net.codec;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,6 @@ import org.opencraft.server.net.packet.PacketManager;
  * An implement of a <code>ProtocolDecoder</code> which decodes buffers into
  * Minecraft packet objects then dispatches them.
  * @author Graham Edgecombe
- *
  */
 public final class MinecraftProtocolDecoder extends CumulativeProtocolDecoder {
 	
@@ -58,25 +57,25 @@ public final class MinecraftProtocolDecoder extends CumulativeProtocolDecoder {
 	 * The current packet being decoded.
 	 */
 	private PacketDefinition currentPacket = null;
-
+	
 	@Override
 	protected boolean doDecode(IoSession session, IoBuffer buffer, ProtocolDecoderOutput out) throws Exception {
-		if(currentPacket == null) {
-			if(buffer.remaining() >= 1) {
+		if (currentPacket == null) {
+			if (buffer.remaining() >= 1) {
 				int opcode = buffer.getUnsigned();
 				currentPacket = PacketManager.getPacketManager().getIncomingPacket(opcode);
-				if(currentPacket == null) {
+				if (currentPacket == null) {
 					throw new IOException("Unknown incoming packet type (opcode = " + opcode + ").");
 				}
 			} else {
 				return false;
 			}
 		}
-		if(buffer.remaining() >= currentPacket.getLength()) {
+		if (buffer.remaining() >= currentPacket.getLength()) {
 			Map<String, Object> values = new HashMap<String, Object>();
-			for(PacketField field : currentPacket.getFields()) {
+			for (PacketField field : currentPacket.getFields()) {
 				Object value = null;
-				switch(field.getType()) {
+				switch (field.getType()) {
 				case BYTE:
 					value = buffer.get();
 					break;
@@ -108,5 +107,5 @@ public final class MinecraftProtocolDecoder extends CumulativeProtocolDecoder {
 			return false;
 		}
 	}
-
+	
 }

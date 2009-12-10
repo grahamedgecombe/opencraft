@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet.handler.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,27 +47,26 @@ import org.opencraft.server.net.packet.handler.PacketHandler;
 /**
  * A class which handles message and comamnd packets.
  * @author Graham Edgecombe
- *
  */
 public class MessagePacketHandler implements PacketHandler {
-
+	
 	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {
-		if(!session.isAuthenticated()) {
+		if (!session.isAuthenticated()) {
 			return;
 		}
 		String message = packet.getStringField("message");
-		if(message.startsWith("/")) {
+		if (message.startsWith("/")) {
 			// interpret as command
 			String tokens = message.substring(1);
 			String[] parts = tokens.split(" ");
 			final Map<String, Command> commands = World.getWorld().getGameMode().getCommands();
 			Command c = commands.get(parts[0]);
-			if(c != null) {
+			if (c != null) {
 				parts[0] = null;
 				List<String> partsList = new ArrayList<String>();
-				for(String s : parts) {
-					if(s != null) {
+				for (String s : parts) {
+					if (s != null) {
 						partsList.add(s);
 					}
 				}
@@ -80,5 +79,5 @@ public class MessagePacketHandler implements PacketHandler {
 			World.getWorld().getGameMode().broadcastChatMessage(session.getPlayer(), message);
 		}
 	}
-
+	
 }

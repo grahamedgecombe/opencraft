@@ -3,7 +3,7 @@ package org.opencraft.server.task;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@ import java.util.logging.Logger;
 /**
  * Manages the task queue.
  * @author Graham Edgecombe
- *
  */
 public final class TaskQueue {
 	
@@ -99,7 +98,7 @@ public final class TaskQueue {
 	public void schedule(final ScheduledTask task) {
 		schedule(task, task.getDelay());
 	}
-
+	
 	/**
 	 * Internally schedules the task.
 	 * @param task The task.
@@ -114,17 +113,17 @@ public final class TaskQueue {
 				} catch (Throwable t) {
 					logger.log(Level.SEVERE, "Error during task execution.", t);
 				}
-				if(!task.isRunning()) {
+				if (!task.isRunning()) {
 					return;
 				}
 				long elapsed = System.currentTimeMillis() - start;
 				long waitFor = task.getDelay() - elapsed;
-				if(waitFor < 0) {
+				if (waitFor < 0) {
 					waitFor = 0;
 				}
 				schedule(task, waitFor);
 			}
 		}, delay, TimeUnit.MILLISECONDS);
 	}
-
+	
 }

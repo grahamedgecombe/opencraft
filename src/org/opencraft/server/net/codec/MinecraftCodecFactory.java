@@ -3,7 +3,7 @@ package org.opencraft.server.net.codec;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import org.apache.mina.filter.codec.ProtocolEncoder;
 /**
  * A <code>ProtocolCodecFactory</code> for the Minecraft protocol.
  * @author Graham Edgecombe
- *
  */
 public final class MinecraftCodecFactory implements ProtocolCodecFactory {
 	
@@ -54,15 +53,15 @@ public final class MinecraftCodecFactory implements ProtocolCodecFactory {
 	 * The encoder instance.
 	 */
 	private final ProtocolEncoder encoder = new MinecraftProtocolEncoder();
-
+	
 	@Override
 	public ProtocolDecoder getDecoder(IoSession session) throws Exception {
 		return decoder;
 	}
-
+	
 	@Override
 	public ProtocolEncoder getEncoder(IoSession session) throws Exception {
 		return encoder;
 	}
-
+	
 }

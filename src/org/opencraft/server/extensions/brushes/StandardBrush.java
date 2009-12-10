@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,11 +36,9 @@ package org.opencraft.server.extensions.brushes;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
 
-
 /**
  * The standard brush used to paint with
  * @author Søren Enevoldsen
- *
  */
 
 public class StandardBrush extends BrushAdapter {
@@ -52,10 +50,10 @@ public class StandardBrush extends BrushAdapter {
 		setRadius(0);
 		useForDelete(true);
 	}
-
+	
 	@Override
-	protected void paintBlocks(Player player, Level level, int x, int y, int z, boolean add,	int type) {
-		if ((positionIsBuildable(x,y,z) == add))
-		level.setBlock(x, y, z, type);
+	protected void paintBlocks(Player player, Level level, int x, int y, int z, boolean add, int type) {
+		if ((positionIsBuildable(x, y, z) == add))
+			level.setBlock(x, y, z, type);
 	}
 }

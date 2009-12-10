@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ import java.util.Map;
 /**
  * Represents a single packet.
  * @author Graham Edgecombe
- *
  */
 public final class Packet {
 	
@@ -98,5 +97,5 @@ public final class Packet {
 	public byte[] getByteArrayField(String fieldName) {
 		return (byte[]) fields.get(fieldName);
 	}
-
+	
 }

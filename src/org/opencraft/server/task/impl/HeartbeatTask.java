@@ -3,7 +3,7 @@ package org.opencraft.server.task.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,10 +45,9 @@ import org.opencraft.server.task.ScheduledTask;
 /**
  * A task which sends a heartbeat periodically to the master server.
  * @author Graham Edgecombe
- *
  */
 public class HeartbeatTask extends ScheduledTask {
-
+	
 	/**
 	 * The delay.
 	 */
@@ -60,10 +59,10 @@ public class HeartbeatTask extends ScheduledTask {
 	public HeartbeatTask() {
 		super(0);
 	}
-
+	
 	@Override
 	public void execute() {
-		if(this.getDelay() == 0) {
+		if (this.getDelay() == 0) {
 			this.setDelay(DELAY);
 		}
 		final Map<String, String> parameters = new HashMap<String, String>();
@@ -76,5 +75,5 @@ public class HeartbeatTask extends ScheduledTask {
 		parameters.put("version", String.valueOf(Constants.PROTOCOL_VERSION));
 		HeartbeatManager.getHeartbeatManager().sendHeartbeat(parameters);
 	}
-
+	
 }

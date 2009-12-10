@@ -3,7 +3,7 @@ package org.opencraft.server.net;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,14 +45,12 @@ import org.opencraft.server.net.packet.handler.PacketHandlerManager;
 /**
  * Manages a connected Minecraft session.
  * @author Graham Edgecombe
- *
  */
 public final class MinecraftSession {
 	
 	/**
 	 * Various connection states.
 	 * @author Graham Edgecombe
-	 *
 	 */
 	public enum State {
 		
@@ -60,12 +58,12 @@ public final class MinecraftSession {
 		 * Indicates the connection is new and has just connected.
 		 */
 		CONNECTED,
-		
+
 		/**
 		 * Indicates the connection has been authenticated but is not yet ready.
 		 */
 		AUTHENTICATED,
-		
+
 		/**
 		 * Indicates the connection is ready for use.
 		 */
@@ -165,29 +163,25 @@ public final class MinecraftSession {
 	 * @param packet The packet to send.
 	 */
 	public void send(Packet packet) {
-		synchronized(this) {
+		synchronized (this) {
 			final String name = packet.getDefinition().getName();
-			final boolean unqueuedPacket = name.equals("authentication_response")
-				|| name.endsWith("level_init")
-				|| name.equals("level_block")
-				|| name.equals("level_finish")
-				|| name.equals("disconnect");
-			if(state == State.READY) {
-				if(queuedPackets.size() > 0) {
-					for(Packet queuedPacket : queuedPackets) {
+			final boolean unqueuedPacket = name.equals("authentication_response") || name.endsWith("level_init") || name.equals("level_block") || name.equals("level_finish") || name.equals("disconnect");
+			if (state == State.READY) {
+				if (queuedPackets.size() > 0) {
+					for (Packet queuedPacket : queuedPackets) {
 						session.write(queuedPacket);
 					}
 					queuedPackets.clear();
 				}
 				session.write(packet);
-			} else if(unqueuedPacket) {
+			} else if (unqueuedPacket) {
 				session.write(packet);
 			} else {
 				queuedPackets.add(packet);
 			}
 		}
 	}
-
+	
 	/**
 	 * Closes this session.
 	 */
@@ -202,5 +196,5 @@ public final class MinecraftSession {
 	public void destroy() {
 		World.getWorld().unregister(this);
 	}
-
+	
 }

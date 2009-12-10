@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,12 +38,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-
 /**
  * Represents the actual level.
  * @author Graham Edgecombe
  * @author Brett Russell
- *
  */
 public final class Level {
 	
@@ -108,36 +106,32 @@ public final class Level {
 		this.lightDepths = new short[width][height];
 		this.spawnPosition = new Position(0, 0, 50);
 		this.spawnRotation = new Rotation(0, 0);
-		for(int i = 0; i < 256; i++) {
+		for (int i = 0; i < 256; i++) {
 			BlockDefinition b = BlockManager.getBlockManager().getBlock(i);
-			if(b != null && b.doesThink()) {
+			if (b != null && b.doesThink()) {
 				activeBlocks.put(i, new ArrayDeque<Position>());
 				activeTimers.put(i, System.currentTimeMillis());
 			}
 		}
 		// temporary:
 		/*
-		for(int z = 0; z < depth / 2; z++) {
-			for(int x = 0; x < width; x++) {
-				for(int y = 0; y < height; y++) {
-					int type = z == (depth / 2 - 1) ? BlockDefinition.GRASS.getId() : BlockDefinition.DIRT.getId();
-					this.blocks[x][y][z] = (byte) type;
-				}
-			}
-		}
-		*/
-		for(int z = 0; z < 7; z++) {
-			for(int x = 0; x < width; x++) {
-				for(int y = 0; y < height; y++) {
-					if(z <= 5) {
+		 * for(int z = 0; z < depth / 2; z++) { for(int x = 0; x < width; x++) {
+		 * for(int y = 0; y < height; y++) { int type = z == (depth / 2 - 1) ?
+		 * BlockDefinition.GRASS.getId() : BlockDefinition.DIRT.getId();
+		 * this.blocks[x][y][z] = (byte) type; } } }
+		 */
+		for (int z = 0; z < 7; z++) {
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					if (z <= 5) {
 						this.blocks[x][y][z] = (byte) BlockConstants.DIRT;
 					} else {
-						if(y < 40) {
+						if (y < 40) {
 							this.blocks[x][y][z] = (byte) BlockConstants.WATER;
-						} else if(y == 50 && x == 50) {
-							this.blocks[x][y][z-1] = (byte) BlockConstants.GRASS;
-							this.queueActiveBlockUpdate(x, y, z-1);
-						} else if(y > 60) {
+						} else if (y == 50 && x == 50) {
+							this.blocks[x][y][z - 1] = (byte) BlockConstants.GRASS;
+							this.queueActiveBlockUpdate(x, y, z - 1);
+						} else if (y > 60) {
 							this.blocks[x][y][z] = (byte) BlockConstants.LAVA;
 						}
 					}
@@ -152,8 +146,8 @@ public final class Level {
 	 * should only be used when it really is necessary.
 	 */
 	public void recalculateAllLightDepths() {
-		for(int x = 0; x < width; x++) {
-			for(int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				recalculateLightDepth(x, y);
 			}
 		}
@@ -165,8 +159,8 @@ public final class Level {
 	 * @param y The y coordinates.
 	 */
 	public void recalculateLightDepth(int x, int y) {
-		for(int z = depth - 1; z >= 0; z--) {
-			if(BlockManager.getBlockManager().getBlock(blocks[x][y][z]).doesBlockLight()) {
+		for (int z = depth - 1; z >= 0; z--) {
+			if (BlockManager.getBlockManager().getBlock(blocks[x][y][z]).doesBlockLight()) {
 				lightDepths[x][y] = (short) z;
 				return;
 			}
@@ -181,7 +175,7 @@ public final class Level {
 	 * @param depth The lowest-lit block.
 	 */
 	public void assignLightDepth(int x, int y, int depth) {
-		if(depth > this.height)
+		if (depth > this.height)
 			return;
 		lightDepths[x][y] = (short) depth;
 	}
@@ -193,29 +187,31 @@ public final class Level {
 	 * @return The light depth.
 	 */
 	public int getLightDepth(int x, int y) {
-		return (int) lightDepths[x][y];
+		return lightDepths[x][y];
 	}
-
+	
 	/**
 	 * Performs physics updates on queued blocks.
 	 */
 	public void applyBlockBehaviour() {
 		Queue<Position> currentQueue = new ArrayDeque<Position>(updateQueue);
 		updateQueue.clear();
-		for(Position pos : currentQueue) {
+		for (Position pos : currentQueue) {
 			BlockManager.getBlockManager().getBlock(this.getBlock(pos.getX(), pos.getY(), pos.getZ())).behavePassive(this, pos.getX(), pos.getY(), pos.getZ());
 		}
-		// we only process up to 20 of each type of thinking block every tick, or we'd probably be here all day.
-		for(int type = 0; type < 256; type++) {
-			if(activeBlocks.containsKey(type)) {
-				if(System.currentTimeMillis() - activeTimers.get(type) > BlockManager.getBlockManager().getBlock(type).getTimer()) {
+		// we only process up to 20 of each type of thinking block every tick,
+		// or we'd probably be here all day.
+		for (int type = 0; type < 256; type++) {
+			if (activeBlocks.containsKey(type)) {
+				if (System.currentTimeMillis() - activeTimers.get(type) > BlockManager.getBlockManager().getBlock(type).getTimer()) {
 					int cyclesThisTick = (activeBlocks.get(type).size() > 20 ? 20 : activeBlocks.get(type).size());
-					for(int i = 0; i < cyclesThisTick; i++) {
+					for (int i = 0; i < cyclesThisTick; i++) {
 						Position pos = activeBlocks.get(type).poll();
-						if(pos == null)
+						if (pos == null)
 							break;
-						// the block  that occupies this space might have changed.
-						if(this.getBlock(pos.getX(), pos.getY(), pos.getZ()) == type) {
+						// the block that occupies this space might have
+						// changed.
+						if (this.getBlock(pos.getX(), pos.getY(), pos.getZ()) == type) {
 							// World.getWorld().broadcast("Processing thinker at ("+pos.getX()+","+pos.getY()+","+pos.getZ()+")");
 							BlockManager.getBlockManager().getBlock(type).behaveSchedule(this, pos.getX(), pos.getY(), pos.getZ());
 						}
@@ -233,7 +229,7 @@ public final class Level {
 	public byte[][][] getBlocks() {
 		return blocks;
 	}
-
+	
 	/**
 	 * Gets the width of the level.
 	 * @return The width of the level.
@@ -268,7 +264,7 @@ public final class Level {
 	public void setBlock(int x, int y, int z, int type) {
 		setBlock(x, y, z, type, true);
 	}
-
+	
 	/**
 	 * Sets a block.
 	 * @param x The x coordinate.
@@ -278,52 +274,53 @@ public final class Level {
 	 * @param updateSelf Update self flag.
 	 */
 	public void setBlock(int x, int y, int z, int type, boolean updateSelf) {
-		if(x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
+		if (x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= depth) {
 			return;
 		}
 		byte formerBlock = this.getBlock(x, y, z);
 		blocks[x][y][z] = (byte) type;
-		for(Player player : World.getWorld().getPlayerList().getPlayers()) {
-			player.getSession().getActionSender().sendBlock(x, y, z, (byte)type);
+		for (Player player : World.getWorld().getPlayerList().getPlayers()) {
+			player.getSession().getActionSender().sendBlock(x, y, z, (byte) type);
 		}
-		if(updateSelf) {
+		if (updateSelf) {
 			queueTileUpdate(x, y, z);
 		}
-		if(type == 0) {
+		if (type == 0) {
 			BlockManager.getBlockManager().getBlock(formerBlock).behaveDestruct(this, x, y, z);
 			updateNeighboursAt(x, y, z);
-			if(this.getLightDepth(x, y) == z) {
+			if (this.getLightDepth(x, y) == z) {
 				this.recalculateLightDepth(x, y);
 				this.scheduleZPlantThink(x, y, z);
 			}
 		}
-		if(BlockManager.getBlockManager().getBlock(type).doesThink()) {
+		if (BlockManager.getBlockManager().getBlock(type).doesThink()) {
 			activeBlocks.get(type).add(new Position(x, y, z));
 		}
-		if(BlockManager.getBlockManager().getBlock(type).doesBlockLight()) {
+		if (BlockManager.getBlockManager().getBlock(type).doesBlockLight()) {
 			this.assignLightDepth(x, y, z);
 			this.scheduleZPlantThink(x, y, z);
 		}
-
+		
 	}
 	
 	/**
-	 * Schedules plants to think in a Z coordinate if a block above them changed.
+	 * Schedules plants to think in a Z coordinate if a block above them
+	 * changed.
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
 	public void scheduleZPlantThink(int x, int y, int z) {
-		for(int i = z - 1; i > 0; i--) {
-			if(BlockManager.getBlockManager().getBlock(this.getBlock(x, y, i)).isPlant()) {
+		for (int i = z - 1; i > 0; i--) {
+			if (BlockManager.getBlockManager().getBlock(this.getBlock(x, y, i)).isPlant()) {
 				queueActiveBlockUpdate(x, y, i);
 			}
-			if(BlockManager.getBlockManager().getBlock(this.getBlock(x, y, i)).doesBlockLight()) {
+			if (BlockManager.getBlockManager().getBlock(this.getBlock(x, y, i)).doesBlockLight()) {
 				return;
 			}
 		}
 	}
-
+	
 	/**
 	 * Updates neighbours at the specified coordinate.
 	 * @param x X coordinate.
@@ -347,9 +344,9 @@ public final class Level {
 	 * @param z Z coordinate.
 	 */
 	private void queueTileUpdate(int x, int y, int z) {
-		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
+		if (x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
 			Position pos = new Position(x, y, z);
-			if(!updateQueue.contains(pos)) {
+			if (!updateQueue.contains(pos)) {
 				updateQueue.add(pos);
 			}
 		}
@@ -362,14 +359,14 @@ public final class Level {
 	 * @param z Z coordinate.
 	 */
 	public void queueActiveBlockUpdate(int x, int y, int z) {
-		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
+		if (x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
 			int blockAt = this.getBlock(x, y, z);
-			if(BlockManager.getBlockManager().getBlock(blockAt).doesThink()) {
+			if (BlockManager.getBlockManager().getBlock(blockAt).doesThink()) {
 				activeBlocks.get(blockAt).add(new Position(x, y, z));
 			}
 		}
 	}
-
+	
 	/**
 	 * Gets a block.
 	 * @param x The x coordinate.
@@ -378,13 +375,13 @@ public final class Level {
 	 * @return The type id.
 	 */
 	public byte getBlock(int x, int y, int z) {
-		if(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
+		if (x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth) {
 			return blocks[x][y][z];
 		} else {
 			return 0;
 		}
 	}
-
+	
 	/**
 	 * Set the rotation of the character when spawned.
 	 * @param spawnRotation The rotation.
@@ -392,7 +389,7 @@ public final class Level {
 	public void setSpawnRotation(Rotation spawnRotation) {
 		this.spawnRotation = spawnRotation;
 	}
-
+	
 	/**
 	 * Get the spawning rotation.
 	 * @return The spawning rotation.
@@ -400,7 +397,7 @@ public final class Level {
 	public Rotation getSpawnRotation() {
 		return spawnRotation;
 	}
-
+	
 	/**
 	 * Set the spawn position.
 	 * @param spawnPosition The spawn position.
@@ -408,7 +405,7 @@ public final class Level {
 	public void setSpawnPosition(Position spawnPosition) {
 		this.spawnPosition = spawnPosition;
 	}
-
+	
 	/**
 	 * Get the spawn position.
 	 * @return The spawn position.
@@ -416,5 +413,5 @@ public final class Level {
 	public Position getSpawnPosition() {
 		return spawnPosition;
 	}
-
+	
 }

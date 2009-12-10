@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,23 +39,23 @@ import org.opencraft.server.model.Player;
 /**
  * A brush that creates a flat area (1 in height)
  * @author Søren Enevoldsen
- *
  */
 
 public class FlatBrush extends BrushAdapter {
 	
-	public FlatBrush() {}
+	public FlatBrush() {
+	}
 	
 	public FlatBrush(int radius) {
 		setRadius(radius);
 	}
-
+	
 	@Override
 	protected void paintBlocks(Player player, Level level, int x, int y, int z, boolean adding, int type) {
-			for (int offsetY=-radius; offsetY<=radius; offsetY++)
-				for (int offsetX=-radius; offsetX<=radius; offsetX++)
-					if (positionIsBuildable(offsetX+x, offsetY+y, z) == adding)
-						level.setBlock(offsetX+x, offsetY+y, z, type);
+		for (int offsetY = -radius; offsetY <= radius; offsetY++)
+			for (int offsetX = -radius; offsetX <= radius; offsetX++)
+				if (positionIsBuildable(offsetX + x, offsetY + y, z) == adding)
+					level.setBlock(offsetX + x, offsetY + y, z, type);
 	}
 	
 }

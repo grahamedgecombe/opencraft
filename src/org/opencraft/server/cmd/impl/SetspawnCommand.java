@@ -3,7 +3,7 @@ package org.opencraft.server.cmd.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,25 +41,27 @@ import org.opencraft.server.model.World;
 /**
  * Official /setspawn command
  * @author Søren Enevoldsen
- *
  */
 
 public class SetspawnCommand implements Command {
-
+	
 	private static final SetspawnCommand INSTANCE = new SetspawnCommand();
 	
 	public static SetspawnCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	private SetspawnCommand() {
+		/* empty */
+	}
+	
 	@Override
 	public void execute(Player player, CommandParameters params) {
-		//Player using command is OP?
+		// Player using command is OP?
 		if (player.getAttribute("IsOperator") != null && player.getAttribute("IsOperator").equals("true")) {
 			World.getWorld().getLevel().setSpawnPosition(player.getPosition());
 			World.getWorld().getLevel().setSpawnRotation(player.getRotation());
-		}
-		else
-			player.getActionSender().sendChatMessage("You must be OP to do that");			
+		} else
+			player.getActionSender().sendChatMessage("You must be OP to do that");
 	}
 }

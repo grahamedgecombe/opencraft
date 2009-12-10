@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package org.opencraft.server.net.packet;
 /**
  * Represents a type of packet.
  * @author Graham Edgecombe
- *
  */
 public final class PacketDefinition {
 	
@@ -72,7 +71,7 @@ public final class PacketDefinition {
 		this.fields = fields;
 		// compute packet length
 		int length = 0;
-		for(PacketField field : fields) {
+		for (PacketField field : fields) {
 			length += field.getType().getLength();
 		}
 		this.length = length;
@@ -110,7 +109,7 @@ public final class PacketDefinition {
 	public PacketField[] getFields() {
 		return fields;
 	}
-
+	
 	/**
 	 * Gets the length of this packet.
 	 * @return The length of this packet, in bytes.
@@ -118,5 +117,5 @@ public final class PacketDefinition {
 	public int getLength() {
 		return length;
 	}
-
+	
 }

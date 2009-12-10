@@ -3,7 +3,7 @@ package org.opencraft.server.game.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,43 +38,34 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opencraft.server.cmd.impl.DeOperatorCommand;
-import org.opencraft.server.cmd.impl.KickCommand;
-import org.opencraft.server.cmd.impl.OperatorCommand;
-import org.opencraft.server.cmd.impl.SayCommand;
-import org.opencraft.server.cmd.impl.SetspawnCommand;
-import org.opencraft.server.cmd.impl.TeleportCommand;
 import org.opencraft.server.extensions.brushes.Brush;
 import org.opencraft.server.extensions.brushes.BrushCommand;
 import org.opencraft.server.extensions.brushes.StandardBrush;
-
 import org.opencraft.server.game.GameModeAdapter;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
 
 /**
- * An experimental game mode. Useful for testing things.
- * Currently logs players in memory and greets them accordingly.
- * Now also has the ability to use brushes
- * Has some of the official commands of which op and deop relies on memory
+ * An experimental game mode. Useful for testing things. Currently logs players
+ * in memory and greets them accordingly. Now also has the ability to use
+ * brushes Has some of the official commands of which op and deop relies on
+ * memory
  * @author Søren Enevoldsen
  */
 
 public class ExperimentalGameMode extends GameModeAdapter {
-
-	//People who have connected
-	private Map<String,Date> visitors = new HashMap<String,Date>();
-		
+	
+	/**
+	 * A map of players who have connected.
+	 */
+	private Map<String, Date> visitors = new HashMap<String, Date>();
+	
+	/**
+	 * Registers the experimental game mode commands.
+	 */
 	public ExperimentalGameMode() {
 		registerCommand("brush", BrushCommand.getBrushCommand());
-		//Official commands
-		registerCommand("op", OperatorCommand.getCommand());
-		registerCommand("deop", DeOperatorCommand.getCommand());
-		registerCommand("say", SayCommand.getCommand());
-		registerCommand("kick", KickCommand.getCommand());
-		registerCommand("tp", TeleportCommand.getCommand());
-		registerCommand("setspawn", SetspawnCommand.getCommand());
 	}
 	
 	/**
@@ -88,22 +79,20 @@ public class ExperimentalGameMode extends GameModeAdapter {
 	@Override
 	public void playerConnected(Player player) {
 		String name = player.getName();
-		//New player?
+		// New player?
 		if (!visitors.containsKey(name)) {
 			World.getWorld().broadcast("Welcome " + name + ".");
-		}
-		else {
-			//Welcome back.
-			String lastConnectDate = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-					DateFormat.SHORT).format(visitors.get(name));
+		} else {
+			// Welcome back.
+			String lastConnectDate = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(visitors.get(name));
 			World.getWorld().broadcast("Welcome back " + name + ".");
 			player.getSession().getActionSender().sendChatMessage("You last connect was: " + lastConnectDate + ".");
 			
 		}
-		//Remember connection time
+		// Remember connection time
 		visitors.put(name, new Date());
 		
-		//Give them a brush
+		// Give them a brush
 		player.setAttribute("brush", getDefaultBrush());
 	}
 	
@@ -114,13 +103,14 @@ public class ExperimentalGameMode extends GameModeAdapter {
 	
 	@Override
 	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type) {
-			((Brush)player.getAttribute("brush")).paint(player, level, x, y, z, mode, type);
+		((Brush) player.getAttribute("brush")).paint(player, level, x, y, z, mode, type);
 	}
 	
 	@Override
-	public void broadcastChatMessage(Player player, String message) { // TODO: rank colors?
+	public void broadcastChatMessage(Player player, String message) { // TODO:
+		// rank
+		// colors?
 		World.getWorld().broadcast(player, player.getName() + ": " + message);
 	}
 	
 }
-

@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ import java.util.Set;
 /**
  * The superclass for players and mobs.
  * @author Graham Edgecombe
- *
  */
 public abstract class Entity {
 	
@@ -108,7 +107,7 @@ public abstract class Entity {
 	 * @param id The id.
 	 */
 	public void setId(int id) {
-		if(id == -1) {
+		if (id == -1) {
 			this.oldId = this.id;
 		}
 		this.id = id;
@@ -183,5 +182,5 @@ public abstract class Entity {
 	 * @return The name of this entity.
 	 */
 	public abstract String getName();
-
+	
 }

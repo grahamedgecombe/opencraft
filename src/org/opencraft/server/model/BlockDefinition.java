@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,13 +33,9 @@ package org.opencraft.server.model;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.model.BlockBehaviour;
-
-
 /**
  * Represents an individual block type.
  * @author Brett Russell
- *
  */
 public class BlockDefinition {
 	
@@ -103,7 +99,8 @@ public class BlockDefinition {
 	private boolean doesThink;
 	
 	/**
-	 * Whether this block is a plant (whether it cares about the blocks above it)
+	 * Whether this block is a plant (whether it cares about the blocks above
+	 * it)
 	 */
 	private boolean isPlant;
 	
@@ -114,9 +111,9 @@ public class BlockDefinition {
 	
 	/**
 	 * Constructor.
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	private BlockDefinition(String name, int bid, boolean solid, boolean liquid, boolean blocksLight, boolean halfBlock, boolean doesThink, boolean isPlant, long thinkTimer, int fullCounterpart, String behaviourName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		this.name = name;
@@ -130,7 +127,7 @@ public class BlockDefinition {
 		this.thinkTimer = thinkTimer;
 		this.fullCounterpart = fullCounterpart;
 		this.behaviourName = behaviourName.trim();
-		if(behaviourName.length() > 0) {
+		if (behaviourName.length() > 0) {
 			this.behaviour = (BlockBehaviour) Class.forName(this.behaviourName).newInstance();
 		}
 	}
@@ -138,9 +135,9 @@ public class BlockDefinition {
 	/**
 	 * Resolves this object.
 	 * @return A resolved object.
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	private Object readResolve() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		return new BlockDefinition(name, bid, solid, liquid, blocksLight, halfBlock, doesThink, isPlant, thinkTimer, fullCounterpart, behaviourName);
@@ -153,7 +150,7 @@ public class BlockDefinition {
 	public String getName() {
 		return name;
 	}
-
+	
 	/**
 	 * Gets the ID.
 	 * @return The ID.
@@ -161,7 +158,7 @@ public class BlockDefinition {
 	public int getId() {
 		return bid;
 	}
-
+	
 	/**
 	 * Gets the solidity.
 	 * @return The solidity.
@@ -169,7 +166,7 @@ public class BlockDefinition {
 	public boolean isSolid() {
 		return solid;
 	}
-
+	
 	/**
 	 * Gets the fluidity.
 	 * @return The fluidity.
@@ -177,7 +174,7 @@ public class BlockDefinition {
 	public boolean isLiquid() {
 		return liquid;
 	}
-
+	
 	/**
 	 * Gets the transparency.
 	 * @return The transparency.
@@ -185,7 +182,7 @@ public class BlockDefinition {
 	public boolean doesBlockLight() {
 		return blocksLight;
 	}
-
+	
 	/**
 	 * Gets the size.
 	 * @return The size.
@@ -193,7 +190,7 @@ public class BlockDefinition {
 	public boolean isHalfBlock() {
 		return halfBlock;
 	}
-
+	
 	/**
 	 * Gets the periodic physics check state.
 	 * @return The... yeah.
@@ -211,7 +208,7 @@ public class BlockDefinition {
 	 * @param type
 	 */
 	public void behavePassive(Level level, int x, int y, int z) {
-		if(behaviour == null) {
+		if (behaviour == null) {
 			return;
 		}
 		this.behaviour.handlePassive(level, x, y, z, this.bid);
@@ -226,7 +223,7 @@ public class BlockDefinition {
 	 * @param type
 	 */
 	public void behaveDestruct(Level level, int x, int y, int z) {
-		if(behaviour == null) {
+		if (behaviour == null) {
 			return;
 		}
 		this.behaviour.handleDestroy(level, x, y, z, this.bid);
@@ -241,7 +238,7 @@ public class BlockDefinition {
 	 * @param type
 	 */
 	public void behaveSchedule(Level level, int x, int y, int z) {
-		if(behaviour == null) {
+		if (behaviour == null) {
 			return;
 		}
 		this.behaviour.handleScheduledBehaviour(level, x, y, z, this.bid);
@@ -254,7 +251,7 @@ public class BlockDefinition {
 	public long getTimer() {
 		return thinkTimer;
 	}
-
+	
 	/**
 	 * Gets this blocks' "plant" state.
 	 * @return Whether or not this block is a plant.
@@ -262,18 +259,16 @@ public class BlockDefinition {
 	public boolean isPlant() {
 		return isPlant;
 	}
-
+	
 	/**
 	 * Gets the fullsize counterpart for this block.
 	 * @return The fullsize counterpart ID.
 	 */
 	public int getFullCounterpart() {
-		if(halfBlock) {
+		if (halfBlock) {
 			return fullCounterpart;
 		} else {
 			return 0;
 		}
 	}
 }
-	
-

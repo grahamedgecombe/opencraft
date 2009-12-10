@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet.handler.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,13 +41,12 @@ import org.opencraft.server.net.packet.handler.PacketHandler;
 /**
  * A packet handler which handles the construction packet.
  * @author Graham Edgecombe
- *
  */
 public class ConstructionPacketHandler implements PacketHandler {
-
+	
 	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {
-		if(!session.isAuthenticated()) {
+		if (!session.isAuthenticated()) {
 			return;
 		}
 		int x = packet.getNumericField("x").intValue();
@@ -55,8 +54,7 @@ public class ConstructionPacketHandler implements PacketHandler {
 		int z = packet.getNumericField("z").intValue();
 		int mode = packet.getNumericField("mode").intValue();
 		int type = packet.getNumericField("type").intValue();
-		World.getWorld().getGameMode().setBlock(session.getPlayer(),
-				World.getWorld().getLevel(),x, y, z, mode, type);
+		World.getWorld().getGameMode().setBlock(session.getPlayer(), World.getWorld().getLevel(), x, y, z, mode, type);
 	}
-
+	
 }

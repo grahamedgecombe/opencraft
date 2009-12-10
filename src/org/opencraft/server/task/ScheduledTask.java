@@ -3,7 +3,7 @@ package org.opencraft.server.task;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package org.opencraft.server.task;
 /**
  * Represents a task which can be repeated multiple times and then stopoped.
  * @author Graham Edgecombe
- *
  */
 public abstract class ScheduledTask implements Task {
 	
@@ -88,5 +87,5 @@ public abstract class ScheduledTask implements Task {
 	public void stop() {
 		running = false;
 	}
-
+	
 }

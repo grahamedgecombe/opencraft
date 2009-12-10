@@ -3,7 +3,7 @@ package org.opencraft.server.task.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +44,9 @@ import org.opencraft.server.task.ScheduledTask;
 /**
  * Updates the players and game world.
  * @author Graham Edgecombe
- *
  */
 public class UpdateTask extends ScheduledTask {
-
+	
 	/**
 	 * The delay.
 	 */
@@ -59,33 +58,33 @@ public class UpdateTask extends ScheduledTask {
 	public UpdateTask() {
 		super(DELAY);
 	}
-
+	
 	@Override
 	public void execute() {
 		final World world = World.getWorld();
-		for(Player player : world.getPlayerList().getPlayers()) {
+		for (Player player : world.getPlayerList().getPlayers()) {
 			Set<Entity> localEntities = player.getLocalEntities();
 			Iterator<Entity> localEntitiesIterator = localEntities.iterator();
-			while(localEntitiesIterator.hasNext()) {
+			while (localEntitiesIterator.hasNext()) {
 				Entity localEntity = localEntitiesIterator.next();
-				if(localEntity.getId() == -1) {
+				if (localEntity.getId() == -1) {
 					localEntitiesIterator.remove();
 					player.getSession().getActionSender().sendRemoveEntity(localEntity);
 				} else {
 					player.getSession().getActionSender().sendUpdateEntity(localEntity);
 				}
 			}
-			for(Player otherEntity : world.getPlayerList().getPlayers()) {
-				if(!localEntities.contains(otherEntity) && otherEntity != player) {
+			for (Player otherEntity : world.getPlayerList().getPlayers()) {
+				if (!localEntities.contains(otherEntity) && otherEntity != player) {
 					localEntities.add(otherEntity);
 					player.getSession().getActionSender().sendAddEntity(otherEntity);
 				}
 			}
 		}
-		for(Player player : world.getPlayerList().getPlayers()) {
+		for (Player player : world.getPlayerList().getPlayers()) {
 			player.resetOldPositionAndRotation();
 		}
 		world.getLevel().applyBlockBehaviour();
 	}
-
+	
 }

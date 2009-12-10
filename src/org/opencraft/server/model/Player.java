@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@ import org.opencraft.server.net.MinecraftSession;
 /**
  * Represents a connected player.
  * @author Graham Edgecombe
- *
  */
 public final class Player extends Entity {
 	
@@ -74,8 +73,8 @@ public final class Player extends Entity {
 	 * Sets an attribute of this player.
 	 * @param name The name of the attribute.
 	 * @param value The value of the attribute.
-	 * @return The old value of the attribute, or <code>null</code> if there
-	 * was no previous attribute with that name.
+	 * @return The old value of the attribute, or <code>null</code> if there was
+	 * no previous attribute with that name.
 	 */
 	public Object setAttribute(String name, Object value) {
 		return attributes.put(name, value);
@@ -84,8 +83,8 @@ public final class Player extends Entity {
 	/**
 	 * Gets an attribute.
 	 * @param name The name of the attribute.
-	 * @return The attribute, or <code>null</code> if there is not an
-	 * attribute with that name.
+	 * @return The attribute, or <code>null</code> if there is not an attribute
+	 * with that name.
 	 */
 	public Object getAttribute(String name) {
 		return attributes.get(name);
@@ -114,7 +113,7 @@ public final class Player extends Entity {
 	public String getName() {
 		return name;
 	}
-
+	
 	/**
 	 * Gets the player's session.
 	 * @return The session.
@@ -122,7 +121,7 @@ public final class Player extends Entity {
 	public MinecraftSession getSession() {
 		return session;
 	}
-
+	
 	/**
 	 * Gets this player's action sender.
 	 * @return The action sender.
@@ -130,5 +129,5 @@ public final class Player extends Entity {
 	public ActionSender getActionSender() {
 		return session.getActionSender();
 	}
-
+	
 }

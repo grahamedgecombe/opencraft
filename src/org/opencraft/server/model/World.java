@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,6 @@ import org.opencraft.server.util.PlayerList;
 /**
  * Manages the in-game world.
  * @author Graham Edgecombe
- *
  */
 public final class World {
 	
@@ -67,7 +66,7 @@ public final class World {
 		World w = null;
 		try {
 			w = new World();
-		} catch(Throwable t) {
+		} catch (Throwable t) {
 			throw new ExceptionInInitializerError(t);
 		}
 		INSTANCE = w;
@@ -80,7 +79,7 @@ public final class World {
 	public static World getWorld() {
 		return INSTANCE;
 	}
-		
+	
 	/**
 	 * The level.
 	 */
@@ -98,9 +97,9 @@ public final class World {
 	
 	/**
 	 * Default private constructor.
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	private World() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		gameMode = (GameMode) Class.forName(Configuration.getConfiguration().getGameMode()).newInstance();
@@ -130,7 +129,7 @@ public final class World {
 	public Level getLevel() {
 		return level;
 	}
-
+	
 	/**
 	 * Registers a session.
 	 * @param session The session.
@@ -139,7 +138,7 @@ public final class World {
 	 */
 	public void register(MinecraftSession session, String username, String verificationKey) {
 		// verify name
-		if(Configuration.getConfiguration().isVerifyingNames()) {
+		if (Configuration.getConfiguration().isVerifyingNames()) {
 			long salt = HeartbeatManager.getHeartbeatManager().getSalt();
 			String hash = new StringBuilder().append(String.valueOf(salt)).append(username).toString();
 			MessageDigest digest;
@@ -149,29 +148,29 @@ public final class World {
 				throw new RuntimeException("No MD5 algorithm!");
 			}
 			digest.update(hash.getBytes());
-			if(!verificationKey.equals(new BigInteger(1, digest.digest()).toString(16))) {
+			if (!verificationKey.equals(new BigInteger(1, digest.digest()).toString(16))) {
 				session.getActionSender().sendLoginFailure("Illegal name.");
 				return;
 			}
 		}
 		// check if name is valid
 		char[] nameChars = username.toCharArray();
-		for(char nameChar : nameChars) {
-			if(nameChar < ' ' || nameChar > '\177') {
+		for (char nameChar : nameChars) {
+			if (nameChar < ' ' || nameChar > '\177') {
 				session.getActionSender().sendLoginFailure("Invalid name!");
 				return;
 			}
 		}
 		// disconnect any existing players with the same name
-		for(Player p : playerList.getPlayers()) {
-			if(p.getName().equalsIgnoreCase(username)) {
+		for (Player p : playerList.getPlayers()) {
+			if (p.getName().equalsIgnoreCase(username)) {
 				p.getSession().getActionSender().sendLoginFailure("Logged in from another computer.");
 				break;
 			}
 		}
 		// attempt to add the player
 		final Player player = new Player(session, username);
-		if(!playerList.add(player)) {
+		if (!playerList.add(player)) {
 			player.getSession().getActionSender().sendLoginFailure("Too many players online!");
 			return;
 		}
@@ -181,40 +180,40 @@ public final class World {
 		session.getActionSender().sendLoginResponse(Constants.PROTOCOL_VERSION, c.getName(), c.getMessage(), false);
 		LevelGzipper.getLevelGzipper().gzipLevel(session);
 	}
-
+	
 	/**
 	 * Unregisters a session.
 	 * @param session The session.
 	 */
 	public void unregister(MinecraftSession session) {
-		if(session.isAuthenticated()) {
+		if (session.isAuthenticated()) {
 			playerList.remove(session.getPlayer());
 			World.getWorld().getGameMode().playerDisconnected(session.getPlayer());
-			session.setPlayer(null);	
+			session.setPlayer(null);
 		}
 	}
-
+	
 	/**
 	 * Completes registration of a session.
 	 * @param session The session.
 	 */
 	public void completeRegistration(MinecraftSession session) {
-		if(!session.isAuthenticated()) {
+		if (!session.isAuthenticated()) {
 			session.close();
 			return;
 		}
 		session.getActionSender().sendChatMessage("Welcome to OpenCraft!");
-		//Notify game mode
+		// Notify game mode
 		World.getWorld().getGameMode().playerConnected(session.getPlayer());
 	}
-
+	
 	/**
 	 * Broadcasts a chat message.
 	 * @param player The source player.
 	 * @param message The message.
 	 */
 	public void broadcast(Player player, String message) {
-		for(Player otherPlayer : playerList.getPlayers()) {
+		for (Player otherPlayer : playerList.getPlayers()) {
 			otherPlayer.getSession().getActionSender().sendChatMessage(player.getId(), message);
 		}
 	}
@@ -224,9 +223,9 @@ public final class World {
 	 * @param message The message.
 	 */
 	public void broadcast(String message) {
-		for(Player player : playerList.getPlayers()) {
+		for (Player player : playerList.getPlayers()) {
 			player.getSession().getActionSender().sendChatMessage(message);
 		}
 	}
-
+	
 }

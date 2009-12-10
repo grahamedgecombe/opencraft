@@ -3,7 +3,7 @@ package org.opencraft.server.task.impl;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ import org.opencraft.server.task.Task;
 /**
  * A task which opens a session.
  * @author Graham Edgecombe
- *
  */
 public final class SessionOpenedTask implements Task {
 	
@@ -48,7 +47,7 @@ public final class SessionOpenedTask implements Task {
 	 * The session.
 	 */
 	private final IoSession session;
-
+	
 	/**
 	 * Creates the session opened task.
 	 * @param session The session.
@@ -56,10 +55,10 @@ public final class SessionOpenedTask implements Task {
 	public SessionOpenedTask(IoSession session) {
 		this.session = session;
 	}
-
+	
 	@Override
 	public void execute() {
 		session.setAttribute("attachment", new MinecraftSession(session));
 	}
-
+	
 }

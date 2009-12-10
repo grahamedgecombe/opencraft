@@ -3,7 +3,7 @@ package org.opencraft.server.net.packet;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ import java.util.Map;
 /**
  * A utility class for creating <code>Packet</code> objects.
  * @author Graham Edgecombe
- *
  */
 public final class PacketBuilder {
 	
@@ -75,9 +74,9 @@ public final class PacketBuilder {
 	 * @param type The data type.
 	 */
 	private void validateField(String name, DataType type) {
-		for(PacketField f : definition.getFields()) {
-			if(f.getName().equals(name)) {
-				if(f.getType().equals(type)) {
+		for (PacketField f : definition.getFields()) {
+			if (f.getName().equals(name)) {
+				if (f.getType().equals(type)) {
 					return;
 				} else {
 					throw new IllegalArgumentException("Incorrect data type - expecting " + f.getType() + ".");
@@ -138,7 +137,7 @@ public final class PacketBuilder {
 	 */
 	public PacketBuilder putString(String name, String value) {
 		validateField(name, DataType.STRING);
-		if(value.length() > 64) {
+		if (value.length() > 64) {
 			throw new IllegalArgumentException("String exceeds maximum length of 64 characters.");
 		}
 		values.put(name, value);
@@ -152,11 +151,11 @@ public final class PacketBuilder {
 	 */
 	public PacketBuilder putByteArray(String name, byte[] value) {
 		validateField(name, DataType.BYTE_ARRAY);
-		if(value.length > 1024) {
+		if (value.length > 1024) {
 			throw new IllegalArgumentException("Byte array exceeds maximum length of 1024 characters.");
 		}
 		values.put(name, value);
 		return this;
 	}
-
+	
 }

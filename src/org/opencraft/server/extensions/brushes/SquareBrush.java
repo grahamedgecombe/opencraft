@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,12 +39,12 @@ import org.opencraft.server.model.Player;
 /**
  * A Brush that makes square blocks
  * @author Søren Enevoldsen
- *
  */
 
 public class SquareBrush extends BrushAdapter {
-
-	public SquareBrush() {}
+	
+	public SquareBrush() {
+	}
 	
 	public SquareBrush(int radius) {
 		setRadius(radius);
@@ -52,12 +52,11 @@ public class SquareBrush extends BrushAdapter {
 	
 	@Override
 	protected void paintBlocks(Player player, Level level, int x, int y, int z, boolean adding, int type) {
-		for (int offsetZ=-radius; offsetZ<=radius; offsetZ++)
-			for (int offsetY=-radius; offsetY<=radius; offsetY++)
-				for (int offsetX=-radius; offsetX<=radius; offsetX++)
-					if (positionIsBuildable(offsetX+x, offsetY+y, offsetZ+z) == adding)
-						level.setBlock(offsetX+x, offsetY+y, offsetZ+z, type);
+		for (int offsetZ = -radius; offsetZ <= radius; offsetZ++)
+			for (int offsetY = -radius; offsetY <= radius; offsetY++)
+				for (int offsetX = -radius; offsetX <= radius; offsetX++)
+					if (positionIsBuildable(offsetX + x, offsetY + y, offsetZ + z) == adding)
+						level.setBlock(offsetX + x, offsetY + y, offsetZ + z, type);
 	}
-
 	
 }

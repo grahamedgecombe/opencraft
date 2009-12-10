@@ -3,7 +3,7 @@ package org.opencraft.server.game;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.opencraft.server.cmd.Command;
+import org.opencraft.server.cmd.impl.DeOperatorCommand;
+import org.opencraft.server.cmd.impl.KickCommand;
+import org.opencraft.server.cmd.impl.OperatorCommand;
+import org.opencraft.server.cmd.impl.SayCommand;
+import org.opencraft.server.cmd.impl.SetspawnCommand;
+import org.opencraft.server.cmd.impl.TeleportCommand;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
 import org.opencraft.server.model.World;
@@ -45,14 +51,26 @@ import org.opencraft.server.model.World;
  * An implementation of a game mode that does the majority of the work for the
  * game mode developer.
  * @author Graham Edgecombe
- *
  */
 public abstract class GameModeAdapter implements GameMode {
-
+	
 	/**
 	 * The command map.
 	 */
 	private final Map<String, Command> commands = new HashMap<String, Command>();
+	
+	/**
+	 * Creates the game mode adapter with default settings.
+	 */
+	public GameModeAdapter() {
+		// these commands are standard to every game mode
+		registerCommand("op", OperatorCommand.getCommand());
+		registerCommand("deop", DeOperatorCommand.getCommand());
+		registerCommand("say", SayCommand.getCommand());
+		registerCommand("kick", KickCommand.getCommand());
+		registerCommand("tp", TeleportCommand.getCommand());
+		registerCommand("setspawn", SetspawnCommand.getCommand());
+	}
 	
 	/**
 	 * Adds a command
@@ -68,25 +86,24 @@ public abstract class GameModeAdapter implements GameMode {
 		return commands;
 	}
 	
-	//Default implementation
+	// Default implementation
 	public void playerConnected(Player player) {
 		World.getWorld().broadcast("Welcome " + player.getName());
 	}
 	
-	//Default implementation
-	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type)
-	{
+	// Default implementation
+	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type) {
 		level.setBlock(x, y, z, (byte) (mode == 1 ? type : 0));
 	}
 	
-	//Default implementation
+	// Default implementation
 	public void playerDisconnected(Player player) {
 		World.getWorld().broadcast(player.getName() + " disconnected.");
 	}
 	
-	//Default implementation
+	// Default implementation
 	public void broadcastChatMessage(Player player, String message) {
 		World.getWorld().broadcast(player, player.getName() + ": " + message);
 	}
-
+	
 }

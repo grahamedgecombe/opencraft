@@ -3,7 +3,7 @@ package org.opencraft.server.model;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package org.opencraft.server.model;
 /**
  * Represents a location in the game world.
  * @author Graham Edgecombe
- *
  */
 public final class Position {
 	
@@ -74,7 +73,7 @@ public final class Position {
 	public int getX() {
 		return x;
 	}
-
+	
 	/**
 	 * Gets the y coordinate.
 	 * @return The y coordinate.

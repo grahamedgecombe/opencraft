@@ -5,7 +5,7 @@ import org.opencraft.server.model.Player;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ import org.opencraft.server.model.Player;
 /**
  * Represents a specific command.
  * @author Graham Edgecombe
- *
  */
 public interface Command {
 	
@@ -48,5 +47,5 @@ public interface Command {
 	 * @param params The parameters.
 	 */
 	public void execute(Player player, CommandParameters params);
-
+	
 }

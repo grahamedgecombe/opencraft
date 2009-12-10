@@ -3,7 +3,7 @@ package org.opencraft.server.util;
 /*
  * OpenCraft License
  * 
-* Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,6 @@ import org.opencraft.server.model.Player;
 /**
  * A class which manages the list of connected players.
  * @author Graham Edgecombe
- *
  */
 public class PlayerList {
 	
@@ -76,8 +75,8 @@ public class PlayerList {
 	 */
 	public Collection<Player> getPlayers() {
 		List<Player> playerList = new LinkedList<Player>();
-		for(Player p : players) {
-			if(p != null) {
+		for (Player p : players) {
+			if (p != null) {
 				playerList.add(p);
 			}
 		}
@@ -87,12 +86,12 @@ public class PlayerList {
 	/**
 	 * Adds a player.
 	 * @param player The new player.
-	 * @return <code>true</code> if they could be added, <code>false</code>
-	 * if not.
+	 * @return <code>true</code> if they could be added, <code>false</code> if
+	 * not.
 	 */
 	public boolean add(Player player) {
-		for(int i = 0; i < players.length; i++) {
-			if(players[i] == null) {
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] == null) {
 				players[i] = player;
 				player.setId(i);
 				size++;
@@ -108,13 +107,13 @@ public class PlayerList {
 	 */
 	public void remove(Player player) {
 		int id = player.getId();
-		if(id != -1 && players[id] == player) {
+		if (id != -1 && players[id] == player) {
 			players[id] = null;
 			size--;
 		}
 		player.setId(-1);
 	}
-
+	
 	/**
 	 * Gets the number of online players.
 	 * @return The player list size.
