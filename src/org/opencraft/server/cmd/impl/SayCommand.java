@@ -45,12 +45,22 @@ import org.opencraft.server.model.World;
 
 public class SayCommand implements Command {
 	
+	/**
+	 * The instance of this command.
+	 */
 	private static final SayCommand INSTANCE = new SayCommand();
 	
+	/**
+	 * Gets the singleton instance of this command.
+	 * @return The singleton instance of this command.
+	 */
 	public static SayCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Default private constructor.
+	 */
 	private SayCommand() {
 		/* empty */
 	}

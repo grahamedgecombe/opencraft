@@ -45,12 +45,22 @@ import org.opencraft.server.model.World;
 
 public class SetspawnCommand implements Command {
 	
+	/**
+	 * The instance of this command.
+	 */
 	private static final SetspawnCommand INSTANCE = new SetspawnCommand();
 	
+	/**
+	 * Gets the singleton instance of this command.
+	 * @return The singleton instance of this command.
+	 */
 	public static SetspawnCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Default private constructor.
+	 */
 	private SetspawnCommand() {
 		/* empty */
 	}

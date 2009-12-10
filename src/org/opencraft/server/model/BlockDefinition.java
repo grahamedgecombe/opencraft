@@ -201,11 +201,10 @@ public class BlockDefinition {
 	
 	/**
 	 * Apply passive physics.
-	 * @param level
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param type
+	 * @param level The level.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
 	 */
 	public void behavePassive(Level level, int x, int y, int z) {
 		if (behaviour == null) {
@@ -216,11 +215,10 @@ public class BlockDefinition {
 	
 	/**
 	 * Apply physics on block destruction.
-	 * @param level
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param type
+	 * @param level The level.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
 	 */
 	public void behaveDestruct(Level level, int x, int y, int z) {
 		if (behaviour == null) {
@@ -231,11 +229,10 @@ public class BlockDefinition {
 	
 	/**
 	 * Apply periodic physics.
-	 * @param level
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param type
+	 * @param level The level.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param z The z coordinate.
 	 */
 	public void behaveSchedule(Level level, int x, int y, int z) {
 		if (behaviour == null) {

@@ -45,12 +45,22 @@ import org.opencraft.server.model.World;
 
 public class TeleportCommand implements Command {
 	
+	/**
+	 * The instance of this command.
+	 */
 	private static final TeleportCommand INSTANCE = new TeleportCommand();
 	
+	/**
+	 * Gets the singleton instance of this command.
+	 * @return The singleton instance of this command.
+	 */
 	public static TeleportCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Default private constructor.
+	 */
 	private TeleportCommand() {
 		/* empty */
 	}

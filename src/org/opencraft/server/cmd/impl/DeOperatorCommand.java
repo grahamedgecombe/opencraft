@@ -45,12 +45,22 @@ import org.opencraft.server.model.World;
 
 public class DeOperatorCommand implements Command {
 	
+	/**
+	 * The instance of this command.
+	 */
 	private static final DeOperatorCommand INSTANCE = new DeOperatorCommand();
 	
+	/**
+	 * Gets the singleton instance of this command.
+	 * @return The singleton instance of this command.
+	 */
 	public static DeOperatorCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Default private constructor.
+	 */
 	private DeOperatorCommand() {
 		/* empty */
 	}

@@ -45,12 +45,22 @@ import org.opencraft.server.model.World;
 
 public class KickCommand implements Command {
 	
+	/**
+	 * The instance of this command.
+	 */
 	private static final KickCommand INSTANCE = new KickCommand();
 	
+	/**
+	 * Gets the singleton instance of this command.
+	 * @return The singleton instance of this command.
+	 */
 	public static KickCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Default private constructor.
+	 */
 	private KickCommand() {
 		/* empty */
 	}

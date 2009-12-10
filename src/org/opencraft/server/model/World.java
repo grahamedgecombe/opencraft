@@ -62,6 +62,9 @@ public final class World {
 	 */
 	private static final Logger logger = Logger.getLogger(World.class.getName());
 	
+	/**
+	 * Static initializer.
+	 */
 	static {
 		World w = null;
 		try {

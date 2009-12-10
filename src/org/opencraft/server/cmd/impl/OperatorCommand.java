@@ -45,12 +45,22 @@ import org.opencraft.server.model.World;
 
 public class OperatorCommand implements Command {
 	
+	/**
+	 * The instance of this command.
+	 */
 	private static final OperatorCommand INSTANCE = new OperatorCommand();
 	
+	/**
+	 * Gets the singleton instance of this command.
+	 * @return The singleton instance of this command.
+	 */
 	public static OperatorCommand getCommand() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Default private constructor.
+	 */
 	private OperatorCommand() {
 		/* empty */
 	}

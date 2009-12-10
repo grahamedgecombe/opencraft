@@ -3,7 +3,7 @@ package org.opencraft.server.extensions.brushes;
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Søren Enevoldsen and Graham Edgecombe.
+ * 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +44,24 @@ import org.opencraft.server.model.Player;
 
 public final class BrushCommand implements Command {
 	
+	/**
+	 * The instance of this command.
+	 */
 	private static final BrushCommand INSTANCE = new BrushCommand();
 	
+	/**
+	 * Gets the singleton instance of this command.
+	 * @return The singleton instance of this command.
+	 */
 	public static BrushCommand getBrushCommand() {
 		return INSTANCE;
+	}
+	
+	/**
+	 * Default private constructor.
+	 */
+	private BrushCommand() {
+		/* empty */
 	}
 	
 	private void usage(Player player) {

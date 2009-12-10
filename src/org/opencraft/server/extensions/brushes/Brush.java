@@ -40,12 +40,18 @@ import org.opencraft.server.model.Player;
  * Represents the brush used to "paint" the level with.
  * @author Søren Enevoldsen
  */
-
-abstract public class Brush {
+public abstract class Brush {
 	
+	/**
+	 * Creates the brush with the default radius.
+	 */
 	public Brush() {
 	}
 	
+	/**
+	 * Creates the brush with the specified radius.
+	 * @param radius The radius of this brush.
+	 */
 	public Brush(int radius) {
 	}
 	
