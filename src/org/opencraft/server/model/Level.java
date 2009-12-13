@@ -306,9 +306,9 @@ public final class Level {
 	/**
 	 * Schedules plants to think in a Z coordinate if a block above them
 	 * changed.
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x X coordinate.
+	 * @param y Y coordinate.
+	 * @param z Z coordinate.
 	 */
 	public void scheduleZPlantThink(int x, int y, int z) {
 		for (int i = z - 1; i > 0; i--) {

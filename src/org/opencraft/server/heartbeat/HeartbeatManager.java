@@ -139,7 +139,7 @@ public class HeartbeatManager {
 					conn.setDoOutput(true);
 					conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 					conn.setRequestProperty("Content-Length", String.valueOf(bytes.length));
-					// this emulates the minecraft client exactly.. idk why
+					// this emulates the minecraft server exactly.. idk why
 					// notch added this personally
 					conn.setRequestProperty("Content-Language", "en-US");
 					conn.setUseCaches(false);

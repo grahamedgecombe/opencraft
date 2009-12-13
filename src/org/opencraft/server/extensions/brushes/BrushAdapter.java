@@ -43,10 +43,9 @@ import org.opencraft.server.model.World;
  * necessary
  * @author Søren Enevoldsen
  */
-
 public abstract class BrushAdapter extends Brush {
 	
-	boolean useForDelete = false;
+	protected boolean useForDelete = false;
 	protected int minWidth = 1;
 	protected int minHeight = 1;
 	protected int minLength = 1;
@@ -80,14 +79,27 @@ public abstract class BrushAdapter extends Brush {
 	protected int zOffStart;
 	protected int zOffEnd;
 	
+	/**
+	 * Creates the brush adapter with the default radius.
+	 */
 	public BrushAdapter() {
 		setRadius(1);
 	}
 	
+	/**
+	 * Creates the brush adapter with the specified radius.
+	 * @param radius The radius.
+	 */
 	public BrushAdapter(int radius) {
 		setRadius(radius);
 	}
 	
+	/**
+	 * Creates the brush adapter with the specified width, length and height.
+	 * @param width The width.
+	 * @param length The length.
+	 * @param height The height.
+	 */
 	public BrushAdapter(int width, int length, int height) {
 		setWidth(width);
 		setLength(length);
