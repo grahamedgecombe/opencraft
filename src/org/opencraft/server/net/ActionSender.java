@@ -40,6 +40,8 @@ import org.opencraft.server.model.Rotation;
 import org.opencraft.server.model.World;
 import org.opencraft.server.net.packet.PacketBuilder;
 import org.opencraft.server.net.packet.PacketManager;
+import org.opencraft.server.persistence.LoadPersistenceRequest;
+import org.opencraft.server.persistence.SavedGameManager;
 import org.opencraft.server.task.Task;
 import org.opencraft.server.task.TaskQueue;
 
@@ -126,8 +128,8 @@ public class ActionSender {
 				bldr.putShort("depth", level.getDepth());
 				sendTeleport(level.getSpawnPosition(), level.getSpawnRotation());
 				session.send(bldr.toPacket());
-				session.setReady();
-				World.getWorld().completeRegistration(session);
+				// now load the player's game (TODO in the future do this in parallel with loading the level)
+				SavedGameManager.getSavedGameManager().queuePersistenceRequest(new LoadPersistenceRequest(session.getPlayer()));
 			}
 		});
 	}

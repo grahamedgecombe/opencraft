@@ -107,4 +107,12 @@ public final class PersistenceManager {
 		}
 	}
 	
+	/**
+	 * Gets the xstream object.
+	 * @return the xstream object.
+	 */
+	public XStream getXStream() {
+		return xstream;
+	}
+	
 }

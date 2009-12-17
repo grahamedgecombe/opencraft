@@ -44,6 +44,8 @@ import org.opencraft.server.game.GameMode;
 import org.opencraft.server.heartbeat.HeartbeatManager;
 import org.opencraft.server.io.LevelGzipper;
 import org.opencraft.server.net.MinecraftSession;
+import org.opencraft.server.persistence.SavedGameManager;
+import org.opencraft.server.persistence.SavePersistenceRequest;
 import org.opencraft.server.util.PlayerList;
 
 /**
@@ -192,6 +194,7 @@ public final class World {
 		if (session.isAuthenticated()) {
 			playerList.remove(session.getPlayer());
 			World.getWorld().getGameMode().playerDisconnected(session.getPlayer());
+			SavedGameManager.getSavedGameManager().queuePersistenceRequest(new SavePersistenceRequest(session.getPlayer()));
 			session.setPlayer(null);
 		}
 	}

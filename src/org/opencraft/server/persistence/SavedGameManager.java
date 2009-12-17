@@ -37,23 +37,28 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.opencraft.server.io.PersistenceManager;
+import org.opencraft.server.model.Player;
+
+import com.thoughtworks.xstream.XStream;
+
 /**
- * The core class of the persistence system.
+ * The core class of the saved game system.
  * @author Graham Edgecombe
  *
  */
-public class PersistenceManager {
+public class SavedGameManager {
 	
 	/**
 	 * The singleton instance of the persistence manager.
 	 */
-	private static final PersistenceManager INSTANCE = new PersistenceManager();
+	private static final SavedGameManager INSTANCE = new SavedGameManager();
 	
 	/**
-	 * Gets the persistence manager instance.
-	 * @return The persistence manager instance.
+	 * Gets the saved game manager instance.
+	 * @return The saved game manager instance.
 	 */
-	public static PersistenceManager getPersistenceManager() {
+	public static SavedGameManager getSavedGameManager() {
 		return INSTANCE;
 	}
 	
@@ -61,11 +66,29 @@ public class PersistenceManager {
 	 * The executor service in which persistence requests are executed.
 	 */
 	private ExecutorService service = Executors.newSingleThreadExecutor();
+	
 	/**
-	 * Creates the persistence manager.
+	 * Creates the saved game manager.
 	 */
-	private PersistenceManager() {
+	private SavedGameManager() {
 		/* empty */
+	}
+	
+	/**
+	 * Gets the xstream instance.
+	 * @return The xstream instance.
+	 */
+	public XStream getXStream() {
+		return PersistenceManager.getPersistenceManager().getXStream();
+	}
+	
+	/**
+	 * Gets the path to a saved game.
+	 * @param player The player.
+	 * @return The path to their saved game.
+	 */
+	public String getPath(Player player) {
+		return "./data/savedGames/" + player.getName().toLowerCase() + ".xml";
 	}
 	
 	/**

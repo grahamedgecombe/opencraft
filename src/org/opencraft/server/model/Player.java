@@ -129,5 +129,13 @@ public final class Player extends Entity {
 	public ActionSender getActionSender() {
 		return session.getActionSender();
 	}
+
+	/**
+	 * Gets the attributes map.
+	 * @return The attributes map.
+	 */
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
 	
 }

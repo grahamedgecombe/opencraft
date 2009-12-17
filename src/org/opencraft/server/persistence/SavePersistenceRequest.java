@@ -33,7 +33,13 @@ package org.opencraft.server.persistence;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.opencraft.server.model.Player;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * A persistence request which saves the specified player.
@@ -51,9 +57,16 @@ public class SavePersistenceRequest extends PersistenceRequest {
 	}
 
 	@Override
-	public void perform() {
+	public void perform() throws IOException {
+		final SavedGameManager mgr = SavedGameManager.getSavedGameManager();
 		final Player player = getPlayer();
-		// TODO save the player
+		final XStream xs = mgr.getXStream();
+		final File file = new File(mgr.getPath(player));
+		try {
+			xs.toXML(player.getAttributes(), new FileOutputStream(file));
+		} catch (RuntimeException ex) {
+			throw new IOException(ex);
+		}
 	}
 	
 }

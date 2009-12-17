@@ -33,6 +33,10 @@ package org.opencraft.server.persistence;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.opencraft.server.model.Player;
 
 /**
@@ -41,6 +45,11 @@ import org.opencraft.server.model.Player;
  *
  */
 public abstract class PersistenceRequest implements Runnable {
+	
+	/**
+	 * Logger instance.
+	 */
+	private static final Logger logger = Logger.getLogger(PersistenceRequest.class.getName());
 	
 	/**
 	 * The player.
@@ -66,7 +75,7 @@ public abstract class PersistenceRequest implements Runnable {
 	/**
 	 * Performs the persistence request.
 	 */
-	public abstract void perform();
+	public abstract void perform() throws IOException;
 	
 	/**
 	 * Calls the <code>perform</code> method to actually run the persistence
@@ -74,7 +83,13 @@ public abstract class PersistenceRequest implements Runnable {
 	 */
 	@Override
 	public final void run() {
-		perform();
+		try {
+			perform();
+			logger.info(getClass().getName() + " for : " + player.getName() + " succeeded.");
+		} catch (IOException ex) {
+			logger.log(Level.SEVERE, getClass().getName() + " for : " + player.getName() + " failed.", ex);
+			player.getSession().getActionSender().sendLoginFailure("Persistence request failed. Please try again.");
+		}
 	}
 	
 }

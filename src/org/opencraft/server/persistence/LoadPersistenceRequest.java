@@ -33,7 +33,15 @@ package org.opencraft.server.persistence;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Map;
+
 import org.opencraft.server.model.Player;
+import org.opencraft.server.model.World;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * A persistence request which loads the specified player.
@@ -50,10 +58,25 @@ public class LoadPersistenceRequest extends PersistenceRequest {
 		super(player);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void perform() {
+	public void perform() throws IOException {
+		final SavedGameManager mgr = SavedGameManager.getSavedGameManager();
 		final Player player = getPlayer();
-		// TODO load the player
+		final XStream xs = mgr.getXStream();
+		final File file = new File(mgr.getPath(player));
+		if(file.exists()) {
+			try {
+				Map<String, Object> attributes = (Map<String, Object>) xs.fromXML(new FileInputStream(file));
+				for(Map.Entry<String, Object> entry : attributes.entrySet()) {
+					player.setAttribute(entry.getKey(), entry.getValue());
+				}
+			} catch (RuntimeException ex) {
+				throw new IOException(ex);
+			}
+		}
+		player.getSession().setReady();
+		World.getWorld().completeRegistration(player.getSession());
 	}
 	
 }

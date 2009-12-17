@@ -92,13 +92,15 @@ public class ExperimentalGameMode extends GameModeAdapter {
 		// Remember connection time
 		visitors.put(name, new Date());
 		
-		// Give them a brush
-		player.setAttribute("brush", getDefaultBrush());
+		// Give them a brush, if they do not have one already
+		if(!player.isAttributeSet("brush")) {
+			player.setAttribute("brush", getDefaultBrush());
+		}
 	}
 	
 	@Override
 	public void playerDisconnected(Player player) {
-		player.removeAttribute("brush");
+		// we persist this :) player.removeAttribute("brush");
 	}
 	
 	@Override
