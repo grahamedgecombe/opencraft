@@ -31,6 +31,7 @@
 			<fileset dir="data">
 				<include name="*.xml"/>
 				<include name="*.properties"/>
+				<include name="savedGames"/>
 			</fileset>
 		</copy>
 		<copy todir="release">

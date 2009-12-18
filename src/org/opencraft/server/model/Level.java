@@ -37,6 +37,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 
 /**
  * Represents the actual level.
@@ -120,7 +121,54 @@ public final class Level {
 		 * BlockDefinition.GRASS.getId() : BlockDefinition.DIRT.getId();
 		 * this.blocks[x][y][z] = (byte) type; } } }
 		 */
-		for (int z = 0; z < 7; z++) {
+		Random random = new Random();
+		int[][] heights = new int[width][height];
+		int maxHeight = 1;
+		for(int i = 0; i < 100000; i++) {
+			int x = random.nextInt(width);
+			int y = random.nextInt(height);
+			int radius = random.nextInt(10) + 4;
+			for(int j = 0; j < width; j++) {
+				for(int k = 0; k < height; k++) {
+					int mod = (radius * radius) - (k - x) * (k - x) - (j - y) * (j - y);
+					if(mod > 0) {
+						heights[j][k] += mod;
+						if(heights[j][k] > maxHeight) {
+							maxHeight = heights[j][k];
+						}
+					}
+				}
+			}
+		}
+		for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				//int h = (int) ((float) (heights[x][y]) / (float) (maxHeight * 2) * (float) (depth / 2));
+				
+				int h = (depth / 2) + (heights[x][y] * (depth / 2) / maxHeight);
+				int d = random.nextInt(8) - 4;
+				for(int z = 0; z < h; z++) {
+					int type = BlockConstants.DIRT;
+					if(z == (h - 1)) {
+						type = BlockConstants.GRASS;
+					} else if(z <= (depth / 2 + d)) {
+						type = BlockConstants.STONE;
+					}
+					blocks[x][y][z] = (byte) type;
+				}
+				for(int z = h; z < depth; z++) {
+					int type = BlockConstants.AIR;
+					if(z == (depth / 2 - 2) && blocks[x][y][z-1] != BlockConstants.AIR) {
+						type = BlockConstants.SAND;
+					} else if(z == (depth / 2 - 1) && blocks[x][y][z-1] != BlockConstants.AIR) {
+						type = BlockConstants.SAND;
+					} else if(z <= (depth / 2)) {
+						type = BlockConstants.WATER;
+					}
+					//blocks[x][y][z] = (byte) type;
+				}
+			}
+		}
+		/*for (int z = 0; z < 7; z++) {
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					if (z <= 5) {
@@ -137,7 +185,7 @@ public final class Level {
 					}
 				}
 			}
-		}
+		}*/
 		recalculateAllLightDepths();
 	}
 	
