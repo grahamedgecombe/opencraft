@@ -76,7 +76,7 @@ public class ActionSender {
 		bldr.putByte("protocol_version", protocolVersion);
 		bldr.putString("server_name", name);
 		bldr.putString("server_message", message);
-		bldr.putByte("user_type", op ? 1 : 0);
+		bldr.putByte("user_type", op ? 100 : 0);
 		session.send(bldr.toPacket());
 	}
 	
