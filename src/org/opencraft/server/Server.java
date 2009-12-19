@@ -46,6 +46,7 @@ import org.opencraft.server.net.SessionHandler;
 import org.opencraft.server.task.TaskQueue;
 import org.opencraft.server.task.impl.HeartbeatTask;
 import org.opencraft.server.task.impl.UpdateTask;
+import org.opencraft.server.util.SetManager;
 
 /**
  * The core class of the OpenCraft server.
@@ -84,6 +85,7 @@ public final class Server {
 		logger.info("Starting OpenCraft server...");
 		logger.info("Configuring...");
 		Configuration.readConfiguration();
+		SetManager.getSetManager().reloadSets();
 		acceptor.setHandler(new SessionHandler());
 		TaskQueue.getTaskQueue().schedule(new UpdateTask());
 		TaskQueue.getTaskQueue().schedule(new HeartbeatTask());

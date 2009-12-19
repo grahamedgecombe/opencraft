@@ -34,6 +34,7 @@ package org.opencraft.server.util;
  */
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -140,7 +141,11 @@ public class SetManager {
 			set = new HashSet<String>();
 			sets.put(name, set);
 		}
-		BufferedReader rdr = new BufferedReader(new InputStreamReader(new FileInputStream("data/" + name + ".txt")));
+		File f = new File("./data/" + name + ".txt");
+		if(!f.exists()) {
+			f.createNewFile();
+		}
+		BufferedReader rdr = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
 		try {
 			String line;
 			while((line = rdr.readLine()) != null) {

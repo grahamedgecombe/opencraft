@@ -37,7 +37,6 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Random;
 
 /**
  * Represents the actual level.
@@ -114,14 +113,18 @@ public final class Level {
 				activeTimers.put(i, System.currentTimeMillis());
 			}
 		}
-		// temporary:
-		/*
-		 * for(int z = 0; z < depth / 2; z++) { for(int x = 0; x < width; x++) {
-		 * for(int y = 0; y < height; y++) { int type = z == (depth / 2 - 1) ?
-		 * BlockDefinition.GRASS.getId() : BlockDefinition.DIRT.getId();
-		 * this.blocks[x][y][z] = (byte) type; } } }
-		 */
-		Random random = new Random();
+		for(int z = 0; z < depth / 2; z++) {
+			for(int x = 0; x < width; x++) {
+				for(int y = 0; y < height; y++) {
+					int type = z == (depth / 2 - 1) ? BlockConstants.GRASS : BlockConstants.DIRT;
+					if((x == 0 || y == 0 || x == width - 1 || y == height - 1) && (z == (depth / 2 - 1) || z == (depth / 2 - 2))) {
+						type = BlockConstants.WATER;
+					}
+					this.blocks[x][y][z] = (byte) type;
+				}
+			}
+		}
+		/*Random random = new Random();
 		int[][] heights = new int[width][height];
 		int maxHeight = 1;
 		for(int i = 0; i < 100000; i++) {
@@ -142,8 +145,6 @@ public final class Level {
 		}
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
-				//int h = (int) ((float) (heights[x][y]) / (float) (maxHeight * 2) * (float) (depth / 2));
-				
 				int h = (depth / 2) + (heights[x][y] * (depth / 2) / maxHeight);
 				int d = random.nextInt(8) - 4;
 				for(int z = 0; z < h; z++) {
@@ -155,37 +156,9 @@ public final class Level {
 					}
 					blocks[x][y][z] = (byte) type;
 				}
-				for(int z = h; z < depth; z++) {
-					int type = BlockConstants.AIR;
-					if(z == (depth / 2 - 2) && blocks[x][y][z-1] != BlockConstants.AIR) {
-						type = BlockConstants.SAND;
-					} else if(z == (depth / 2 - 1) && blocks[x][y][z-1] != BlockConstants.AIR) {
-						type = BlockConstants.SAND;
-					} else if(z <= (depth / 2)) {
-						type = BlockConstants.WATER;
-					}
-					//blocks[x][y][z] = (byte) type;
-				}
-			}
-		}
-		/*for (int z = 0; z < 7; z++) {
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
-					if (z <= 5) {
-						this.blocks[x][y][z] = (byte) BlockConstants.DIRT;
-					} else {
-						if (y < 40) {
-							this.blocks[x][y][z] = (byte) BlockConstants.WATER;
-						} else if (y == 50 && x == 50) {
-							this.blocks[x][y][z - 1] = (byte) BlockConstants.GRASS;
-							this.queueActiveBlockUpdate(x, y, z - 1);
-						} else if (y > 60) {
-							this.blocks[x][y][z] = (byte) BlockConstants.LAVA;
-						}
-					}
-				}
 			}
 		}*/
+
 		recalculateAllLightDepths();
 	}
 	
