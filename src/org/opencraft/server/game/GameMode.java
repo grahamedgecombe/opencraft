@@ -53,6 +53,11 @@ public interface GameMode {
 	public Map<String, Command> getCommands();
 	
 	/**
+	 * Called every 100ms BEFORE each tick.
+	 */
+	public void tick();
+	
+	/**
 	 * Notification of player connected
 	 * @param player The connected player
 	 */

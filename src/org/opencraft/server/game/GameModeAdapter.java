@@ -87,6 +87,11 @@ public abstract class GameModeAdapter implements GameMode {
 	}
 	
 	// Default implementation
+	public void tick() {
+		
+	}
+	
+	// Default implementation
 	public void playerConnected(Player player) {
 		World.getWorld().broadcast("Welcome " + player.getName());
 	}

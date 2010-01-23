@@ -135,4 +135,11 @@ public class ScriptedGameMode extends GameModeAdapter {
 		}
 	}
 	
+	@Override
+	public void tick() {
+		if(!delegate("tick")) {
+			super.tick();
+		}
+	}
+	
 }

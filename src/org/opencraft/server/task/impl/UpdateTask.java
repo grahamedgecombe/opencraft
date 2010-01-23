@@ -62,6 +62,7 @@ public class UpdateTask extends ScheduledTask {
 	@Override
 	public void execute() {
 		final World world = World.getWorld();
+		world.getGameMode().tick();
 		for (Player player : world.getPlayerList().getPlayers()) {
 			Set<Entity> localEntities = player.getLocalEntities();
 			Iterator<Entity> localEntitiesIterator = localEntities.iterator();
