@@ -86,6 +86,8 @@ public class ScriptedGameMode extends GameModeAdapter {
 		
 		logger.info("Evaluating script...");
 		engine.eval(new InputStreamReader(new FileInputStream("./data/scripts/" + name)));
+		
+		delegate("init");
 	}
 	
 	/**
