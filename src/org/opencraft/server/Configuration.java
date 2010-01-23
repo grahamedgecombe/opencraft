@@ -121,6 +121,11 @@ public class Configuration {
 	private String gameMode;
 	
 	/**
+	 * The script name.
+	 */
+	private String scriptName;
+	
+	/**
 	 * Creates the configuration from the specified properties object.
 	 * @param props The properties object.
 	 */
@@ -133,6 +138,7 @@ public class Configuration {
 		mapFilename = props.getProperty("filename", "server_level.dat");
 		spongeRadius = Integer.valueOf(props.getProperty("sponge_radius", "2"));
 		gameMode = props.getProperty("game_mode", CreativeGameMode.class.getName());
+		scriptName = props.getProperty("script_name", null);
 	}
 	
 	/**
@@ -197,6 +203,14 @@ public class Configuration {
 	 */
 	public String getGameMode() {
 		return gameMode;
+	}
+	
+	/**
+	 * Gets the script name.
+	 * @return The script name.
+	 */
+	public String getScriptName() {
+		return scriptName;
 	}
 	
 }

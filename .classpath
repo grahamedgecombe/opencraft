@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-jdk.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-core.jar"/>
+	<classpathentry kind="lib" path="lib/jython.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
