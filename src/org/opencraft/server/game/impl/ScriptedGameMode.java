@@ -34,19 +34,17 @@ package org.opencraft.server.game.impl;
  */
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
-
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import org.opencraft.server.Configuration;
 import org.opencraft.server.game.GameModeAdapter;
 import org.opencraft.server.model.Level;
 import org.opencraft.server.model.Player;
+import org.python.core.Py;
+import org.python.core.PyObject;
+import org.python.util.PythonInterpreter;
 
 /**
  * A game mode which delegates methods to a script.
@@ -61,33 +59,37 @@ public class ScriptedGameMode extends GameModeAdapter {
 	private static final Logger logger = Logger.getLogger(ScriptedGameMode.class.getName());
 	
 	/**
-	 * The script engine.
+	 * The python interpreter.
+	 * We were origianlly using javax.script but that had some issues with
+	 * commands.
 	 */
-	private ScriptEngine engine;
+	private PythonInterpreter interpreter = new PythonInterpreter();
 	
 	/**
 	 * Creates the scripted game mode.
-	 * @throws ScriptException if a script exception occurs.
-	 * @throws FileNotFoundException if a file was not found.
+	 * @throws IOException if an I/O error occurs.
 	 */
-	public ScriptedGameMode() throws FileNotFoundException, ScriptException {
+	public ScriptedGameMode() throws IOException {
 		init();
 	}
 	
 	/**
 	 * Initializes the script engine and evaluates the script.
-	 * @throws ScriptException if a script exception occurs.
-	 * @throws FileNotFoundException if a file was not found.
+	 * @throws IOException if an I/O error occurs.
 	 */
-	private void init() throws FileNotFoundException, ScriptException {
-		final ScriptEngineManager mgr = new ScriptEngineManager();
-		engine = mgr.getEngineByName("python");
+	private void init() throws IOException {
 		String name = Configuration.getConfiguration().getScriptName();
 		
 		logger.info("Evaluating script...");
-		engine.eval(new InputStreamReader(new FileInputStream("./data/scripts/" + name)));
+		InputStream is = new FileInputStream("./data/scripts/" + name);
+		try {
+			interpreter.execfile(is);
+		} finally {
+			is.close();
+		}
 		
-		delegate("init");
+		logger.info("Initializing script...");
+		delegate("init", this);
 	}
 	
 	/**
@@ -96,13 +98,15 @@ public class ScriptedGameMode extends GameModeAdapter {
 	 * @param args The arguments.
 	 */
 	private boolean delegate(String method, Object... args) {
-		Invocable inv = (Invocable) engine;
-		try {
-			inv.invokeFunction(method, args);
-		} catch (NoSuchMethodException ex) {
+		PyObject m = interpreter.get(method);
+		if(m != null) {
+			try {
+				m.__call__(Py.javas2pys(args));
+			} catch (Exception ex) {
+				logger.log(java.util.logging.Level.SEVERE, "Error invoking method.", ex);
+			}
+		} else {
 			return false;
-		} catch (Exception ex) {
-			logger.log(java.util.logging.Level.SEVERE, "Error invoking method.", ex);
 		}
 		return true;
 	}
