@@ -36,33 +36,21 @@ package org.opencraft.server.net.packet.handler;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.opencraft.server.io.PersistenceManager;
-import org.opencraft.server.net.MinecraftSession;
+import org.opencraft.server.net.OCSession;
 import org.opencraft.server.net.packet.Packet;
 
 /**
  * A class which manages <code>PacketHandler</code>s.
  * @author Graham Edgecombe
  */
-public final class PacketHandlerManager {
+public class PacketHandlerManager<SessionType extends OCSession> {
 	
-	/**
-	 * The singleton instance.
-	 */
-	private static final PacketHandlerManager INSTANCE = new PacketHandlerManager();
 	
 	/**
 	 * Logger instance.
 	 */
 	private static final Logger logger = Logger.getLogger(PacketHandlerManager.class.getName());
 	
-	/**
-	 * Gets the packet handler manager instance.
-	 * @return The packet handler manager instance.
-	 */
-	public static PacketHandlerManager getPacketHandlerManager() {
-		return INSTANCE;
-	}
 	
 	/**
 	 * An array of packet handlers.
@@ -73,9 +61,9 @@ public final class PacketHandlerManager {
 	 * Default private constructor.
 	 */
 	@SuppressWarnings("unchecked")
-	private PacketHandlerManager() {
+	protected PacketHandlerManager(Map<Integer, String> map) {
 		try {
-			Map<Integer, String> handlers = (Map<Integer, String>) PersistenceManager.getPersistenceManager().load("data/packetHandlers.xml");
+			Map<Integer, String> handlers = map;
 			for (Map.Entry<Integer, String> handler : handlers.entrySet()) {
 				this.handlers[handler.getKey()] = (PacketHandler) Class.forName(handler.getValue()).newInstance();
 			}
@@ -89,7 +77,7 @@ public final class PacketHandlerManager {
 	 * @param session The session.
 	 * @param packet The packet.
 	 */
-	public void handlePacket(MinecraftSession session, Packet packet) {
+	public void handlePacket(SessionType session, Packet packet) {
 		PacketHandler handler = handlers[packet.getDefinition().getOpcode()];
 		if (handler != null) {
 			handler.handlePacket(session, packet);

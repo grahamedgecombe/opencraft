@@ -44,7 +44,7 @@ import org.opencraft.server.net.packet.handler.PacketHandler;
  * A packet handler which handles movement packets.
  * @author Graham Edgecombe
  */
-public class MovementPacketHandler implements PacketHandler {
+public class MovementPacketHandler implements PacketHandler<MinecraftSession> {
 	
 	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {

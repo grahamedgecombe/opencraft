@@ -1,9 +1,9 @@
-package org.opencraft.server.net.packet.handler.impl;
+package org.opencraft.server.net;
 
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell. Mark Farrell
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,29 +32,24 @@ package org.opencraft.server.net.packet.handler.impl;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-import org.opencraft.server.model.World;
-import org.opencraft.server.net.MinecraftSession;
-import org.opencraft.server.net.packet.Packet;
-import org.opencraft.server.net.packet.handler.PacketHandler;
-
 /**
- * A packet handler which handles the construction packet.
+ * Various connection states.
  * @author Graham Edgecombe
  */
-public class ConstructionPacketHandler implements PacketHandler<MinecraftSession> {
+public enum State {
 	
-	@Override
-	public void handlePacket(MinecraftSession session, Packet packet) {
-		if (!session.isAuthenticated()) {
-			return;
-		}
-		int x = packet.getNumericField("x").intValue();
-		int y = packet.getNumericField("y").intValue();
-		int z = packet.getNumericField("z").intValue();
-		int mode = packet.getNumericField("mode").intValue();
-		int type = packet.getNumericField("type").intValue();
-		World.getWorld().getGameMode().setBlock(session.getPlayer(), World.getWorld().getLevel(), x, y, z, mode, type);
-	}
-	
+	/**
+	 * Indicates the connection is new and has just connected.
+	 */
+	CONNECTED,
+
+	/**
+	 * Indicates the connection has been authenticated but is not yet ready.
+	 */
+	AUTHENTICATED,
+
+	/**
+	 * Indicates the connection is ready for use.
+	 */
+	READY;
 }

@@ -1,4 +1,3 @@
-package org.opencraft.server.net.packet.handler.impl;
 
 /*
  * OpenCraft License
@@ -32,29 +31,28 @@ package org.opencraft.server.net.packet.handler.impl;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.opencraft.server.net;
 
-import org.opencraft.server.model.World;
-import org.opencraft.server.net.MinecraftSession;
-import org.opencraft.server.net.packet.Packet;
-import org.opencraft.server.net.packet.handler.PacketHandler;
+import java.util.Map;
+
+import org.opencraft.server.io.PersistenceManager;
+import org.opencraft.server.net.packet.handler.PacketHandlerManager;
 
 /**
- * A packet handler which handles the construction packet.
- * @author Graham Edgecombe
+ * @author Mark Farrell
+ * The persisting packet handler manager for opencraft.
  */
-public class ConstructionPacketHandler implements PacketHandler<MinecraftSession> {
-	
-	@Override
-	public void handlePacket(MinecraftSession session, Packet packet) {
-		if (!session.isAuthenticated()) {
-			return;
-		}
-		int x = packet.getNumericField("x").intValue();
-		int y = packet.getNumericField("y").intValue();
-		int z = packet.getNumericField("z").intValue();
-		int mode = packet.getNumericField("mode").intValue();
-		int type = packet.getNumericField("type").intValue();
-		World.getWorld().getGameMode().setBlock(session.getPlayer(), World.getWorld().getLevel(), x, y, z, mode, type);
+public final class PersistingHandlerManager extends PacketHandlerManager{
+
+	private static final PacketHandlerManager INSTANCE = new PersistingHandlerManager();
+
+	@SuppressWarnings("unchecked")
+	private PersistingHandlerManager() {
+		super((Map<Integer, String>) PersistenceManager.getPersistenceManager().load("data/packetHandlers.xml"));
+	}
+
+	public static PacketHandlerManager getPacketHandlerManager() {
+		return INSTANCE;
 	}
 	
 }

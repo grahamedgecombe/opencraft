@@ -33,20 +33,20 @@ package org.opencraft.server.net.packet.handler;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.opencraft.server.net.MinecraftSession;
+import org.opencraft.server.net.OCSession;
 import org.opencraft.server.net.packet.Packet;
 
 /**
  * Describes the methods necessary for a packet handler.
  * @author Graham Edgecombe
  */
-public interface PacketHandler {
+public interface PacketHandler<SessionType extends OCSession> {
 	
 	/**
 	 * Handles a packet.
 	 * @param session The session.
 	 * @param packet The packet.
 	 */
-	public void handlePacket(MinecraftSession session, Packet packet);
+	public void handlePacket(SessionType session, Packet packet);
 	
 }

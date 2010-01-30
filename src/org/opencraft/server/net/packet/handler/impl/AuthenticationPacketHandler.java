@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 import org.opencraft.server.Constants;
 import org.opencraft.server.model.World;
 import org.opencraft.server.net.MinecraftSession;
+import org.opencraft.server.net.OCSession;
 import org.opencraft.server.net.packet.Packet;
 import org.opencraft.server.net.packet.handler.PacketHandler;
 
@@ -45,7 +46,7 @@ import org.opencraft.server.net.packet.handler.PacketHandler;
  * Handles the incoming authentication packet.
  * @author Graham Edgecombe
  */
-public final class AuthenticationPacketHandler implements PacketHandler {
+public final class AuthenticationPacketHandler implements PacketHandler<MinecraftSession> {
 	
 	/**
 	 * Logger instance.
@@ -69,5 +70,6 @@ public final class AuthenticationPacketHandler implements PacketHandler {
 			World.getWorld().register(session, username, verificationKey);
 		}
 	}
+
 	
 }

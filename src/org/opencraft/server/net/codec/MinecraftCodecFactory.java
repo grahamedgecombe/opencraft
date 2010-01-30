@@ -37,6 +37,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
+import org.opencraft.server.net.packet.PacketManager;
 
 /**
  * A <code>ProtocolCodecFactory</code> for the Minecraft protocol.
@@ -47,12 +48,19 @@ public final class MinecraftCodecFactory implements ProtocolCodecFactory {
 	/**
 	 * The decoder instance.
 	 */
-	private final ProtocolDecoder decoder = new MinecraftProtocolDecoder();
+	private final ProtocolDecoder decoder;
 	
 	/**
 	 * The encoder instance.
 	 */
-	private final ProtocolEncoder encoder = new MinecraftProtocolEncoder();
+	private final ProtocolEncoder encoder;
+	
+	
+	public MinecraftCodecFactory(PacketManager manager)
+	{
+		decoder = new MinecraftProtocolDecoder(manager);
+		encoder = new MinecraftProtocolEncoder();
+	}
 	
 	@Override
 	public ProtocolDecoder getDecoder(IoSession session) throws Exception {

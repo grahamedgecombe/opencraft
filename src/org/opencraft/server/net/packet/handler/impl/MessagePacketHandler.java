@@ -48,7 +48,7 @@ import org.opencraft.server.net.packet.handler.PacketHandler;
  * A class which handles message and comamnd packets.
  * @author Graham Edgecombe
  */
-public class MessagePacketHandler implements PacketHandler {
+public class MessagePacketHandler implements PacketHandler<MinecraftSession> {
 	
 	@Override
 	public void handlePacket(MinecraftSession session, Packet packet) {

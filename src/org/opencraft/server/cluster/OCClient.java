@@ -1,9 +1,7 @@
-package org.opencraft.server.net;
-
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen, Mark Farrell and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,53 +30,84 @@ package org.opencraft.server.net;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.opencraft.server.cluster;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.RuntimeIoException;
+import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.transport.socket.SocketConnector;
+import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import org.opencraft.server.net.Connectable;
+import org.opencraft.server.net.OCSession;
+import org.opencraft.server.net.State;
 import org.opencraft.server.net.codec.MinecraftCodecFactory;
 import org.opencraft.server.net.packet.Packet;
-import org.opencraft.server.task.TaskQueue;
-import org.opencraft.server.task.impl.SessionClosedTask;
-import org.opencraft.server.task.impl.SessionMessageTask;
-import org.opencraft.server.task.impl.SessionOpenedTask;
 
 /**
- * An implementation of an <code>IoHandler</code> which manages incoming events
- * from MINA and passes them onto the necessary subsystem in the OpenCraft
- * server.
- * @author Graham Edgecombe
+ * @author Mark Farrell
+ * A client that is connecting to a server in the cluster.
  */
-public final class SessionHandler extends IoHandlerAdapter {
+public abstract class OCClient extends Connectable{
+
+	/**
+	 * The task's logging system.
+	 */
+	private static final Logger logger = Logger.getLogger(OCClient.class.getCanonicalName());
+
+	
+	private static final int AWAIT_TIME = 3000;
+	private final String IP;
+	private final int PORT;
+
 	
 	/**
-	 * Logger instance.
+	 * What connects to the info server.
 	 */
-	private static final Logger logger = Logger.getLogger(SessionHandler.class.getName());
+	private SocketConnector connector;
+
+
+	/**
+	 * The protocol factory for the client.
+	 */
+	private final MinecraftCodecFactory factory;
 	
-	@Override
-	public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
-		logger.log(Level.SEVERE, "Exception occurred, closing session.", throwable);
-		session.close(false);
+	public OCClient(String ip, int port, MinecraftCodecFactory factory)
+	{
+		this.IP = ip;
+		this.PORT = port;
+		this.factory = factory;
+		this.connector = new NioSocketConnector();
 	}
-	
-	@Override
-	public void messageReceived(IoSession session, Object message) throws Exception {
-		TaskQueue.getTaskQueue().push(new SessionMessageTask(session, (Packet) message));
+	/**
+	 * Attempt to connect to the info server.
+	 */
+	public void connect()
+	{
+		try
+		{
+			ConnectFuture future = connector.connect(new InetSocketAddress(IP, PORT));
+			future.awaitUninterruptibly(AWAIT_TIME);
+
+			IoSession session = future.getSession();
+			session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(factory));
+			state = State.READY;
+			this.onConnect(session);
+		}
+		catch(RuntimeIoException e)
+		{
+			this.onFailure(e);
+		}
 	}
-	
-	@Override
-	public void sessionClosed(IoSession session) throws Exception {
-		TaskQueue.getTaskQueue().push(new SessionClosedTask(session));
-	}
-	
-	@Override
-	public void sessionOpened(IoSession session) throws Exception {
-		session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(new MinecraftCodecFactory(PersistingPacketManager.getPacketManager())));
-		TaskQueue.getTaskQueue().push(new SessionOpenedTask(session));
-	}
-	
+
+	/**
+	 * Requires what to do when it connects or fails to connect.
+	 */
+	public abstract void onConnect(IoSession session);
+	public abstract void onFailure(Throwable e);
 }

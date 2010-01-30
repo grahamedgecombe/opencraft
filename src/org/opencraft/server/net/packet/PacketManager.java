@@ -36,26 +36,12 @@ package org.opencraft.server.net.packet;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.opencraft.server.io.PersistenceManager;
-
 /**
  * A utility class for managing the whole packet system.
  * @param Graham Edgecombe
  */
-public final class PacketManager {
+public class PacketManager {
 	
-	/**
-	 * The packet manager instance.
-	 */
-	private static final PacketManager INSTANCE = (PacketManager) PersistenceManager.getPersistenceManager().load("data/packets.xml");;
-	
-	/**
-	 * Gets the packet manager instance.
-	 * @return The packet manager instance.
-	 */
-	public static PacketManager getPacketManager() {
-		return INSTANCE;
-	}
 	
 	/**
 	 * Incoming packets.
@@ -80,7 +66,7 @@ public final class PacketManager {
 	/**
 	 * Default private constructor.
 	 */
-	private PacketManager() {
+	protected PacketManager() {
 		/* empty */
 	}
 	

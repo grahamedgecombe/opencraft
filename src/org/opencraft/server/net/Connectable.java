@@ -1,9 +1,7 @@
-package org.opencraft.server.net.packet.handler.impl;
-
 /*
  * OpenCraft License
  * 
- * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen and Brett Russell.
+ * Copyright (c) 2009 Graham Edgecombe, Søren Enevoldsen, Mark Farrell and Brett Russell.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,29 +30,53 @@ package org.opencraft.server.net.packet.handler.impl;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.opencraft.server.net;
 
-import org.opencraft.server.model.World;
-import org.opencraft.server.net.MinecraftSession;
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+import org.apache.mina.core.session.IoSession;
 import org.opencraft.server.net.packet.Packet;
-import org.opencraft.server.net.packet.handler.PacketHandler;
 
 /**
- * A packet handler which handles the construction packet.
- * @author Graham Edgecombe
+ * @author Mark Farrell
+ * Represents an object that is bound to either end of a socket.
  */
-public class ConstructionPacketHandler implements PacketHandler<MinecraftSession> {
+public abstract class Connectable {
 	
-	@Override
-	public void handlePacket(MinecraftSession session, Packet packet) {
-		if (!session.isAuthenticated()) {
-			return;
+	/**
+	 * Packet queue.
+	 */
+	protected final Queue<Packet> queuedPackets = new ArrayDeque<Packet>();
+	
+	/**
+	 * State.
+	 */
+	protected State state = State.CONNECTED;
+	
+	/**
+	 * Sends a packet. This method may be called from multiple threads.
+	 * @param packet The packet to send.
+	 */
+	protected void send(Packet packet, IoSession session) {
+		synchronized (this) {
+			final String name = packet.getDefinition().getName();
+			final boolean unqueuedPacket = name.equals("authentication_response") || name.endsWith("level_init") || name.equals("level_block") || name.equals("level_finish") || name.equals("disconnect");
+			if (state == State.READY) {
+				if (queuedPackets.size() > 0) {
+					for (Packet queuedPacket : queuedPackets) {
+						session.write(queuedPacket);
+					}
+					queuedPackets.clear();
+				}
+				session.write(packet);
+			} else if (unqueuedPacket) {
+				session.write(packet);
+			} else {
+				queuedPackets.add(packet);
+			}
 		}
-		int x = packet.getNumericField("x").intValue();
-		int y = packet.getNumericField("y").intValue();
-		int z = packet.getNumericField("z").intValue();
-		int mode = packet.getNumericField("mode").intValue();
-		int type = packet.getNumericField("type").intValue();
-		World.getWorld().getGameMode().setBlock(session.getPlayer(), World.getWorld().getLevel(), x, y, z, mode, type);
 	}
+	
 	
 }

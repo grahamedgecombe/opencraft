@@ -46,64 +46,24 @@ import org.opencraft.server.net.packet.handler.PacketHandlerManager;
  * Manages a connected Minecraft session.
  * @author Graham Edgecombe
  */
-public final class MinecraftSession {
+public final class MinecraftSession extends OCSession{
 	
-	/**
-	 * Various connection states.
-	 * @author Graham Edgecombe
-	 */
-	public enum State {
-		
-		/**
-		 * Indicates the connection is new and has just connected.
-		 */
-		CONNECTED,
-
-		/**
-		 * Indicates the connection has been authenticated but is not yet ready.
-		 */
-		AUTHENTICATED,
-
-		/**
-		 * Indicates the connection is ready for use.
-		 */
-		READY;
-	}
-	
-	/**
-	 * The <code>IoSession</code> associated with this
-	 * <code>MinecraftSession</code>.
-	 */
-	private final IoSession session;
 	
 	/**
 	 * The action sender associated with this session.
 	 */
 	private final ActionSender actionSender = new ActionSender(this);
 	
-	/**
-	 * Packet queue.
-	 */
-	private final Queue<Packet> queuedPackets = new ArrayDeque<Packet>();
-	
-	/**
-	 * State.
-	 */
-	private State state = State.CONNECTED;
 	
 	/**
 	 * The player associated with this session.
 	 */
 	private Player player;
 	
-	/**
-	 * Creates the Minecraft session.
-	 * @param session The <code>IoSession</code>.
-	 */
-	public MinecraftSession(IoSession session) {
-		this.session = session;
-	}
 	
+	public MinecraftSession(IoSession sess) {
+		super(sess);
+	}
 	/**
 	 * Gets the action sender associated with this session.
 	 * @return The action sender.
@@ -121,80 +81,43 @@ public final class MinecraftSession {
 	}
 	
 	/**
-	 * Sets the state to authenticated.
-	 */
-	public void setAuthenticated() {
-		this.state = State.AUTHENTICATED;
-	}
-	
-	/**
-	 * Sets the state to ready.
-	 */
-	public void setReady() {
-		this.state = State.READY;
-	}
-	
-	/**
 	 * Gets the player associated with this session.
 	 * @return The player.
 	 */
 	public Player getPlayer() {
 		return player;
 	}
-	
-	/**
-	 * Checks if this session is authenticated.
-	 * @return <code>true</code> if so, <code>false</code> if not.
-	 */
-	public boolean isAuthenticated() {
-		return player != null;
-	}
+
 	
 	/**
 	 * Handles a packet.
 	 * @param packet The packet to handle.
 	 */
+	@Override
 	public void handle(Packet packet) {
-		PacketHandlerManager.getPacketHandlerManager().handlePacket(this, packet);
+		PersistingHandlerManager.getPacketHandlerManager().handlePacket(this, packet);
 	}
-	
-	/**
-	 * Sends a packet. This method may be called from multiple threads.
-	 * @param packet The packet to send.
-	 */
-	public void send(Packet packet) {
-		synchronized (this) {
-			final String name = packet.getDefinition().getName();
-			final boolean unqueuedPacket = name.equals("authentication_response") || name.endsWith("level_init") || name.equals("level_block") || name.equals("level_finish") || name.equals("disconnect");
-			if (state == State.READY) {
-				if (queuedPackets.size() > 0) {
-					for (Packet queuedPacket : queuedPackets) {
-						session.write(queuedPacket);
-					}
-					queuedPackets.clear();
-				}
-				session.write(packet);
-			} else if (unqueuedPacket) {
-				session.write(packet);
-			} else {
-				queuedPackets.add(packet);
-			}
-		}
-	}
-	
-	/**
-	 * Closes this session.
-	 */
-	public void close() {
-		session.close(false);
-	}
+
 	
 	/**
 	 * Called when this session is to be destroyed, should release any
 	 * resources.
 	 */
+	@Override
 	public void destroy() {
 		World.getWorld().unregister(this);
+	}
+	
+	
+	public boolean isAuthenticated() {
+		if(player == null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	
 }

@@ -57,13 +57,18 @@ public final class MinecraftProtocolDecoder extends CumulativeProtocolDecoder {
 	 * The current packet being decoded.
 	 */
 	private PacketDefinition currentPacket = null;
+	private PacketManager manager;
 	
+	public MinecraftProtocolDecoder(PacketManager manager)
+	{
+		this.manager = manager;
+	}
 	@Override
 	protected boolean doDecode(IoSession session, IoBuffer buffer, ProtocolDecoderOutput out) throws Exception {
 		if (currentPacket == null) {
 			if (buffer.remaining() >= 1) {
 				int opcode = buffer.getUnsigned();
-				currentPacket = PacketManager.getPacketManager().getIncomingPacket(opcode);
+				currentPacket = manager.getIncomingPacket(opcode);
 				if (currentPacket == null) {
 					throw new IOException("Unknown incoming packet type (opcode = " + opcode + ").");
 				}
