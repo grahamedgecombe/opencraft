@@ -44,7 +44,7 @@ import org.opencraft.server.model.Player;
  * @author Graham Edgecombe
  * @author Søren Enevoldsen
  */
-public interface GameMode {
+public interface GameMode<P extends Player> {
 	
 	/**
 	 * Gets a map of commands that are supported in this game mode.
@@ -61,14 +61,14 @@ public interface GameMode {
 	 * Notification of player connected
 	 * @param player The connected player
 	 */
-	public void playerConnected(Player player);
+	public void playerConnected(P player);
 	
 	/**
 	 * Event handler for a player disconnect Remember player has already
 	 * disconnected!
 	 * @param player The disconnected player
 	 */
-	public void playerDisconnected(Player player);
+	public void playerDisconnected(P player);
 	
 	/**
 	 * Handles block adding and removing
@@ -77,12 +77,12 @@ public interface GameMode {
 	 * @param mode 1/0 adding/removing
 	 * @param type typeId of the block
 	 */
-	public void setBlock(Player player, Level level, int x, int y, int z, int mode, int type);
+	public void setBlock(P player, Level level, int x, int y, int z, int mode, int type);
 	
 	/**
 	 * Broadcasts a chat message.
 	 * @param player The sending player.
 	 * @param message The chat message.
 	 */
-	public void broadcastChatMessage(Player player, String message);
+	public void broadcastChatMessage(P player, String message);
 }

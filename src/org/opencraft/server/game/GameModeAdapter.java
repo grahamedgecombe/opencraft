@@ -52,7 +52,7 @@ import org.opencraft.server.model.World;
  * game mode developer.
  * @author Graham Edgecombe
  */
-public abstract class GameModeAdapter implements GameMode {
+public abstract class GameModeAdapter<P extends Player> implements GameMode<P> {
 	
 	/**
 	 * The command map.

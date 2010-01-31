@@ -43,7 +43,7 @@ import org.opencraft.server.net.MinecraftSession;
  * Represents a connected player.
  * @author Graham Edgecombe
  */
-public final class Player extends Entity {
+public class Player extends Entity {
 	
 	/**
 	 * The player's session.

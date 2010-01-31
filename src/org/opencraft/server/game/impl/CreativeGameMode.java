@@ -34,11 +34,12 @@ package org.opencraft.server.game.impl;
  */
 
 import org.opencraft.server.game.GameModeAdapter;
+import org.opencraft.server.model.Player;
 
 /**
  * An implementation of the creative game mode.
  * @author Graham Edgecombe
  */
-public class CreativeGameMode extends GameModeAdapter {
+public class CreativeGameMode extends GameModeAdapter<Player> {
 	
 }

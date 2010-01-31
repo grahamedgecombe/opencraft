@@ -51,7 +51,7 @@ import org.python.util.PythonInterpreter;
  * @author Graham Edgecombe
  *
  */
-public class ScriptedGameMode extends GameModeAdapter {
+public class ScriptedGameMode extends GameModeAdapter<Player> {
 	
 	/**
 	 * Logger instance.
