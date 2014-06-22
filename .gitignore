@@ -1,0 +1,9 @@
+.*
+*~
+/bin
+/release
+/data/savedGames
+/data/ops.txt
+/data/banned.txt
+!.git*
+!.mailmap
