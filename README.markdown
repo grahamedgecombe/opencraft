@@ -15,6 +15,10 @@ The line endings and encoding have been converted to UNIX-style and UTF-8
 respectively. In the original OpenCraft repository, DOS-style and ISO-8859-1
 were used.
 
+This code is old and parts of it are pretty terrible. It is here for reference
+only. [Lightstone][lightstone] is much better.
+
 [classic]: https://minecraft.net/classic
 [sf]: http://sourceforge.net/p/opencraft/code/HEAD/tree/
 [gitorious]: https://gitorious.org/opencraft
+[lightstone]: https://github.com/grahamedgecombe/lightstone
