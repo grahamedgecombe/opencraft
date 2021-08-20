@@ -1,6 +1,4 @@
-OpenCraft
-=========
-
+# OpenCraft
 OpenCraft is an open-source third-party implementation of the
 [Minecraft Classic][classic] server software. (In fact, if my memory serves me
 correctly, I believe it was the first open-source one, but feel free to prove me
